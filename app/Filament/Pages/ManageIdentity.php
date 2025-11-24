@@ -4,13 +4,15 @@ namespace App\Filament\Pages;
 
 use App\Services\ImageConversionService;
 use App\Settings\GeneralSettings;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
-use Spatie\LaravelSettings\Settings;
 
 class ManageIdentity extends Page
 {
+    use InteractsWithFormActions;
     protected static string $view = 'filament.pages.manage-identity';
     
     protected static ?string $navigationGroup = 'Government';
@@ -23,7 +25,7 @@ class ManageIdentity extends Page
 
     public function mount(): void
     {
-        $settings = Settings::group(GeneralSettings::class);
+        $settings = app(GeneralSettings::class);
         
         $this->form->fill([
             'site_name' => $settings->site_name ?? '',
@@ -122,6 +124,15 @@ class ManageIdentity extends Page
             ->columns(2);
     }
 
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('save')
+                ->label('Save')
+                ->submit('save'),
+        ];
+    }
+
     public function save(): void
     {
         $data = $this->form->getState();
@@ -138,7 +149,7 @@ class ManageIdentity extends Page
             }
         }
         
-        Settings::group(GeneralSettings::class)->fill($data)->save();
+        app(GeneralSettings::class)->fill($data)->save();
         
         $this->notify('success', 'Settings saved successfully.');
     }

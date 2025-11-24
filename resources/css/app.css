@@ -157,8 +157,8 @@ html {
     opacity: 1 !important;
 }
 
-/* Filament Custom Styles */
-@import './filament-custom.css';
+/* Filament Custom Styles - REMOVED: Filament CSS should NOT be imported in frontend app.css */
+/* Filament CSS is loaded separately via viteTheme in AdminPanelProvider */
 
 /* Hero Section Animations */
 @keyframes fade-in {

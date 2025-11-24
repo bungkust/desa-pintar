@@ -3,6 +3,7 @@
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ApbdesController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ComplaintPublicController;
 use App\Http\Controllers\LayananSuratController;
 use App\Http\Controllers\PeraturanDesaController;
 use App\Models\Apbdes;
@@ -255,10 +256,15 @@ Route::middleware(['throttle:60,1'])->group(function () {
         return $controller->showDummyPage('Potensi Desa');
     })->name('potensi-desa');
 
-    Route::get('/pengaduan', function () {
-        $controller = new \App\Http\Controllers\QuickLinkController();
-        return $controller->showDummyPage('Pengaduan');
-    })->name('pengaduan');
+    // Complaint routes (public)
+    Route::prefix('pengaduan')->name('complaints.')->group(function () {
+        Route::get('/', [ComplaintPublicController::class, 'create'])->name('create');
+        Route::post('/', [ComplaintPublicController::class, 'store'])->name('store');
+        Route::get('/track', [ComplaintPublicController::class, 'showTracking'])->name('tracking-form');
+        Route::get('/track/{code}', [ComplaintPublicController::class, 'track'])
+            ->name('track')
+            ->where('code', 'ADU-[A-Z0-9]{6}');
+    });
 
     // Generic quick link route (for dynamic labels) - validate label
     Route::get('/quick-link/{label}', [\App\Http\Controllers\QuickLinkController::class, 'redirect'])
@@ -270,6 +276,13 @@ Route::middleware(['throttle:60,1'])->group(function () {
 Route::middleware(['throttle:60,1'])->group(function () {
     Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
     Route::get('/agenda/{id}', [AgendaController::class, 'show'])->name('agenda.show')->where('id', '[0-9]+');
+});
+
+// Petugas routes (protected by role middleware)
+Route::middleware(['auth', 'role:petugas'])->prefix('petugas/complaints')->name('petugas.complaints.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\ComplaintPetugasController::class, 'indexAssigned'])->name('index');
+    Route::post('/{complaint}/status', [\App\Http\Controllers\ComplaintPetugasController::class, 'updateStatusByPetugas'])->name('update-status');
+    Route::post('/{complaint}/photo', [\App\Http\Controllers\ComplaintPetugasController::class, 'uploadProgressPhoto'])->name('upload-photo');
 });
 
 // Route for sitemap.xml (no rate limiting needed)

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Apbdes;
+use App\Models\Complaint;
 use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Official;
@@ -11,7 +12,9 @@ use App\Models\Statistic;
 use App\Models\StatisticDetail;
 use App\Observers\CacheClearingObserver;
 use App\Observers\ImageConversionObserver;
+use App\Policies\ComplaintPolicy;
 use App\Settings\GeneralSettings;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Settings;
 
@@ -30,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register policies
+        Gate::policy(Complaint::class, ComplaintPolicy::class);
+        
         Settings::register(GeneralSettings::class);
 
         // Register image conversion observers

@@ -15,6 +15,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'role',
     ];
 
     protected $hidden = [
@@ -28,6 +29,72 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Role helper methods
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function isAdminDesa(): bool
+    {
+        return $this->role === 'admin_desa';
+    }
+
+    public function isLurah(): bool
+    {
+        return $this->role === 'lurah';
+    }
+
+    public function isPetugas(): bool
+    {
+        return $this->role === 'petugas';
+    }
+
+    public function isViewer(): bool
+    {
+        return $this->role === 'viewer';
+    }
+
+    public function canManageComplaints(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin_desa', 'lurah']);
+    }
+
+    public function canAssignPetugas(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin_desa']);
+    }
+
+    public function canViewPrivateData(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin_desa', 'lurah']);
+    }
+
+    /**
+     * Relationships
+     */
+    public function assignedComplaints()
+    {
+        return $this->hasMany(Complaint::class, 'assigned_to');
+    }
+
+    public function complaintUpdates()
+    {
+        return $this->hasMany(ComplaintUpdate::class, 'updated_by');
+    }
+
+    public function complaintComments()
+    {
+        return $this->hasMany(ComplaintComment::class, 'user_id');
+    }
+
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class);
     }
 
     /**

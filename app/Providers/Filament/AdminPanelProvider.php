@@ -41,6 +41,9 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
             ])
             ->navigationGroups([
+                NavigationGroup::make('Pengaduan')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->collapsible(true),
                 NavigationGroup::make('Website Content')
                     ->icon('heroicon-o-document-text')
                     ->collapsible(true),

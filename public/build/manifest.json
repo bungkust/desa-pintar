@@ -6,8 +6,13 @@
     "isDynamicEntry": true
   },
   "resources/css/app.css": {
-    "file": "assets/css/app-BXQOXkDx.css",
+    "file": "assets/css/app-dJ4n_GEo.css",
     "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/filament-custom.css": {
+    "file": "assets/css/filament-custom-BHrP1S2f.css",
+    "src": "resources/css/filament-custom.css",
     "isEntry": true
   },
   "resources/js/app.js": {

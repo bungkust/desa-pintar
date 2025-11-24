@@ -29,6 +29,11 @@ class QuickLinkController
         // Normalize label (convert slug back to label format)
         $normalizedLabel = ucwords(str_replace(['-', '_'], ' ', $label));
         
+        // Check for special pages first (like pengaduan)
+        if (strtolower($label) === 'pengaduan') {
+            return $this->showPengaduanPage();
+        }
+
         // Try to find quick link by label
         $quickLink = QuickLink::where('label', $normalizedLabel)
             ->orWhere('label', 'like', '%' . $label . '%')
@@ -104,7 +109,7 @@ class QuickLinkController
             'statistik' => 'statistik-lengkap',
             'potensi' => 'potensi-desa',
             'potensi-desa' => 'potensi-desa',
-            'pengaduan' => 'pengaduan',
+            'pengaduan' => 'complaints.create',
         ];
 
         $normalizedSlug = strtolower(str_replace([' ', '-', '_'], '-', $slug));
@@ -231,6 +236,76 @@ class QuickLinkController
             'description' => 'Halaman ini sedang dalam pengembangan dan akan segera tersedia.',
             'items' => [],
         ];
+    }
+
+    /**
+     * Show dedicated pengaduan landing page
+     */
+    public function showPengaduanPage()
+    {
+        // Get Menu Items for navbar (cached)
+        $menuItems = Cache::remember('menu_items', 3600, function () {
+            return MenuItem::where('is_active', true)
+                ->whereNull('parent_id')
+                ->orderBy('order')
+                ->with(['children' => function ($query) {
+                    $query->where('is_active', true)
+                          ->orderBy('order')
+                          ->with(['children' => function ($subQuery) {
+                              $subQuery->where('is_active', true)
+                                       ->orderBy('order');
+                          }]);
+                }])
+                ->get();
+        });
+
+        // Get settings (cached)
+        $settings = Cache::rememberForever('general_settings', function () {
+            try {
+                return app(GeneralSettings::class);
+            } catch (\Exception $e) {
+                return (object) [
+                    'site_name' => 'Pemerintah Kalurahan Donoharjo',
+                    'village_address' => 'Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581',
+                    'whatsapp' => '6281227666999',
+                    'logo_path' => null,
+                    'instagram' => null,
+                ];
+            }
+        });
+
+        // Get statistics for transparency (cached for 5 minutes)
+        $stats = Cache::remember('complaint_stats_public', 300, function () {
+            return [
+                'total' => \App\Models\Complaint::count(),
+                'selesai' => \App\Models\Complaint::where('status', 'done')->count(),
+                'sedang_diproses' => \App\Models\Complaint::where('status', 'in_progress')->count(),
+            ];
+        });
+
+        // Categories for display
+        $categories = [
+            'infrastruktur' => 'Infrastruktur & Jalan',
+            'sampah' => 'Sampah & Kebersihan',
+            'air' => 'Air & Sanitasi',
+            'listrik' => 'Listrik & Penerangan',
+            'keamanan' => 'Keamanan & Ketertiban',
+            'sosial' => 'Sosial & Kesejahteraan',
+            'pendidikan' => 'Pendidikan',
+            'kesehatan' => 'Kesehatan',
+            'lainnya' => 'Lainnya',
+        ];
+
+        return view('quick-link.pengaduan', [
+            'menuItems' => $menuItems,
+            'settings' => $settings,
+            'stats' => $stats,
+            'categories' => $categories,
+            'pageTitle' => 'Pengaduan Masyarakat - ' . ($settings->site_name ?? 'Desa Donoharjo'),
+            'metaTitle' => 'Pengaduan Masyarakat - ' . ($settings->site_name ?? 'Desa Donoharjo'),
+            'metaDescription' => 'Laporkan masalah atau keluhan Anda kepada pemerintah desa. Sistem pengaduan online yang mudah dan transparan.',
+            'canonicalUrl' => url()->current(),
+        ]);
     }
 }
 
