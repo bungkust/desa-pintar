@@ -172,7 +172,7 @@
 
             <!-- Actions -->
             <div class="pt-6 border-t">
-                <a href="{{ route('complaints.create') }}" 
+                <a href="{{ route('complaints.index') }}" 
                    class="inline-block px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors">
                     Buat Pengaduan Baru
                 </a>

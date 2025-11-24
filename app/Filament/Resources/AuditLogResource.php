@@ -20,6 +20,11 @@ class AuditLogResource extends Resource
     
     protected static ?int $navigationSort = 6;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; // Hide from navigation, use ActivityLog instead
+    }
+
     public static function canCreate(): bool
     {
         return false; // View-only resource

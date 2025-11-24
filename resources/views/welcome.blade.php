@@ -68,7 +68,7 @@
                         'Layanan Surat' => 'layanan-surat',
                         'Produk Hukum' => 'peraturan-desa',
                         'Potensi Desa' => 'potensi-desa',
-                        'Pengaduan' => 'pengaduan',
+                        'Pengaduan' => 'complaints.index',
                         'Berita' => 'berita',
                         'APBDes' => 'apbdes.show',
                         'Statistik' => 'statistik-lengkap',

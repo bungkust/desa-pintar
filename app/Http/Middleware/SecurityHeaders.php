@@ -18,18 +18,29 @@ class SecurityHeaders
         // Content Security Policy
         // Note: 'unsafe-inline' and 'unsafe-eval' are required for Filament/Livewire to work
         // In production, consider using nonces or hashes for better security
+        
+        // Allow Vite dev server in development mode
+        $isDev = app()->environment('local', 'development');
+        
+        $viteHttp = $isDev ? 'http://127.0.0.1:5173 http://localhost:5173' : '';
+        $viteWs = $isDev ? 'ws://127.0.0.1:5173 ws://localhost:5173' : '';
+        
+        $scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net" . ($viteHttp ? ' ' . $viteHttp : '');
+        $styleSrc = "'self' 'unsafe-inline' https://fonts.bunny.net" . ($viteHttp ? ' ' . $viteHttp : '');
+        $connectSrc = "'self' https://wa.me https://fonts.bunny.net https://cdn.jsdelivr.net" . ($viteHttp ? ' ' . $viteHttp : '') . ($viteWs ? ' ' . $viteWs : '');
+        
         $csp = "default-src 'self'; " .
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; " .
-            "style-src 'self' 'unsafe-inline' https://fonts.bunny.net; " .
+            "script-src {$scriptSrc}; " .
+            "style-src {$styleSrc}; " .
             "img-src 'self' data: https: blob:; " .
             "font-src 'self' data: https://fonts.bunny.net; " .
-            "connect-src 'self' https://wa.me https://fonts.bunny.net https://cdn.jsdelivr.net; " .
+            "connect-src {$connectSrc}; " .
             "frame-src 'self'; " .
             "frame-ancestors 'self'; " .
             "object-src 'none'; " .
             "base-uri 'self'; " .
-            "form-action 'self'; " .
-            "upgrade-insecure-requests;";
+            "form-action 'self';" . 
+            ($isDev ? '' : ' upgrade-insecure-requests;');
         
         $response->headers->set('Content-Security-Policy', $csp);
         

@@ -16,4 +16,7 @@ class EditComplaint extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    // Assignment tracking is now handled by ComplaintObserver
+    // No need to override handleRecordUpdate
 }

@@ -64,6 +64,9 @@ class AppServiceProvider extends ServiceProvider
         Statistic::observe($auditObserver);
         MenuItem::observe($auditObserver);
         \App\Models\QuickLink::observe($auditObserver);
+
+        // Register Complaint observer for assignment tracking
+        Complaint::observe(\App\Observers\ComplaintObserver::class);
     }
 }
 

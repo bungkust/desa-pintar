@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Complaint;
-use App\Models\ComplaintUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -69,15 +68,22 @@ class ComplaintPetugasController
 
             $complaint->update(['status' => $newStatus]);
 
-            ComplaintUpdate::create([
+            $imagePath = $request->hasFile('image') 
+                ? $request->file('image')->store('complaints/progress', 'public')
+                : null;
+            
+            \App\Models\ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'status_changed',
+                'model_type' => \App\Models\Complaint::class,
+                'model_id' => $complaint->id,
                 'complaint_id' => $complaint->id,
                 'status_from' => $oldStatus,
                 'status_to' => $newStatus,
                 'note' => $request->input('note'),
-                'image' => $request->hasFile('image') 
-                    ? $request->file('image')->store('complaints/progress', 'public')
-                    : null,
-                'updated_by' => $user->id,
+                'image' => $imagePath,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
             ]);
 
             // Log audit
@@ -122,13 +128,18 @@ class ComplaintPetugasController
         try {
             $imagePath = $request->file('image')->store('complaints/progress', 'public');
 
-            ComplaintUpdate::create([
+            \App\Models\ActivityLog::create([
+                'user_id' => $user->id,
+                'action' => 'progress_update',
+                'model_type' => \App\Models\Complaint::class,
+                'model_id' => $complaint->id,
                 'complaint_id' => $complaint->id,
                 'status_from' => $complaint->status,
                 'status_to' => $complaint->status,
                 'note' => $request->input('note', 'Foto progress pekerjaan'),
                 'image' => $imagePath,
-                'updated_by' => $user->id,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
             ]);
 
             return back()->with('success', 'Foto progress berhasil diupload');

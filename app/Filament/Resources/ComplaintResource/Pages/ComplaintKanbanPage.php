@@ -4,7 +4,6 @@ namespace App\Filament\Resources\ComplaintResource\Pages;
 
 use App\Filament\Resources\ComplaintResource;
 use App\Models\Complaint;
-use App\Models\ComplaintUpdate;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 
@@ -168,12 +167,17 @@ class ComplaintKanbanPage extends Page
         $oldStatus = $complaint->status;
         $complaint->update(['status' => $newStatus]);
         
-        ComplaintUpdate::create([
+        \App\Models\ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'status_changed',
+            'model_type' => \App\Models\Complaint::class,
+            'model_id' => $complaint->id,
             'complaint_id' => $complaint->id,
             'status_from' => $oldStatus,
             'status_to' => $newStatus,
             'note' => 'Status diupdate via Kanban board',
-            'updated_by' => Auth::id(),
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
         ]);
         
         \Illuminate\Support\Facades\Log::info('Complaint status changed via Kanban', [

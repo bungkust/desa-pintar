@@ -22,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('complaints.track', ['code' => '']) }}" method="GET" class="space-y-6" id="tracking-form">
+            <form action="#" method="GET" class="space-y-6" id="tracking-form">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Kode Tracking <span class="text-red-500">*</span>
@@ -46,7 +46,7 @@
                     e.preventDefault();
                     const code = document.getElementById('tracking-code').value.trim().toUpperCase();
                     if (code.match(/^ADU-[A-Z0-9]{6}$/)) {
-                        window.location.href = '{{ route("complaints.track", ["code" => ""]) }}' + code;
+                        window.location.href = '{{ url("/pengaduan/track") }}/' + code;
                     } else {
                         alert('Format kode tracking tidak valid. Format: ADU-XXXXXX');
                     }
@@ -55,7 +55,7 @@
 
             <div class="mt-8 pt-8 border-t">
                 <p class="text-sm text-gray-600 mb-4">Belum punya kode tracking?</p>
-                <a href="{{ route('complaints.create') }}" 
+                <a href="{{ route('complaints.index') }}" 
                    class="inline-block text-emerald-600 hover:text-emerald-700 font-medium">
                     Buat Pengaduan Baru →
                 </a>

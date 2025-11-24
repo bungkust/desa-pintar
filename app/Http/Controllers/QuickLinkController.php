@@ -29,9 +29,9 @@ class QuickLinkController
         // Normalize label (convert slug back to label format)
         $normalizedLabel = ucwords(str_replace(['-', '_'], ' ', $label));
         
-        // Check for special pages first (like pengaduan)
+        // Check for special pages first (like pengaduan) - redirect directly to route
         if (strtolower($label) === 'pengaduan') {
-            return $this->showPengaduanPage();
+            return redirect()->route('complaints.index');
         }
 
         // Try to find quick link by label
@@ -109,7 +109,7 @@ class QuickLinkController
             'statistik' => 'statistik-lengkap',
             'potensi' => 'potensi-desa',
             'potensi-desa' => 'potensi-desa',
-            'pengaduan' => 'complaints.create',
+            'pengaduan' => 'complaints.index',
         ];
 
         $normalizedSlug = strtolower(str_replace([' ', '-', '_'], '-', $slug));

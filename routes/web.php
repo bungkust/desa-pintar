@@ -258,7 +258,8 @@ Route::middleware(['throttle:60,1'])->group(function () {
 
     // Complaint routes (public)
     Route::prefix('pengaduan')->name('complaints.')->group(function () {
-        Route::get('/', [ComplaintPublicController::class, 'create'])->name('create');
+        Route::get('/', [ComplaintPublicController::class, 'index'])->name('index');
+        Route::get('/create', [ComplaintPublicController::class, 'create'])->name('form');
         Route::post('/', [ComplaintPublicController::class, 'store'])->name('store');
         Route::get('/track', [ComplaintPublicController::class, 'showTracking'])->name('tracking-form');
         Route::get('/track/{code}', [ComplaintPublicController::class, 'track'])

@@ -10,7 +10,7 @@
 <!-- CTA Section - Large Buttons -->
 <x-sections.section spacing="py-8 md:py-12" background="bg-white">
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="{{ route('complaints.create') }}" 
+        <a href="{{ route('complaints.index') }}" 
            class="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
             📝 Buat Pengaduan Baru
         </a>
@@ -225,7 +225,7 @@
             ];
         @endphp
         @foreach($categories as $key => $label)
-        <a href="{{ route('complaints.create') }}#form-pengaduan" 
+        <a href="{{ route('complaints.form') }}" 
            class="bg-white rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-all border-2 border-transparent hover:border-emerald-500 block">
             <div class="text-4xl mb-3">{{ $categoryIcons[$key] ?? '📄' }}</div>
             <div class="font-semibold text-gray-900 text-sm">{{ $label }}</div>
@@ -245,7 +245,7 @@
             Klik tombol di bawah untuk mengisi formulir pengaduan. Prosesnya mudah dan cepat!
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('complaints.create') }}" 
+            <a href="{{ route('complaints.index') }}" 
                class="inline-flex items-center justify-center px-8 py-4 bg-white text-emerald-600 font-bold text-lg rounded-lg hover:bg-emerald-50 transition-colors duration-200 shadow-md hover:shadow-lg">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>

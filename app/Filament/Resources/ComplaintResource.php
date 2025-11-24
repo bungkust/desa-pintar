@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ComplaintResource\Pages;
+use App\Filament\Resources\ComplaintResource\RelationManagers;
 use App\Models\Complaint;
 use App\Models\User;
 use Filament\Forms;
@@ -173,6 +174,9 @@ class ComplaintResource extends Resource
 
         return $table
             ->modifyQueryUsing(function (Builder $query) use ($user) {
+                // Eager load relationships for better performance
+                $query->with('assignedUser');
+                
                 // Petugas can only see assigned complaints
                 if ($user->isPetugas()) {
                     $query->where('assigned_to', $user->id);
@@ -294,6 +298,22 @@ class ComplaintResource extends Resource
                         return $formatted;  // No "Due Soon" prefix, just date
                     }),
                 
+                // 6. Assigned To (Petugas yang ditugaskan)
+                Tables\Columns\TextColumn::make('assignedUser.name')
+                    ->label('Ditugaskan ke')
+                    ->searchable()
+                    ->sortable()
+                    ->formatStateUsing(function ($state, $record) {
+                        return $state ?: 'Belum ditugaskan';
+                    })
+                    ->badge()
+                    ->color(function ($state, $record) {
+                        return $state && $state !== 'Belum ditugaskan' ? 'info' : 'gray';
+                    })
+                    ->icon(function ($state, $record) {
+                        return $state && $state !== 'Belum ditugaskan' ? 'heroicon-o-user' : null;
+                    }),
+                
                 // HIDDEN COLUMNS (toggleable, collapsed by default)
                 
                 // Nama Pelapor
@@ -316,12 +336,6 @@ class ComplaintResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 
-                // Petugas (Assigned To)
-                Tables\Columns\TextColumn::make('assignedUser.name')
-                    ->label('Petugas')
-                    ->searchable()
-                    ->default('Belum ditugaskan')
-                    ->toggleable(isToggledHiddenByDefault: true),
                 
                 // Dibuat (Created At)
                 Tables\Columns\TextColumn::make('created_at')
@@ -429,19 +443,17 @@ class ComplaintResource extends Resource
                             $oldStatus = $record->status;
                             $record->update(['status' => $data['status']]);
                             
-                            \App\Models\ComplaintUpdate::create([
+                            \App\Models\ActivityLog::create([
+                                'user_id' => auth()->id(),
+                                'action' => 'status_changed',
+                                'model_type' => Complaint::class,
+                                'model_id' => $record->id,
                                 'complaint_id' => $record->id,
                                 'status_from' => $oldStatus,
                                 'status_to' => $data['status'],
                                 'note' => $data['note'] ?? null,
-                                'updated_by' => auth()->id(),
-                            ]);
-                            
-                            \Illuminate\Support\Facades\Log::info('Complaint status changed', [
-                                'complaint_id' => $record->id,
-                                'status_from' => $oldStatus,
-                                'status_to' => $data['status'],
-                                'user_id' => auth()->id(),
+                                'ip_address' => request()->ip(),
+                                'user_agent' => request()->userAgent(),
                             ]);
                             
                             Notification::make()
@@ -464,13 +476,8 @@ class ComplaintResource extends Resource
                                 ->helperText('Pilih petugas yang akan menangani pengaduan ini'),
                         ])
                         ->action(function (array $data, Complaint $record) {
+                            // Assignment tracking is handled by ComplaintObserver
                             $record->update(['assigned_to' => $data['assigned_to']]);
-                            
-                            \Illuminate\Support\Facades\Log::info('Complaint assigned', [
-                                'complaint_id' => $record->id,
-                                'assigned_to' => $data['assigned_to'],
-                                'user_id' => auth()->id(),
-                            ]);
                             
                             Notification::make()
                                 ->title('Petugas berhasil ditugaskan')
@@ -509,36 +516,39 @@ class ComplaintResource extends Resource
                                 ->send();
                         }),
                     
-                    // Riwayat Update
+                    // Riwayat Update (moved to RelationManager, keeping for backward compatibility)
                     Tables\Actions\Action::make('riwayatUpdate')
                         ->label('Riwayat Update')
                         ->icon('heroicon-o-clock')
                         ->modalHeading('Riwayat Update Pengaduan')
                         ->modalContent(function (Complaint $record) {
-                            $updates = $record->updates()->with('updatedBy')->get();
+                            $activities = $record->activities()
+                                ->statusChanges()
+                                ->with('user')
+                                ->get();
                             
-                            if ($updates->isEmpty()) {
+                            if ($activities->isEmpty()) {
                                 return '<div class="p-4 text-center text-gray-500">Belum ada riwayat update.</div>';
                             }
                             
                             $html = '<div class="space-y-4">';
-                            foreach ($updates as $update) {
+                            foreach ($activities as $activity) {
                                 $html .= '<div class="border-l-4 border-blue-500 pl-4 py-2">';
                                 $html .= '<div class="flex items-center justify-between mb-1">';
                                 $html .= '<span class="font-semibold text-sm">' . 
-                                    ucfirst($update->status_from) . ' → ' . ucfirst($update->status_to) . 
+                                    ucfirst($activity->status_from ?? '—') . ' → ' . ucfirst($activity->status_to ?? '—') . 
                                     '</span>';
                                 $html .= '<span class="text-xs text-gray-500">' . 
-                                    $update->created_at->format('d/m/Y H:i') . 
+                                    $activity->created_at->format('d/m/Y H:i') . 
                                     '</span>';
                                 $html .= '</div>';
-                                if ($update->updatedBy) {
+                                if ($activity->user) {
                                     $html .= '<div class="text-xs text-gray-600 mb-1">Oleh: ' . 
-                                        e($update->updatedBy->name) . '</div>';
+                                        e($activity->user->name) . '</div>';
                                 }
-                                if ($update->note) {
+                                if ($activity->note) {
                                     $html .= '<div class="text-sm text-gray-700 mt-2">' . 
-                                        nl2br(e($update->note)) . '</div>';
+                                        nl2br(e($activity->note)) . '</div>';
                                 }
                                 $html .= '</div>';
                             }
@@ -568,6 +578,14 @@ class ComplaintResource extends Resource
             ])
             ->defaultSort('sla_deadline', 'asc')
             ->poll('30s');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\CommentsRelationManager::class,
+            RelationManagers\ActivitiesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

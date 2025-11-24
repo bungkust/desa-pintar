@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Complaint;
 use App\Models\ComplaintComment;
-use App\Models\ComplaintUpdate;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -90,16 +89,23 @@ class ComplaintAdminController
             // Update complaint status
             $complaint->update(['status' => $newStatus]);
 
-            // Create status update record
-            $update = ComplaintUpdate::create([
+            // Create activity log for status change
+            $imagePath = $request->hasFile('image') 
+                ? $request->file('image')->store('complaints/progress', 'public')
+                : null;
+            
+            \App\Models\ActivityLog::create([
+                'user_id' => Auth::id(),
+                'action' => 'status_changed',
+                'model_type' => \App\Models\Complaint::class,
+                'model_id' => $complaint->id,
                 'complaint_id' => $complaint->id,
                 'status_from' => $oldStatus,
                 'status_to' => $newStatus,
                 'note' => $request->input('note'),
-                'image' => $request->hasFile('image') 
-                    ? $request->file('image')->store('complaints/progress', 'public')
-                    : null,
-                'updated_by' => Auth::id(),
+                'image' => $imagePath,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
             ]);
 
             // Log audit
@@ -161,19 +167,8 @@ class ComplaintAdminController
         try {
             DB::beginTransaction();
 
-            $oldAssigned = $complaint->assigned_to;
+            // Assignment tracking is handled by ComplaintObserver
             $complaint->update(['assigned_to' => $petugas->id]);
-
-            // Create status update if not already assigned
-            if ($oldAssigned !== $petugas->id) {
-                ComplaintUpdate::create([
-                    'complaint_id' => $complaint->id,
-                    'status_from' => $complaint->status,
-                    'status_to' => $complaint->status,
-                    'note' => "Ditugaskan kepada: {$petugas->name}",
-                    'updated_by' => Auth::id(),
-                ]);
-            }
 
             // Log audit
             Log::info('Complaint assigned', [

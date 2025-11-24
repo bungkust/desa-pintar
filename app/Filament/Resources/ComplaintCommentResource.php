@@ -20,6 +20,11 @@ class ComplaintCommentResource extends Resource
     
     protected static ?int $navigationSort = 5;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false; // Hide from navigation, use relation manager in Complaint details instead
+    }
+
     public static function canCreate(): bool
     {
         return false; // View-only resource

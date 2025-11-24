@@ -17,6 +17,76 @@ use Illuminate\Support\Str;
 class ComplaintPublicController
 {
     /**
+     * Show complaint landing page
+     */
+    public function index()
+    {
+        // Get Menu Items for navbar (cached)
+        $menuItems = Cache::remember('menu_items', 3600, function () {
+            return MenuItem::where('is_active', true)
+                ->whereNull('parent_id')
+                ->orderBy('order')
+                ->with(['children' => function ($query) {
+                    $query->where('is_active', true)
+                          ->orderBy('order')
+                          ->with(['children' => function ($subQuery) {
+                              $subQuery->where('is_active', true)
+                                       ->orderBy('order');
+                          }]);
+                }])
+                ->get();
+        });
+
+        // Get settings (cached)
+        $settings = Cache::rememberForever('general_settings', function () {
+            try {
+                return app(GeneralSettings::class);
+            } catch (\Exception $e) {
+                return (object) [
+                    'site_name' => 'Pemerintah Kalurahan Donoharjo',
+                    'village_address' => 'Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581',
+                    'whatsapp' => '6281227666999',
+                    'logo_path' => null,
+                    'instagram' => null,
+                ];
+            }
+        });
+
+        // Categories for dropdown
+        $categories = [
+            'infrastruktur' => 'Infrastruktur & Jalan',
+            'sampah' => 'Sampah & Kebersihan',
+            'air' => 'Air & Sanitasi',
+            'listrik' => 'Listrik & Penerangan',
+            'keamanan' => 'Keamanan & Ketertiban',
+            'sosial' => 'Sosial & Kesejahteraan',
+            'pendidikan' => 'Pendidikan',
+            'kesehatan' => 'Kesehatan',
+            'lainnya' => 'Lainnya',
+        ];
+
+        // Get statistics for transparency (cached for 5 minutes)
+        $stats = Cache::remember('complaint_stats_public', 300, function () {
+            return [
+                'total' => Complaint::count(),
+                'selesai' => Complaint::where('status', 'done')->count(),
+                'sedang_diproses' => Complaint::whereIn('status', ['verification', 'todo', 'in_progress'])->count(),
+            ];
+        });
+
+        return view('complaints.index', [
+            'menuItems' => $menuItems,
+            'settings' => $settings,
+            'categories' => $categories,
+            'stats' => $stats,
+            'pageTitle' => 'Pengaduan Masyarakat - ' . ($settings->site_name ?? 'Desa Donoharjo'),
+            'metaTitle' => 'Pengaduan Masyarakat - ' . ($settings->site_name ?? 'Desa Donoharjo'),
+            'metaDescription' => 'Laporkan masalah atau keluhan Anda kepada pemerintah desa. Kami siap membantu menyelesaikan masalah Anda dengan cepat dan transparan.',
+            'canonicalUrl' => url()->current(),
+        ]);
+    }
+
+    /**
      * Show complaint submission form
      */
     public function create()
@@ -74,7 +144,7 @@ class ComplaintPublicController
             ];
         });
 
-        return view('complaints.create', [
+        return view('complaints.form', [
             'menuItems' => $menuItems,
             'settings' => $settings,
             'categories' => $categories,

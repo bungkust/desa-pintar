@@ -13,6 +13,11 @@ class Complaint extends Model
 {
     use SoftDeletes;
 
+    /**
+     * Store old assigned_to values during update
+     */
+    protected static array $oldAssignedValues = [];
+
     protected $fillable = [
         'tracking_code',
         'name',
@@ -53,6 +58,46 @@ class Complaint extends Model
             // Calculate SLA deadline based on category
             if (empty($complaint->sla_deadline)) {
                 $complaint->sla_deadline = static::calculateSLADeadline($complaint->category);
+            }
+        });
+
+        static::updating(function (Complaint $complaint) {
+            // Store original assigned_to before update in a static property
+            if ($complaint->isDirty('assigned_to')) {
+                static::$oldAssignedValues[$complaint->id] = $complaint->getOriginal('assigned_to');
+            }
+        });
+
+        static::updated(function (Complaint $complaint) {
+            // Check if assignment was changed
+            $oldAssigned = static::$oldAssignedValues[$complaint->id] ?? null;
+            $newAssigned = $complaint->assigned_to;
+
+            // Clean up
+            unset(static::$oldAssignedValues[$complaint->id]);
+
+            // Only create log if actually changed
+            if ($oldAssigned != $newAssigned) {
+                $assignedUser = $newAssigned ? User::find($newAssigned) : null;
+                
+                if ($assignedUser) {
+                    $note = "Ditugaskan kepada: {$assignedUser->name}";
+                } elseif ($oldAssigned) {
+                    $note = "Assignment dihapus";
+                } else {
+                    $note = "Ditugaskan";
+                }
+
+                \App\Models\ActivityLog::create([
+                    'user_id' => auth()->id(),
+                    'action' => 'assigned',
+                    'model_type' => self::class,
+                    'model_id' => $complaint->id,
+                    'complaint_id' => $complaint->id,
+                    'note' => $note,
+                    'ip_address' => request()->ip(),
+                    'user_agent' => request()->userAgent(),
+                ]);
             }
         });
     }
@@ -97,6 +142,11 @@ class Complaint extends Model
     public function updates(): HasMany
     {
         return $this->hasMany(ComplaintUpdate::class)->orderBy('created_at', 'desc');
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class)->orderBy('created_at', 'desc');
     }
 
     public function comments(): HasMany
