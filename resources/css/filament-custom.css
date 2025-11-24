@@ -1,0 +1,21 @@
+/* Sticky Table Header for Filament Tables */
+.fi-ta-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgb(249 250 251); /* gray-50 */
+}
+
+.dark .fi-ta-table thead {
+    background-color: rgb(17 24 39); /* gray-900 */
+}
+
+/* Ensure header cells have proper background */
+.fi-ta-table thead th {
+    background-color: inherit;
+}
+
+.dark .fi-ta-table thead th {
+    background-color: inherit;
+}
+

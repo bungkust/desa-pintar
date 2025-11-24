@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media (hover: none) {
+    .hover\:scale-105:hover {
+        transform: none;
+    }
+}
+
+/* Dropdown menu styles - ensure hidden by default */
+.dropdown-menu {
+    display: none !important;
+}
+
+.group:hover .dropdown-menu {
+    display: block !important;
+}
+
+/* Fix dropdown disappearing - add invisible padding area between button and dropdown */
+.dropdown-container {
+    padding-top: 8px;
+}
+
+/* Keep dropdown visible when hovering over parent group */
+.group:hover .dropdown-container {
+    display: block !important;
+}
+
+/* Keep dropdown visible when hovering over dropdown itself */
+.dropdown-container:hover {
+    display: block !important;
+}
+
+/* Additional fix: keep dropdown visible when moving mouse from button to dropdown */
+.group:hover > .dropdown-container {
+    display: block !important;
+}
+
+/* Nested dropdown support - show on hover with padding gap */
+.nested-dropdown-container {
+    padding-left: 8px;
+}
+
+/* Show nested dropdown when hovering parent */
+.nested-dropdown-parent.group:hover .nested-dropdown-container {
+    display: block !important;
+}
+
+/* Keep nested dropdown visible when hovering over it */
+.nested-dropdown-container:hover {
+    display: block !important;
+}
+
+/* Ensure parent dropdown stays open when hovering nested dropdown */
+.group:hover .dropdown-container .nested-dropdown-parent.group:hover .nested-dropdown-container {
+    display: block !important;
+}
+
+/* Ensure nested dropdown stays visible when hovering over nested dropdown content */
+.nested-dropdown-container:hover {
+    display: block !important;
+}
+
+/* Keep parent dropdown open when hovering nested dropdown */
+.group:hover .dropdown-container:hover .nested-dropdown-parent.group:hover .nested-dropdown-container {
+    display: block !important;
+}
+
+/* Nested submenu (level 2) - Using custom class for better reliability */
+.nav-submenu-item {
+    position: relative;
+}
+
+/* Hide nested submenu by default - override Tailwind hidden class */
+.nav-submenu-item .nav-submenu-level2,
+.nav-submenu-level2 {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateX(-10px);
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Show nested submenu on hover - multiple selectors to ensure it works */
+.nav-submenu-item:hover .nav-submenu-level2,
+.nav-submenu-item:hover > .nav-submenu-level2,
+.nav-submenu-item .nav-submenu-level2:hover {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateX(0) !important;
+}
+
+/* Keep nested submenu visible when hovering over it */
+.nav-submenu-level2:hover {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translateX(0) !important;
+}
+
+/* Ensure parent dropdown stays open when hovering nested submenu */
+.group:hover > div[role="menu"] .nav-submenu-item:hover .nav-submenu-level2 {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure all dropdown menus are hidden by default */
+[class*="dropdown-menu"] {
+    display: none !important;
+}
+
+.group:hover [class*="dropdown-menu"] {
+    display: block !important;
+}
+
+/* Fix dropdown disappearing when moving cursor - add padding gap */
+.navbar-dropdown-container {
+    padding-top: 8px;
+}
+
+.navbar-dropdown-container > div {
+    pointer-events: auto;
+}
+
+/* Keep dropdown visible when hovering over it or parent */
+.group:hover > div[role="menu"],
+.navbar-dropdown-container:hover {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Delay for hiding dropdown to prevent flickering */
+.group > div[role="menu"] {
+    pointer-events: none;
+    transition: opacity 0.15s ease-in-out, display 0.15s ease-in-out;
+}
+
+.group:hover > div[role="menu"],
+.navbar-dropdown-container:hover {
+    pointer-events: auto;
+}
+
+/* Ensure dropdown stays visible when moving cursor into it */
+.group > div[role="menu"]:hover {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Filament Custom Styles */
+@import './filament-custom.css';
+
+/* Hero Section Animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-fade-in-delay {
+    animation: fade-in 0.8s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+/* Smooth scrolling for hero section background */
+.hero-section {
+    background-attachment: scroll;
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    .hero-section {
+        background-attachment: fixed;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-section {
+        background-attachment: scroll;
+    }
+    
+    .animate-fade-in,
+    .animate-fade-in-delay {
+        animation: none;
+        opacity: 1;
+    }
+}
+

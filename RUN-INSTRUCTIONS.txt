@@ -1,0 +1,37 @@
+═══════════════════════════════════════════════════════════════
+  DESA DONOHARJO - LOCAL EXECUTION INSTRUCTIONS
+═══════════════════════════════════════════════════════════════
+
+STATUS:
+✅ PHP 8.5.0 installed and working
+✅ Composer installed
+✅ Landing page code created (routes/web.php, resources/views/welcome.blade.php)
+⚠️  Missing Laravel core files (artisan, composer.json, vendor/)
+
+TO RUN THIS APPLICATION:
+
+Option 1: If this is part of a parent Laravel project:
+  cd /path/to/parent/laravel/project
+  export PATH="/opt/homebrew/bin:$PATH"
+  php artisan serve
+
+Option 2: Initialize as complete Laravel project:
+  1. Check if composer.json exists in parent directory
+  2. Or create new Laravel project and copy custom files
+  3. Run: composer install
+  4. Run: php artisan storage:link
+  5. Run: php artisan serve
+
+CURRENT PHP SETUP:
+  PHP Location: /opt/homebrew/bin/php
+  Version: 8.5.0
+  Composer: /opt/homebrew/bin/composer
+
+NEXT STEPS:
+  1. Locate or create Laravel project root
+  2. Ensure composer.json exists
+  3. Run: composer install
+  4. Run: php artisan serve
+  5. Access: http://localhost:8000
+
+═══════════════════════════════════════════════════════════════
