@@ -47,6 +47,17 @@ class AppServiceProvider extends ServiceProvider
         Statistic::observe($cacheObserver);
         StatisticDetail::observe($cacheObserver);
         Official::observe($cacheObserver);
+
+        // Register audit logging observer for admin actions
+        $auditObserver = $this->app->make(\App\Observers\AuditLogObserver::class);
+        Post::observe($auditObserver);
+        \App\Models\Agenda::observe($auditObserver);
+        Apbdes::observe($auditObserver);
+        Official::observe($auditObserver);
+        HeroSlide::observe($auditObserver);
+        Statistic::observe($auditObserver);
+        MenuItem::observe($auditObserver);
+        \App\Models\QuickLink::observe($auditObserver);
     }
 }
 

@@ -37,6 +37,8 @@ class OfficialResource extends Resource
                 
                 Forms\Components\FileUpload::make('photo')
                     ->image()
+                    ->maxSize(2048) // 2MB max size in KB for profile photos
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->disk('public')
                     ->directory('officials/photos')
                     ->visibility('public')

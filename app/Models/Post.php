@@ -7,7 +7,13 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'slug',
+        'thumbnail',
+        'content',
+        'published_at',
+    ];
 
     protected $casts = [
         'published_at' => 'datetime',

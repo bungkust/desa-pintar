@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Statistic extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'label',
+        'value',
+        'icon',
+        'category',
+        'order',
+    ];
 
     protected $casts = [
         'order' => 'integer',

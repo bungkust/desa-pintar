@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class StatisticDetail extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'statistic_id',
+        'year',
+        'value',
+        'additional_data',
+    ];
 
     protected $casts = [
         'year' => 'integer',

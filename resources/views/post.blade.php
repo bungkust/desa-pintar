@@ -95,7 +95,7 @@
 
             <!-- Post Content -->
             <div class="prose prose-lg max-w-none">
-                {!! $post->content !!}
+                {!! str($post->content)->sanitizeHtml() !!}
             </div>
 
             <!-- Back Button -->

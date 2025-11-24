@@ -47,6 +47,8 @@ class PostResource extends Resource
                 
                 Forms\Components\FileUpload::make('thumbnail')
                     ->image()
+                    ->maxSize(5120) // 5MB max size in KB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                     ->disk('public')
                     ->directory('posts/thumbnails')
                     ->visibility('public')

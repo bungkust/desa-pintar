@@ -272,7 +272,7 @@
                     <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-800">{{ $lurah->name }}</h3>
                     <div class="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed prose prose-lg max-w-none">
                         @if($lurah->greeting)
-                            {!! $lurah->greeting !!}
+                            {!! str($lurah->greeting)->sanitizeHtml() !!}
                         @else
                             <p>
                         Assalamu'alaikum Warahmatullahi Wabarakatuh. 

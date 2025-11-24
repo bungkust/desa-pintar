@@ -25,6 +25,28 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // In production, ensure detailed errors are not exposed
+        if (app()->environment('production')) {
+            $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
+                // Log the full exception details
+                \Illuminate\Support\Facades\Log::error('Unhandled exception', [
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+
+                // Return generic error page for production
+                if ($request->expectsJson()) {
+                    return response()->json([
+                        'message' => 'Server Error',
+                        'error' => 'An error occurred. Please try again later.',
+                    ], 500);
+                }
+
+                // For web requests, Laravel will show generic error page
+                return null;
+            });
+        }
     })->create();
 

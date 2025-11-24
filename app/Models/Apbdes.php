@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Apbdes extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'year',
+        'type',
+        'category',
+        'amount',
+        'realisasi',
+        'anggaran',
+    ];
 
     protected $casts = [
         'year' => 'integer',

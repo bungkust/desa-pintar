@@ -41,7 +41,12 @@ class PageController extends Controller
             }
         });
 
-        // Map slug to view name
+        // Validate slug format (alphanumeric, hyphens only)
+        if (!preg_match('/^[a-z0-9\-]+$/', $slug)) {
+            abort(404);
+        }
+
+        // Map slug to view name (whitelist approach for security)
         $views = [
             'pajak-pbb' => 'pages.pajak-pbb',
             'peladi-makarti' => 'pages.peladi-makarti',

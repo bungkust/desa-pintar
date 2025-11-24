@@ -38,6 +38,8 @@ class HeroSlideResource extends Resource
                 
                 Forms\Components\FileUpload::make('image')
                     ->image()
+                    ->maxSize(5120) // 5MB max size in KB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->disk('public')
                     ->directory('hero-slides')
                     ->visibility('public')

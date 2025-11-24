@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelSettings\Exceptions\MissingSettings;
 
-Route::get('/', function () {
+// Homepage route (with rate limiting)
+Route::middleware(['throttle:120,1'])->group(function () {
+    Route::get('/', function () {
     // Get first active HeroSlide (cached for 1 hour)
     $heroSlide = Cache::remember('hero_slide_active', 3600, function () {
         return HeroSlide::where('is_active', true)
@@ -158,101 +160,118 @@ Route::get('/', function () {
         'apbdesData' => $apbdesData,
         'settings' => $settings,
     ]);
+    });
 });
 
-// Route for individual post pages
-Route::get('/posts/{slug}', function ($slug) {
-    $post = Cache::remember("post_{$slug}", 1800, function () use ($slug) {
-        return Post::where('slug', $slug)->whereNotNull('published_at')->firstOrFail();
-    });
-    
-    // Get Menu Items for navbar (cached)
-    $menuItems = Cache::remember('menu_items', 3600, function () {
-        return MenuItem::where('is_active', true)
-        ->whereNull('parent_id')
-        ->orderBy('order')
-        ->with(['children' => function ($query) {
-            $query->where('is_active', true)
-                  ->orderBy('order')
-                  ->with(['children' => function ($subQuery) {
-                      $subQuery->where('is_active', true)
-                               ->orderBy('order');
-                  }]);
-        }])
-        ->get();
-    });
-    
-    $settings = Cache::rememberForever('general_settings', function () {
-    try {
-            return app(GeneralSettings::class);
-    } catch (\Exception $e) {
-            return (object) [
-            'site_name' => 'Pemerintah Kalurahan Donoharjo',
-            'village_address' => 'Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581',
-            'whatsapp' => '6281227666999',
-            'logo_path' => null,
-            'instagram' => null,
-        ];
-    }
-    });
-    
-    return view('post', [
-        'post' => $post,
-        'menuItems' => $menuItems,
-        'settings' => $settings,
-    ]);
-})->name('post.show');
+// Route for individual post pages (with validation and rate limiting)
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/posts/{slug}', function ($slug) {
+        // Validate slug format (alphanumeric, hyphens, underscores only)
+        if (!preg_match('/^[a-z0-9\-_]+$/', $slug)) {
+            abort(404);
+        }
+        
+        $post = Cache::remember("post_{$slug}", 1800, function () use ($slug) {
+            return Post::where('slug', $slug)->whereNotNull('published_at')->firstOrFail();
+        });
+        
+        // Get Menu Items for navbar (cached)
+        $menuItems = Cache::remember('menu_items', 3600, function () {
+            return MenuItem::where('is_active', true)
+            ->whereNull('parent_id')
+            ->orderBy('order')
+            ->with(['children' => function ($query) {
+                $query->where('is_active', true)
+                      ->orderBy('order')
+                      ->with(['children' => function ($subQuery) {
+                          $subQuery->where('is_active', true)
+                                   ->orderBy('order');
+                      }]);
+            }])
+            ->get();
+        });
+        
+        $settings = Cache::rememberForever('general_settings', function () {
+        try {
+                return app(GeneralSettings::class);
+        } catch (\Exception $e) {
+                return (object) [
+                'site_name' => 'Pemerintah Kalurahan Donoharjo',
+                'village_address' => 'Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581',
+                'whatsapp' => '6281227666999',
+                'logo_path' => null,
+                'instagram' => null,
+            ];
+        }
+        });
+        
+        return view('post', [
+            'post' => $post,
+            'menuItems' => $menuItems,
+            'settings' => $settings,
+        ]);
+    })->name('post.show');
+});
 
-// Route for APBDes detail page
-Route::get('/apbdes/{year?}', [ApbdesController::class, 'show'])->name('apbdes.show');
+// Public routes with rate limiting
+Route::middleware(['throttle:60,1'])->group(function () {
+    // Route for APBDes detail page
+    Route::get('/apbdes/{year?}', [ApbdesController::class, 'show'])
+        ->name('apbdes.show')
+        ->where('year', '[0-9]{4}');
 
-// Route for Statistik Lengkap page
-Route::get('/statistik-lengkap', [\App\Http\Controllers\StatistikLengkapController::class, 'show'])->name('statistik-lengkap');
+    // Route for Statistik Lengkap page
+    Route::get('/statistik-lengkap', [\App\Http\Controllers\StatistikLengkapController::class, 'show'])->name('statistik-lengkap');
 
-// Route for Berita page
-Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
+    // Route for Berita page
+    Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
 
-// Route for Peraturan Desa page
-Route::get('/peraturan-desa', [PeraturanDesaController::class, 'index'])->name('peraturan-desa');
+    // Route for Peraturan Desa page
+    Route::get('/peraturan-desa', [PeraturanDesaController::class, 'index'])->name('peraturan-desa');
 
-// Route for Layanan Surat page
-Route::get('/layanan-surat', [LayananSuratController::class, 'index'])->name('layanan-surat');
+    // Route for Layanan Surat page
+    Route::get('/layanan-surat', [LayananSuratController::class, 'index'])->name('layanan-surat');
 
-// Routes for Agenda
-Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
-Route::get('/agenda/{id}', [AgendaController::class, 'show'])->name('agenda.show');
+    // Routes for Pages
+    Route::get('/pajak-pbb', function () {
+        return app(\App\Http\Controllers\PageController::class)->show('pajak-pbb');
+    })->name('pages.pajak-pbb');
 
-// Routes for Pages
-Route::get('/pajak-pbb', function () {
-    return app(\App\Http\Controllers\PageController::class)->show('pajak-pbb');
-})->name('pages.pajak-pbb');
+    Route::get('/peladi-makarti', function () {
+        return app(\App\Http\Controllers\PageController::class)->show('peladi-makarti');
+    })->name('pages.peladi-makarti');
 
-Route::get('/peladi-makarti', function () {
-    return app(\App\Http\Controllers\PageController::class)->show('peladi-makarti');
-})->name('pages.peladi-makarti');
+    Route::get('/survey-ikm', function () {
+        return app(\App\Http\Controllers\PageController::class)->show('survey-ikm');
+    })->name('pages.survey-ikm');
 
-Route::get('/survey-ikm', function () {
-    return app(\App\Http\Controllers\PageController::class)->show('survey-ikm');
-})->name('pages.survey-ikm');
+    Route::get('/survey-korupsi', function () {
+        return app(\App\Http\Controllers\PageController::class)->show('survey-korupsi');
+    })->name('pages.survey-korupsi');
 
-Route::get('/survey-korupsi', function () {
-    return app(\App\Http\Controllers\PageController::class)->show('survey-korupsi');
-})->name('pages.survey-korupsi');
+    // Routes for Quick Links dummy pages
+    Route::get('/potensi-desa', function () {
+        $controller = new \App\Http\Controllers\QuickLinkController();
+        return $controller->showDummyPage('Potensi Desa');
+    })->name('potensi-desa');
 
-// Route for sitemap.xml
+    Route::get('/pengaduan', function () {
+        $controller = new \App\Http\Controllers\QuickLinkController();
+        return $controller->showDummyPage('Pengaduan');
+    })->name('pengaduan');
+
+    // Generic quick link route (for dynamic labels) - validate label
+    Route::get('/quick-link/{label}', [\App\Http\Controllers\QuickLinkController::class, 'redirect'])
+        ->name('quick-link.show')
+        ->where('label', '[a-zA-Z0-9\-_]+');
+});
+
+// Routes for Agenda (with rate limiting)
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
+    Route::get('/agenda/{id}', [AgendaController::class, 'show'])->name('agenda.show')->where('id', '[0-9]+');
+});
+
+// Route for sitemap.xml (no rate limiting needed)
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
-
-// Routes for Quick Links dummy pages
-Route::get('/potensi-desa', function () {
-    $controller = new \App\Http\Controllers\QuickLinkController();
-    return $controller->showDummyPage('Potensi Desa');
-})->name('potensi-desa');
-
-Route::get('/pengaduan', function () {
-    $controller = new \App\Http\Controllers\QuickLinkController();
-    return $controller->showDummyPage('Pengaduan');
-})->name('pengaduan');
-
-// Generic quick link route (for dynamic labels)
-Route::get('/quick-link/{label}', [\App\Http\Controllers\QuickLinkController::class, 'redirect'])->name('quick-link.show');
 

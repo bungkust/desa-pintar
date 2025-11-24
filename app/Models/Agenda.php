@@ -6,7 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'description',
+        'category',
+        'date',
+        'start_time',
+        'end_time',
+        'location',
+        'organizer',
+        'contact_person',
+        'google_maps_url',
+        'image',
+        'is_featured',
+        'is_recurring',
+        'recurring_type',
+    ];
 
     protected $casts = [
         'date' => 'date',

@@ -102,10 +102,11 @@ class AgendaResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Gambar')
                             ->image()
+                            ->maxSize(2048) // 2MB max size in KB
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
                             ->disk('public')
                             ->directory('agendas')
                             ->visibility('public')
-                            ->maxSize(2048)
                             ->helperText('Maksimal 2MB. Format: JPG, PNG, GIF')
                             ->columnSpanFull(),
                         

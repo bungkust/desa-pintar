@@ -83,3 +83,4 @@ class AssignThumbnailsToPosts extends Command
 }
 
 
+

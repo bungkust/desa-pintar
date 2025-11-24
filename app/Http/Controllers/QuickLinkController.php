@@ -16,6 +16,16 @@ class QuickLinkController
      */
     public function redirect($label)
     {
+        // Validate label format (alphanumeric, hyphens, underscores only)
+        if (!preg_match('/^[a-zA-Z0-9\-_]+$/', $label)) {
+            abort(404);
+        }
+
+        // Limit label length to prevent DoS
+        if (strlen($label) > 100) {
+            abort(404);
+        }
+
         // Normalize label (convert slug back to label format)
         $normalizedLabel = ucwords(str_replace(['-', '_'], ' ', $label));
         
@@ -34,33 +44,43 @@ class QuickLinkController
 
     /**
      * Handle quick link based on the URL field
+     * Secured against SSRF and open redirect attacks
      */
     protected function handleQuickLinkRedirect(QuickLink $quickLink)
     {
         $url = $quickLink->url;
-
-        // If URL starts with http:// or https://, redirect directly
-        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
-            return redirect($url);
-        }
 
         // If URL is empty or '#', show dummy page
         if (empty($url) || $url === '#' || $url === '/#') {
             return $this->showDummyPage($quickLink->label);
         }
 
-        // Try to resolve as route name first
+        // Validate URL for security (SSRF/open redirect protection)
+        if (!\App\Http\Requests\ValidateQuickLinkRedirect::isSafeUrl($url)) {
+            // Unsafe URL - show dummy page instead of redirecting
+            return $this->showDummyPage($quickLink->label);
+        }
+
+        // If URL starts with http:// or https://, validate and redirect
+        if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
+            // Already validated by isSafeUrl, safe to redirect
+            return redirect($url, 302, ['Referrer-Policy' => 'no-referrer']);
+        }
+
+        // Try to resolve as route name first (internal routes are safe)
         if (Route::has($url)) {
             return redirect()->route($url);
         }
 
-        // Try as absolute path
+        // Try as absolute path (internal paths are safe if validated)
         if (str_starts_with($url, '/')) {
-            // Check if route exists for this path
-            try {
-                return redirect($url);
-            } catch (\Exception $e) {
-                return $this->showDummyPage($quickLink->label);
+            // Validate it's a safe internal path
+            if (\App\Http\Requests\ValidateQuickLinkRedirect::isSafeUrl($url)) {
+                try {
+                    return redirect($url);
+                } catch (\Exception $e) {
+                    return $this->showDummyPage($quickLink->label);
+                }
             }
         }
 
@@ -213,4 +233,5 @@ class QuickLinkController
         ];
     }
 }
+
 

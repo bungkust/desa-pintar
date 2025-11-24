@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidateAgendaSearch;
 use App\Models\Agenda;
 use App\Models\MenuItem;
 use App\Settings\GeneralSettings;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 
 class AgendaController
 {
-    public function index(Request $request)
+    public function index(ValidateAgendaSearch $request)
     {
         // Get Menu Items for navbar (cached)
         $menuItems = Cache::remember('menu_items', 3600, function () {
@@ -47,23 +48,26 @@ class AgendaController
         // Build query
         $query = Agenda::upcoming();
 
-        // Filter by category
-        if ($request->has('category') && $request->category) {
-            $query->where('category', $request->category);
+        // Filter by category (validated)
+        $validated = $request->validated();
+        
+        if (!empty($validated['category'])) {
+            $query->where('category', $validated['category']);
         }
 
-        // Filter by date
-        if ($request->has('date') && $request->date) {
-            $query->whereDate('date', $request->date);
+        // Filter by date (validated)
+        if (!empty($validated['date'])) {
+            $query->whereDate('date', $validated['date']);
         }
 
-        // Search by title
-        if ($request->has('search') && $request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+        // Search by title (validated and sanitized)
+        $search = $request->getValidatedSearch();
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
         }
 
-        // Get view mode (table or card), default to card
-        $viewMode = $request->get('view', 'card'); // 'table' or 'card'
+        // Get view mode (table or card), default to card (validated)
+        $viewMode = $validated['view'] ?? 'card';
         
         // Get agendas (not grouped, just a simple collection)
         // Note: scopeUpcoming already orders by date and start_time
@@ -98,6 +102,15 @@ class AgendaController
 
     public function show($id)
     {
+        // Validate ID is a positive integer
+        $id = filter_var($id, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1]
+        ]);
+        
+        if ($id === false) {
+            abort(404);
+        }
+
         // Get Menu Items for navbar (cached)
         $menuItems = Cache::remember('menu_items', 3600, function () {
             return MenuItem::where('is_active', true)

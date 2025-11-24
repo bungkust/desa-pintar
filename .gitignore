@@ -11,6 +11,7 @@
 .env
 .env.backup
 .env.production
+.env.*.local
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -23,4 +24,11 @@ yarn-error.log
 *.swp
 *.swo
 *~
+
+# Database files
+*.sqlite
+*.sqlite3
+/database/database.sqlite
+/database/*.sqlite
+/database/*.sqlite3
 
