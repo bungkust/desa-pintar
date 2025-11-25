@@ -1,24 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Form Header -->
-<section class="py-8 bg-white border-b border-gray-200">
-    <div class="max-w-3xl mx-auto px-4">
-        <a href="{{ route('complaints.index') }}" 
-           class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-medium mb-4">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Kembali ke Halaman Pengaduan
-        </a>
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Form Pengaduan Masyarakat</h1>
-        <p class="text-gray-600 mt-2">Isi form berikut dengan lengkap dan benar</p>
-    </div>
-</section>
+<x-sections.page-header 
+    title="Form Pengaduan Masyarakat"
+    description="Isi form berikut dengan lengkap dan benar"
+    gradient="from-emerald-50 via-teal-50 to-cyan-50"
+/>
 
-<!-- Form Section -->
-<section class="py-8 md:py-12 bg-gray-50">
-    <div class="max-w-3xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto mb-6">
+            @include('components.buttons.back-button', [
+                'href' => route('complaints.index'),
+                'label' => 'Kembali ke Halaman Pengaduan',
+                'variant' => 'gray',
+            ])
+        </div>
         <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
             @if(session('success'))
                 <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800">
@@ -211,7 +208,7 @@
             </form>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 @push('scripts')
 <script src="{{ asset('js/complaint-form.js') }}"></script>
@@ -249,4 +246,5 @@
 </script>
 @endpush
 @endsection
+
 

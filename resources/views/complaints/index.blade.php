@@ -1,33 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Section -->
-<section class="py-12 md:py-20 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50">
-    <div class="max-w-5xl mx-auto px-4 text-center">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Pengaduan Masyarakat
-        </h1>
-        <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Laporkan masalah atau keluhan Anda kepada pemerintah desa. Kami siap membantu menyelesaikan masalah Anda dengan cepat dan transparan.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="{{ route('complaints.form') }}" 
-               class="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
-                📝 Buat Pengaduan Baru
-            </a>
-            <a href="{{ route('complaints.tracking-form') }}" 
-               class="w-full sm:w-auto px-8 py-4 border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
-                🔍 Lacak Pengaduan
-            </a>
-        </div>
-    </div>
-</section>
+<x-sections.page-header 
+    title="Pengaduan Masyarakat"
+    description="Laporkan masalah atau keluhan Anda kepada pemerintah desa. Kami siap membantu menyelesaikan masalah Anda dengan cepat dan transparan."
+    gradient="from-emerald-50 via-teal-50 to-cyan-50"
+    :actions="'<div class=\"flex flex-col sm:flex-row gap-4 justify-center items-center\"><a href=\"' . route('complaints.form') . '\" class=\"w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center\">📝 Buat Pengaduan Baru</a><a href=\"' . route('complaints.tracking-form') . '\" class=\"w-full sm:w-auto px-8 py-4 border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center\">🔍 Lacak Pengaduan</a></div>'"
+/>
 
 <!-- Mini Statistics Section -->
 @if(isset($stats))
-<section class="py-12 md:py-16 bg-white">
-    <div class="max-w-5xl mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<x-sections.section spacing="py-12 md:py-16" background="bg-white">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             @include('components.cards.stat-card', [
                 'title' => 'Total Pengaduan',
                 'value' => $stats['total'] ?? 0,
@@ -51,12 +36,12 @@
             ])
         </div>
     </div>
-</section>
+</x-sections.section>
 @endif
 
 <!-- Process Stepper Section -->
-<section class="py-12 md:py-20 bg-gray-50">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Proses Pengaduan</h2>
         
         <div class="relative">
@@ -141,11 +126,11 @@
             </div>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 <!-- Why Report Section -->
-<section class="py-12 md:py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-white">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Kenapa Perlu Melapor?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="text-center">
@@ -177,11 +162,11 @@
             </div>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 <!-- What Can Be Reported Section -->
-<section class="py-12 md:py-20 bg-gray-50">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Apa Saja yang Bisa Dilaporkan?</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center">
@@ -216,12 +201,12 @@
             </div>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 <!-- Complaint Categories Section -->
 @if(isset($categories))
-<section class="py-12 md:py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-white">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Kategori Pengaduan</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             @php
@@ -246,12 +231,12 @@
             @endforeach
         </div>
     </div>
-</section>
+</x-sections.section>
 @endif
 
 <!-- FAQ Section -->
-<section class="py-12 md:py-20 bg-gray-50">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Pertanyaan Umum</h2>
         <div class="max-w-4xl mx-auto space-y-4">
             <div class="bg-white rounded-lg p-6 shadow-sm">
@@ -272,11 +257,11 @@
             </div>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 <!-- Emergency Contact Section -->
-<section class="py-12 md:py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-4">
+<x-sections.section spacing="py-12 md:py-16" background="bg-white">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
         <div class="bg-emerald-50 rounded-xl shadow-lg p-8 md:p-12 text-center border border-emerald-100">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Butuh Bantuan Cepat?</h2>
             <p class="text-gray-600 mb-6 text-lg">Hubungi kami langsung melalui WhatsApp</p>
@@ -291,7 +276,7 @@
             <p class="mt-4 text-lg font-semibold text-gray-700">{{ $settings->whatsapp ?? '6282330462234' }}</p>
         </div>
     </div>
-</section>
+</x-sections.section>
 
 <!-- Sticky Mobile CTA Button -->
 <a href="{{ route('complaints.form') }}" 

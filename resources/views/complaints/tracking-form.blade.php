@@ -8,9 +8,17 @@
 />
 
 <x-sections.section spacing="py-12 md:py-16 lg:py-20">
-    <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Cari Pengaduan</h2>
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto mb-6">
+            @include('components.buttons.back-button', [
+                'href' => route('complaints.index'),
+                'label' => 'Kembali ke Halaman Pengaduan',
+                'variant' => 'gray',
+            ])
+        </div>
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 border border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Cari Pengaduan</h2>
 
             @if($errors->any())
                 <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -59,6 +67,7 @@
                    class="inline-block text-emerald-600 hover:text-emerald-700 font-medium">
                     Buat Pengaduan Baru →
                 </a>
+            </div>
             </div>
         </div>
     </div>
