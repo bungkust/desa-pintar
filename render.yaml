@@ -4,7 +4,10 @@ services:
     runtime: php
     plan: free
     buildCommand: |
-      composer install --no-dev --optimize-autoloader &&
+      if ! command -v composer &> /dev/null; then
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      fi &&
+      /usr/local/bin/composer install --no-dev --optimize-autoloader &&
       npm ci &&
       npm run build &&
       php artisan config:cache &&

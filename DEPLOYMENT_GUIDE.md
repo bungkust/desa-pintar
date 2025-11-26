@@ -124,8 +124,10 @@ Isi form dengan detail berikut:
 - **Runtime**: **PHP**
 - **Build Command**: 
   ```bash
-  composer install --no-dev --optimize-autoloader && npm ci && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache
+  if ! command -v composer &> /dev/null; then curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; fi && /usr/local/bin/composer install --no-dev --optimize-autoloader && npm ci && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache
   ```
+  
+  **Catatan**: Build command ini akan install composer jika belum tersedia, lalu install dependencies dan build assets.
 - **Start Command**: 
   ```bash
   php artisan serve --host=0.0.0.0 --port=${PORT}
