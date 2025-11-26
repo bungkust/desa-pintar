@@ -14,7 +14,7 @@
                 </time>
             @endif
         </x-slot>
-        
-        {!! str($post->content)->sanitizeHtml() !!}
+
+                {!! str($post->content)->sanitizeHtml() !!}
     </x-layouts.article-layout>
 @endsection

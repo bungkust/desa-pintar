@@ -508,3 +508,71 @@ p, .body-text {
     }
 }
 
+
+
+/* ============================================
+   RESPONSIVE HELPERS
+   ============================================ */
+
+/* Hide on Mobile */
+.hide-mobile {
+    @apply hidden md:block;
+}
+
+/* Show on Mobile Only */
+.show-mobile {
+    @apply block md:hidden;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        @apply text-black;
+    }
+    
+    a {
+        @apply text-black no-underline;
+    }
+}
+
+
+
+/* ============================================
+   RESPONSIVE HELPERS
+   ============================================ */
+
+/* Hide on Mobile */
+.hide-mobile {
+    @apply hidden md:block;
+}
+
+/* Show on Mobile Only */
+.show-mobile {
+    @apply block md:hidden;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        @apply text-black;
+    }
+    
+    a {
+        @apply text-black no-underline;
+    }
+}
+

@@ -4,169 +4,13 @@
     $pageTitle = ($settings->site_name ?? 'Desa Donoharjo') . ' - Beranda';
     $metaTitle = $settings->site_name ?? 'Desa Donoharjo';
     $metaDescription = 'Website resmi ' . ($settings->site_name ?? 'Desa Donoharjo') . '. Informasi desa, statistik, berita, dan transparansi APBDes.';
-    $heroImage = ($heroSlide && $heroSlide->image) ? (str_starts_with($heroSlide->image, 'http://') || str_starts_with($heroSlide->image, 'https://') ? $heroSlide->image : Storage::url($heroSlide->image)) : null;
 @endphp
-@push('styles')
-    @if($heroImage)
-    <link rel="preload" as="image" href="{{ $heroImage }}" fetchpriority="high">
-    @endif
-@endpush
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="relative h-[90vh] min-h-[600px] flex items-center justify-center text-white overflow-hidden hero-section" 
-             @if($heroSlide && $heroSlide->image)
-                 style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url('{{ str_starts_with($heroSlide->image, 'http://') || str_starts_with($heroSlide->image, 'https://') ? $heroSlide->image : Storage::url($heroSlide->image) }}'); background-size: cover; background-position: center;"
-             @else
-                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"
-             @endif>
-        <!-- Overlay Gradient -->
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30"></div>
-        
-        <!-- Content -->
-        <div class="container-standard py-20 md:py-24 lg:py-32 text-center relative z-10">
-            <div class="max-w-4xl mx-auto">
-                @if($heroSlide)
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 drop-shadow-lg animate-fade-in leading-none tracking-tight">
-                        {{ $heroSlide->title }}
-                    </h1>
-                    <p class="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-md animate-fade-in-delay leading-relaxed">
-                        {{ $heroSlide->subtitle }}
-                    </p>
-                @else
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 drop-shadow-lg leading-none tracking-tight">
-                        Selamat Datang di {{ $settings->site_name ?? 'Desa Donoharjo' }}
-                    </h1>
-                    <p class="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-md leading-relaxed">
-                        Website resmi desa kami
-                    </p>
-                @endif
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
-        </div>
-    </section>
-
-    <!-- Floating QuickLinks Cards -->
-    @if($quickLinks->count() > 0)
-    <section class="container-standard -mt-16 md:-mt-20 lg:-mt-24 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
-            @foreach($quickLinks as $link)
-            @php
-                // Helper function to resolve quick link URL
-                $resolveQuickLinkUrl = function($link) {
-                    $url = trim($link->url ?? '');
-                    $openInNewTab = false;
-                    
-                    // Map quick link labels to routes (for backward compatibility)
-                    $linkRouteMap = [
-                        'Layanan Surat' => 'layanan-surat',
-                        'Produk Hukum' => 'peraturan-desa',
-                        'Potensi Desa' => 'potensi-desa',
-                        'Pengaduan' => 'complaints.index',
-                        'Berita' => 'berita',
-                        'APBDes' => 'apbdes.show',
-                        'Statistik' => 'statistik-lengkap',
-                    ];
-                    
-                    // If URL is empty or #, try to map from label
-                    if (empty($url) || $url === '#' || $url === '/#') {
-                        $routeName = $linkRouteMap[$link->label] ?? null;
-                        if ($routeName && \Illuminate\Support\Facades\Route::has($routeName)) {
-                            // Special handling for apbdes.show which needs year parameter
-                            if ($routeName === 'apbdes.show') {
-                                $latestYear = \App\Models\Apbdes::max('year');
-                                if ($latestYear) {
-                                    return [route($routeName, ['year' => $latestYear]), false];
-                                }
-                            }
-                            return [route($routeName), false];
-                        }
-                        // Fallback to generic quick link route
-                        return [route('quick-link.show', ['label' => strtolower(str_replace(' ', '-', $link->label))]), false];
-                    }
-                    
-                    // External URL
-                    if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://')) {
-                        return [$url, true];
-                    }
-                    
-                    // Internal path starting with /
-                    if (str_starts_with($url, '/')) {
-                        return [$url, false];
-                    }
-                    
-                    // Try as route name
-                    if (\Illuminate\Support\Facades\Route::has($url)) {
-                        try {
-                            // Special handling for apbdes.show which needs year parameter
-                            if ($url === 'apbdes.show') {
-                                $latestYear = \App\Models\Apbdes::max('year');
-                                if ($latestYear) {
-                                    return [route($url, ['year' => $latestYear]), false];
-                                }
-                            }
-                            return [route($url), false];
-                        } catch (\Exception $e) {
-                            // Route exists but needs parameters - use dummy page
-                            $routeName = $linkRouteMap[$link->label] ?? null;
-                            if ($routeName && \Illuminate\Support\Facades\Route::has($routeName)) {
-                                if ($routeName === 'apbdes.show') {
-                                    $latestYear = \App\Models\Apbdes::max('year');
-                                    if ($latestYear) {
-                                        return [route($routeName, ['year' => $latestYear]), false];
-                                    }
-                                }
-                                return [route($routeName), false];
-                            }
-                            return [route('quick-link.show', ['label' => strtolower(str_replace(' ', '-', $link->label))]), false];
-                        }
-                    }
-                    
-                    // Unknown format - try to map from label or use dummy page
-                    $routeName = $linkRouteMap[$link->label] ?? null;
-                    if ($routeName && \Illuminate\Support\Facades\Route::has($routeName)) {
-                        if ($routeName === 'apbdes.show') {
-                            $latestYear = \App\Models\Apbdes::max('year');
-                            if ($latestYear) {
-                                return [route($routeName, ['year' => $latestYear]), false];
-                            }
-                        }
-                        return [route($routeName), false];
-                    }
-                    return [route('quick-link.show', ['label' => strtolower(str_replace(' ', '-', $link->label))]), false];
-                };
-                
-                [$actualUrl, $openInNewTab] = $resolveQuickLinkUrl($link);
-            @endphp
-            <a href="{{ $actualUrl }}" @if($openInNewTab) target="_blank" rel="noopener noreferrer" @endif
-               class="bg-white shadow-lg rounded-lg p-4 md:p-6 hover:scale-105 hover:shadow-xl transition-all duration-300 group min-h-[120px] flex items-center justify-center">
-                <div class="flex flex-col items-center text-center">
-                    <div class="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 mb-3 flex items-center justify-center"
-                         @if($link->color) style="color: {{ $link->color }};" @else style="color: #10b981;" @endif>
-                        @if($link->icon_class)
-                            @svg($link->icon_class, 'w-full h-full')
-                        @else
-                            {{-- Default icon if none specified --}}
-                            <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                        </svg>
-                        @endif
-                    </div>
-                    <h3 class="text-sm md:text-base font-semibold text-gray-800 group-hover:text-emerald-600 transition">
-                        {{ $link->label }}
-                    </h3>
-                </div>
-            </a>
-            @endforeach
-        </div>
-    </section>
-    @endif
+    <x-layouts.landing-layout
+        :heroSlide="$heroSlide"
+        :quickLinks="$quickLinks"
+        :settings="$settings">
 
     <!-- Statistik Section -->
     @if($statistics->count() > 0)
@@ -400,4 +244,5 @@
         </div>
         @endif
     </x-sections.section>
+    </x-layouts.landing-layout>
 @endsection
