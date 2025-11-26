@@ -28,6 +28,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy application files
 COPY . .
 
+# Create .env file from .env.example if .env doesn't exist (for composer scripts)
+RUN if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || touch .env; fi
+
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/html/storage/framework/cache \
     && mkdir -p /var/www/html/storage/framework/sessions \
@@ -37,8 +40,10 @@ RUN mkdir -p /var/www/html/storage/framework/cache \
     && chmod -R 775 /var/www/html/storage \
     && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Clear composer cache and install PHP dependencies
+# Using --no-scripts to avoid running artisan commands before dependencies are fully installed
+RUN composer clear-cache || true && \
+    composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist --verbose
 
 # Install Node.js dependencies and build assets
 RUN npm ci && npm run build
