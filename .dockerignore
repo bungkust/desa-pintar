@@ -1,0 +1,56 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules
+vendor
+
+# Build artifacts
+public/hot
+public/storage
+storage/*.key
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# Scripts
+scripts
+setup-local.sh
+
+# Database
+database/database.sqlite
+database/*.sqlite
+database/*.sqlite3
+
+# Testing
+.phpunit.result.cache
+tests
+phpunit.xml
+
+# Logs
+*.log
+

@@ -1,19 +1,11 @@
 services:
   - type: web
     name: desa-donoharjo-web
-    runtime: php
+    runtime: docker
     plan: free
-    buildCommand: |
-      if ! command -v composer &> /dev/null; then
-        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-      fi &&
-      /usr/local/bin/composer install --no-dev --optimize-autoloader &&
-      npm ci &&
-      npm run build &&
-      php artisan config:cache &&
-      php artisan route:cache &&
-      php artisan view:cache
-    startCommand: php artisan serve --host=0.0.0.0 --port=${PORT}
+    # Build and start commands are handled by Dockerfile
+    # buildCommand: (not needed, Dockerfile handles it)
+    # startCommand: (not needed, CMD in Dockerfile handles it)
     envVars:
       - key: APP_ENV
         value: production

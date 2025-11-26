@@ -14,14 +14,10 @@ Panduan cepat untuk deploy ke Render.com. Untuk panduan lengkap, lihat [DEPLOYME
 - Render Dashboard → New + → Web Service
 - Connect GitHub repository
 - Settings:
-- **Build Command**: 
-  ```bash
-  if ! command -v composer &> /dev/null; then curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer; fi && /usr/local/bin/composer install --no-dev --optimize-autoloader && npm ci && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache
-  ```
-  - **Start Command**: 
-    ```bash
-    php artisan serve --host=0.0.0.0 --port=${PORT}
-    ```
+  - **Runtime**: **Docker** ⚠️ (Bukan PHP atau Node.js)
+  - **Build Command**: (Kosongkan - Dockerfile handle)
+  - **Start Command**: (Kosongkan - CMD di Dockerfile handle)
+  - Render akan otomatis detect `Dockerfile`
 
 ### 3. Set Environment Variables
 

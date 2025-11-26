@@ -6,8 +6,9 @@ Dokumentasi lengkap untuk deploy aplikasi Desa Donoharjo ke Render.com dengan su
 
 1. **[QUICK_DEPLOY.md](./QUICK_DEPLOY.md)** - Panduan cepat (5 menit) untuk yang sudah familiar
 2. **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Panduan lengkap step-by-step untuk pemula
-3. **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** - Checklist untuk memastikan semua langkah sudah dilakukan
-4. **[PRE_DEPLOYMENT_SECURITY_CHECKLIST.md](./PRE_DEPLOYMENT_SECURITY_CHECKLIST.md)** - 🔒 **WAJIB DICEK!** Security checklist sebelum deploy
+3. **[DOCKER_DEPLOYMENT.md](./DOCKER_DEPLOYMENT.md)** - 🐳 Panduan khusus Docker deployment
+4. **[DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md)** - Checklist untuk memastikan semua langkah sudah dilakukan
+5. **[PRE_DEPLOYMENT_SECURITY_CHECKLIST.md](./PRE_DEPLOYMENT_SECURITY_CHECKLIST.md)** - 🔒 **WAJIB DICEK!** Security checklist sebelum deploy
 
 ## 🎯 Quick Start
 
@@ -17,9 +18,22 @@ Jika Anda pemula, ikuti [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) dari awal s
 
 ## 📋 File Konfigurasi
 
-- **`render.yaml`** - Konfigurasi untuk Render.com (auto-deploy)
+- **`Dockerfile`** - Konfigurasi Docker untuk deployment (⚠️ **WAJIB**)
+- **`.dockerignore`** - File yang di-exclude dari Docker build
+- **`render.yaml`** - Konfigurasi untuk Render.com (auto-deploy dengan Docker)
 - **`.renderignore`** - File yang di-ignore saat deployment
 - **`.env.example`** - Template environment variables
+
+## 🐳 Docker Deployment
+
+Project ini menggunakan **Docker** untuk deployment karena Render tidak menyediakan PHP runtime langsung.
+
+**PENTING**: 
+- Pastikan `Dockerfile` ada di root repository
+- Pilih **Runtime: Docker** di Render dashboard
+- Build dan Start commands akan di-handle oleh Dockerfile
+
+Lihat [DOCKER_DEPLOYMENT.md](./DOCKER_DEPLOYMENT.md) untuk detail lengkap.
 
 ## 🔑 Environment Variables yang Diperlukan
 
