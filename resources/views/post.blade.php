@@ -65,20 +65,17 @@
 @endpush
 
 @section('content')
+    <!-- Page Header -->
+    <x-sections.page-header 
+        title="{{ $post->title }}"
+        description="{{ $post->published_at ? 'Dipublikasikan pada ' . $post->published_at->locale('id')->isoFormat('dddd, D MMMM YYYY') : 'Informasi terbaru dari ' . ($settings->site_name ?? 'Desa Donoharjo') }}"
+        gradient="from-blue-50 via-emerald-50 to-teal-50"
+    />
+
     <!-- Post Content -->
-    <article class="container mx-auto px-4 md:px-6 lg:px-8 max-w-4xl py-8">
+    <x-sections.section>
+        <article class="max-w-4xl mx-auto">
         <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 lg:p-10">
-            <!-- Post Header -->
-            <header class="mb-6">
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                    {{ $post->title }}
-                </h1>
-                @if($post->published_at)
-                    <time class="text-sm text-gray-500">
-                        {{ $post->published_at->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
-                    </time>
-                @endif
-            </header>
 
             <!-- Post Thumbnail -->
             @if($post->thumbnail)
@@ -109,4 +106,5 @@
             </div>
         </div>
     </article>
+    </x-sections.section>
 @endsection

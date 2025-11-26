@@ -1,16 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+    <x-sections.page-header 
+        title="{{ $content['title'] }}"
+        description="{{ $content['description'] }}"
+        gradient="from-blue-50 via-emerald-50 to-teal-50"
+    />
+
 <x-sections.section spacing="py-12 md:py-16 lg:py-20">
     <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-8 md:mb-12">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                {{ $content['title'] }}
-            </h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-                {{ $content['description'] }}
-            </p>
-        </div>
 
         @if(count($content['items']) > 0)
         <div class="bg-emerald-50 border-l-4 border-emerald-500 p-6 rounded-lg mb-8">

@@ -4,7 +4,7 @@
 <x-sections.page-header 
     title="Form Pengaduan Masyarakat"
     description="Isi form berikut dengan lengkap dan benar"
-    gradient="from-emerald-50 via-teal-50 to-cyan-50"
+    gradient="from-blue-50 via-emerald-50 to-teal-50"
 />
 
 <x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">

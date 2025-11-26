@@ -113,7 +113,7 @@
 <x-sections.page-header 
     title="Lacak Pengaduan"
     description="Pantau status pengaduan Anda secara real-time"
-    gradient="from-emerald-50 via-teal-50 to-cyan-50"
+    gradient="from-blue-50 via-emerald-50 to-teal-50"
 />
 
 <x-sections.section spacing="py-12 md:py-16 lg:py-20">

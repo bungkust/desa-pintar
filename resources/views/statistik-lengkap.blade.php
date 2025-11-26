@@ -1,27 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-emerald-50 to-teal-50">
-        <div class="container mx-auto px-4 md:px-6 lg:px-8">
-            <!-- Breadcrumb -->
-            <nav class="text-sm text-gray-600 mb-6" aria-label="Breadcrumb">
-                <a href="/" class="hover:text-emerald-600 transition-colors">Beranda</a> / 
-                <a href="/#statistik" class="hover:text-emerald-600 transition-colors">Statistik</a> / 
-                <span class="text-gray-900 font-medium">Statistik Lengkap</span>
-            </nav>
-
-            <!-- Page Title -->
-            <div class="text-center mb-10 md:mb-12">
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
-                    Statistik Lengkap Desa {{ $settings->site_name ?? 'Donoharjo' }}
-                </h1>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-                    Data statistik lengkap dengan tren historis dan perbandingan tahun ke tahun untuk memberikan gambaran komprehensif tentang perkembangan desa.
-                </p>
-            </div>
-        </div>
-    </section>
+    <!-- Page Header -->
+    <x-sections.page-header 
+        title="Statistik Lengkap Desa {{ $settings->site_name ?? 'Donoharjo' }}"
+        description="Data statistik lengkap dengan tren historis dan perbandingan tahun ke tahun untuk memberikan gambaran komprehensif tentang perkembangan desa."
+        gradient="from-blue-50 via-emerald-50 to-teal-50"
+    />
 
     @php
         // Icon mapping untuk statistik (Heroicons v2 outline)
@@ -45,10 +30,7 @@
 
     @if(isset($statistics) && $statistics->count() > 0)
     <!-- Ringkasan Statistik Section -->
-    <section class="py-12 md:py-16 lg:py-20 bg-white">
-        <div class="container mx-auto px-4 md:px-6 lg:px-8">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">Ringkasan Statistik</h2>
-            
+    <x-sections.section title="Ringkasan Statistik">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 @foreach($allStats->take(6) as $stat)
                     @php
@@ -62,11 +44,10 @@
                     ])
                 @endforeach
             </div>
-        </div>
-    </section>
+    </x-sections.section>
 
     <!-- Statistik Detail per Kategori -->
-    <section class="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-emerald-50 to-teal-50">
+    <x-sections.section background="bg-gradient-to-br from-blue-50 via-emerald-50 to-teal-50">
         <div class="container mx-auto px-4 md:px-6 lg:px-8">
             @php
                 $categoryLabels = [
@@ -148,15 +129,15 @@
             </div>
             @endforeach
         </div>
-    </section>
+    </x-sections.section>
 
     @else
     <!-- Empty State -->
-    <section class="py-12 md:py-16 lg:py-20 bg-white">
-        <div class="container mx-auto px-4 md:px-6 lg:px-8 text-center">
+    <x-sections.section>
+        <div class="text-center">
             <p class="text-gray-600 text-lg">Belum ada data statistik yang tersedia.</p>
         </div>
-    </section>
+    </x-sections.section>
     @endif
 @endsection
 

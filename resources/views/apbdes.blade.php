@@ -12,10 +12,11 @@
         </x-sections.section>
     @else
         <!-- Header Section -->
-        @include('components.sections.page-header', [
-            'title' => 'APBDes ' . $year . ' - ' . ($settings->site_name ?? 'Desa Donoharjo'),
-            'description' => 'Laporan realisasi anggaran desa secara lengkap, sebagai bentuk pertanggungjawaban kepada masyarakat. <strong>Realisasi</strong> adalah dana yang benar-benar telah digunakan, <strong>Anggaran</strong> adalah rencana pengeluaran yang ditetapkan, dan <strong>Persentase</strong> menunjukkan seberapa besar realisasi dibandingkan dengan anggaran yang direncanakan.',
-        ])
+        <x-sections.page-header 
+            title="APBDes {{ $year }} - {{ $settings->site_name ?? 'Desa Donoharjo' }}"
+            description="Laporan realisasi anggaran desa secara lengkap, sebagai bentuk pertanggungjawaban kepada masyarakat. <strong>Realisasi</strong> adalah dana yang benar-benar telah digunakan, <strong>Anggaran</strong> adalah rencana pengeluaran yang ditetapkan, dan <strong>Persentase</strong> menunjukkan seberapa besar realisasi dibandingkan dengan anggaran yang direncanakan."
+            gradient="from-blue-50 via-emerald-50 to-teal-50"
+        />
         
         @if(count($availableYears) > 1)
         <section class="py-0 -mt-8">

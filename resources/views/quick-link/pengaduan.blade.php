@@ -111,7 +111,12 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">🛣️</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Jalan Rusak / Berlubang</h3>
                     <p class="text-sm text-gray-600">Laporkan kondisi jalan yang rusak atau berlubang</p>
@@ -120,7 +125,11 @@
         </div>
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">💡</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Lampu Jalan Mati</h3>
                     <p class="text-sm text-gray-600">Laporkan lampu jalan yang tidak menyala</p>
@@ -129,7 +138,11 @@
         </div>
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">🗑️</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Sampah Menumpuk</h3>
                     <p class="text-sm text-gray-600">Laporkan tumpukan sampah yang mengganggu</p>
@@ -138,7 +151,11 @@
         </div>
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">🛡️</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Gangguan Keamanan</h3>
                     <p class="text-sm text-gray-600">Laporkan gangguan keamanan di lingkungan</p>
@@ -147,7 +164,11 @@
         </div>
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">💧</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Pipa Bocor</h3>
                     <p class="text-sm text-gray-600">Laporkan pipa air yang bocor atau rusak</p>
@@ -156,7 +177,11 @@
         </div>
         <div class="bg-white rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow">
             <div class="flex items-start">
-                <span class="text-2xl mr-3">🌳</span>
+                <div class="w-10 h-10 mr-3 text-emerald-600 flex-shrink-0">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12H18.75m-3.75-3.75H16.5m-2.25-2.25h-1.5m-2.25 0H9.75m-1.591 1.591l-1.591-1.591M3 12H5.25m3.75 3.75H5.25m3.75-3.75H9.75m-1.591-1.591l-1.591 1.591M12 18.75V21m0 0h2.25m-2.25 0h-2.25m0 0H9.75m0 0H7.5m0 0h-1.5m1.5 0v-2.25m0 2.25H5.25m3.75-3.75H5.25m3.75 3.75H9.75m-1.591-1.591l-1.591 1.591M12 5.25V3m0 0H9.75m2.25 0H16.5m-2.25 0h-1.5m0 0H12m0 0v2.25m0-2.25v2.25m0 0h-2.25m2.25 0h2.25"></path>
+                    </svg>
+                </div>
                 <div>
                     <h3 class="font-semibold text-gray-900 mb-1">Pohon Tumbang</h3>
                     <p class="text-sm text-gray-600">Laporkan pohon yang tumbang atau berbahaya</p>
@@ -213,21 +238,25 @@
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
         @php
             $categoryIcons = [
-                'infrastruktur' => '🛠️',
-                'sampah' => '🗑️',
-                'air' => '💧',
-                'listrik' => '⚡',
-                'keamanan' => '🛡️',
-                'sosial' => '🤝',
-                'pendidikan' => '🎓',
-                'kesehatan' => '❤️',
-                'lainnya' => '📄',
+                'infrastruktur' => 'M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z',
+                'sampah' => 'M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0',
+                'air' => 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z',
+                'listrik' => 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
+                'keamanan' => 'M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z',
+                'sosial' => 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M12 9a3 3 0 100-6 3 3 0 000 6z',
+                'pendidikan' => 'M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443a55.381 55.381 0 015.25 2.882V15',
+                'kesehatan' => 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z',
+                'lainnya' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
             ];
         @endphp
         @foreach($categories as $key => $label)
         <a href="{{ route('complaints.form') }}" 
            class="bg-white rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-all border-2 border-transparent hover:border-emerald-500 block">
-            <div class="text-4xl mb-3">{{ $categoryIcons[$key] ?? '📄' }}</div>
+            <div class="w-12 h-12 mx-auto mb-3 text-emerald-600">
+                <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $categoryIcons[$key] ?? $categoryIcons['lainnya'] }}"></path>
+                </svg>
+            </div>
             <div class="font-semibold text-gray-900 text-sm">{{ $label }}</div>
         </a>
         @endforeach

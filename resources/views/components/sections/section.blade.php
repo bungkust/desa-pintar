@@ -2,7 +2,7 @@
     'title' => null,
     'subtitle' => null,
     'background' => 'bg-white',
-    'spacing' => 'py-12 md:py-16',
+    'spacing' => 'py-12 md:py-16 lg:py-20',
     'id' => null,
 ])
 
