@@ -7,11 +7,13 @@
     gradient="from-blue-50 via-emerald-50 to-teal-50"
 />
 
-<!-- Mini Statistics Section -->
+<!-- Statistics & CTA Section -->
 @if(isset($stats))
 <x-sections.section spacing="py-12 md:py-16" background="bg-white">
     <div class="container mx-auto px-4 md:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8">Transparansi Pengaduan</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12">
             @include('components.cards.stat-card', [
                 'title' => 'Total Pengaduan',
                 'value' => $stats['total'] ?? 0,
@@ -33,6 +35,17 @@
                 'iconColor' => 'text-yellow-600',
                 'gradient' => 'from-yellow-50 to-orange-50',
             ])
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="{{ route('complaints.form') }}" 
+               class="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
+                📝 Buat Pengaduan Baru
+            </a>
+            <a href="{{ route('complaints.tracking-form') }}" 
+               class="w-full sm:w-auto px-8 py-4 border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
+                🔍 Lacak Pengaduan
+            </a>
         </div>
     </div>
 </x-sections.section>
@@ -227,6 +240,40 @@
     </div>
 </x-sections.section>
 
+<!-- Category Selection Section -->
+@if(isset($categories))
+<x-sections.section spacing="py-12 md:py-16" background="bg-white">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-8">Kategori Pengaduan</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            @php
+                $categoryIcons = [
+                    'infrastruktur' => 'M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655-5.653a2.548 2.548 0 010-3.586L11.42 15.17z',
+                    'sampah' => 'M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0',
+                    'air' => 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z',
+                    'listrik' => 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
+                    'keamanan' => 'M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z',
+                    'sosial' => 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M12 9a3 3 0 100-6 3 3 0 000 6z',
+                    'pendidikan' => 'M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443a55.381 55.381 0 015.25 2.882V15',
+                    'kesehatan' => 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z',
+                    'lainnya' => 'M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z',
+                ];
+            @endphp
+            @foreach($categories as $key => $label)
+            <a href="{{ route('complaints.form', ['category' => $key]) }}" 
+               class="bg-white rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-all border-2 border-transparent hover:border-emerald-500 block">
+                <div class="w-12 h-12 mx-auto mb-3 text-emerald-600">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $categoryIcons[$key] ?? $categoryIcons['lainnya'] }}"></path>
+                    </svg>
+                </div>
+                <div class="font-semibold text-gray-900 text-sm">{{ $label }}</div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+</x-sections.section>
+@endif
 
 <!-- FAQ Section -->
 <x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
@@ -268,6 +315,36 @@
                 📞 Telepon/WhatsApp Desa
             </a>
             <p class="mt-4 text-lg font-semibold text-gray-700">{{ $settings->whatsapp ?? '6282330462234' }}</p>
+        </div>
+    </div>
+</x-sections.section>
+
+<!-- Final CTA Section -->
+<x-sections.section spacing="py-12 md:py-16" background="bg-gradient-to-r from-emerald-500 to-teal-600">
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
+                Siap Melaporkan Pengaduan?
+            </h2>
+            <p class="text-emerald-50 text-lg mb-8 max-w-2xl mx-auto">
+                Klik tombol di bawah untuk mengisi formulir pengaduan. Prosesnya mudah dan cepat!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{{ route('complaints.form') }}" 
+                   class="inline-flex items-center justify-center px-8 py-4 bg-white text-emerald-600 font-bold text-lg rounded-lg hover:bg-emerald-50 transition-colors duration-200 shadow-md hover:shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Buat Pengaduan Baru
+                </a>
+                <a href="{{ route('complaints.tracking-form') }}" 
+                   class="inline-flex items-center justify-center px-8 py-4 bg-emerald-700 text-white font-bold text-lg rounded-lg hover:bg-emerald-800 transition-colors duration-200 shadow-md hover:shadow-lg">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Lacak Pengaduan
+                </a>
+            </div>
         </div>
     </div>
 </x-sections.section>
