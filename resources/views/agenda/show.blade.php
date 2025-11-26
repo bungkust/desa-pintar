@@ -13,18 +13,13 @@
 
     <x-sections.section spacing="py-12 md:py-16 lg:py-20">
         <div class="max-w-4xl mx-auto">
-            <div class="bg-white shadow rounded-xl p-6 md:p-8">
+            <div class="bg-white shadow rounded-xl p-6 md:p-8 text-gray-900">
                 <!-- Header Info -->
                 <div class="mb-6 pb-6 border-b">
                     <div class="flex flex-wrap items-center gap-2 mb-4">
                         <div class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-700">
                             {{ $agenda->category_label }}
                         </div>
-                        @if($agenda->is_featured)
-                        <div class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-700">
-                            Featured
-                        </div>
-                        @endif
                         @if($agenda->is_recurring)
                         <div class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700">
                             Berulang: {{ $agenda->recurring_type == 'weekly' ? 'Mingguan' : 'Bulanan' }}
@@ -101,7 +96,7 @@
 
                 <!-- Description -->
                 @if($agenda->description)
-                <div class="mb-6 prose prose-lg max-w-none">
+                <div class="mb-6 prose prose-lg max-w-none prose-neutral text-gray-900 prose-p:text-gray-700 prose-headings:text-gray-900">
                     <h2 class="text-xl font-semibold mb-4 text-gray-900">Deskripsi</h2>
                     <div class="text-gray-700 whitespace-pre-line">
                         {!! nl2br(e($agenda->description)) !!}

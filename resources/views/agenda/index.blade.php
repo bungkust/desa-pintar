@@ -15,7 +15,7 @@
 
     <x-sections.section spacing="py-12 md:py-16 lg:py-20">
         <!-- Filters and View Toggle -->
-        <div class="bg-white rounded-lg shadow p-4 md:p-6 mb-8">
+        <div class="bg-white rounded-lg shadow p-4 md:p-6 mb-8 text-gray-900">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
                 <!-- View Toggle -->
                 <div class="flex items-center gap-2">
@@ -107,17 +107,12 @@
                 <!-- Card View - Grid 3 Columns -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($agendas as $agenda)
-                    <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                        <!-- Category & Featured Badge -->
+                    <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col text-gray-900">
+                        <!-- Category Badge -->
                         <div class="flex items-center justify-between mb-4">
                             <div class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-700 font-medium">
                                 {{ $agenda->category_label }}
                             </div>
-                            @if($agenda->is_featured)
-                            <div class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-700 font-medium">
-                                Featured
-                            </div>
-                            @endif
                         </div>
 
                         <!-- Date -->
@@ -215,11 +210,6 @@
                                                 </div>
                                                 @endif
                                             </div>
-                                            @if($agenda->is_featured)
-                                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                Featured
-                                            </span>
-                                            @endif
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">

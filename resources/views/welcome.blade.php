@@ -24,20 +24,20 @@
         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30"></div>
         
         <!-- Content -->
-        <div class="container mx-auto px-4 md:px-6 lg:px-8 py-20 md:py-24 lg:py-32 text-center relative z-10">
+        <div class="container-standard py-20 md:py-24 lg:py-32 text-center relative z-10">
             <div class="max-w-4xl mx-auto">
                 @if($heroSlide)
-                    <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight drop-shadow-lg animate-fade-in">
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 drop-shadow-lg animate-fade-in leading-none tracking-tight">
                         {{ $heroSlide->title }}
                     </h1>
-                    <p class="text-base md:text-lg lg:text-xl xl:text-2xl max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-fade-in-delay">
+                    <p class="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-md animate-fade-in-delay leading-relaxed">
                         {{ $heroSlide->subtitle }}
                     </p>
                 @else
-                    <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 md:mb-6 leading-tight drop-shadow-lg">
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 md:mb-6 drop-shadow-lg leading-none tracking-tight">
                         Selamat Datang di {{ $settings->site_name ?? 'Desa Donoharjo' }}
                     </h1>
-                    <p class="text-base md:text-lg lg:text-xl xl:text-2xl max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+                    <p class="text-lg md:text-xl text-white max-w-3xl mx-auto drop-shadow-md leading-relaxed">
                         Website resmi desa kami
                     </p>
                 @endif
@@ -54,7 +54,7 @@
 
     <!-- Floating QuickLinks Cards -->
     @if($quickLinks->count() > 0)
-    <section class="container mx-auto px-4 md:px-6 lg:px-8 -mt-16 md:-mt-20 lg:-mt-24 relative z-10">
+    <section class="container-standard -mt-16 md:-mt-20 lg:-mt-24 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-4 lg:gap-6">
             @foreach($quickLinks as $link)
             @php
@@ -170,17 +170,12 @@
 
     <!-- Statistik Section -->
     @if($statistics->count() > 0)
-    <section id="statistik" class="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-emerald-50 to-teal-50">
-        <div class="container mx-auto px-4 md:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-10 md:mb-12">
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
-                    Statistik Desa {{ $settings->site_name ?? 'Donoharjo' }}
-                </h2>
-                <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-                    Data demografi dan wilayah terbaru yang menggambarkan kondisi {{ $settings->site_name ?? 'Desa Donoharjo' }}.
-                </p>
-            </div>
+    <x-sections.section 
+        id="statistik"
+        title="Statistik Desa {{ $settings->site_name ?? 'Donoharjo' }}"
+        subtitle="Data demografi dan wilayah terbaru yang menggambarkan kondisi {{ $settings->site_name ?? 'Desa Donoharjo' }}."
+        background="bg-gradient-to-br from-blue-50 via-emerald-50 to-teal-50"
+        spacing="py-16 md:py-20 lg:py-24">
         
         @php
             $categoryLabels = [
@@ -197,6 +192,8 @@
                 'heroicon-o-users' => 'M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z',
                 'heroicon-o-home' => 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
                 'heroicon-o-map' => 'M9 20.25l-6.22-3.846a.75.75 0 01-.03-1.28l6.22-3.846a.75.75 0 01.78 0l6.22 3.846a.75.75 0 01-.03 1.28L9 20.25zm0 0l6.22 3.846a.75.75 0 00.78 0l6.22-3.846a.75.75 0 00-.03-1.28L15.78 12.5a.75.75 0 00-.78 0L9 16.346zm0 0l-6.22-3.846a.75.75 0 010-1.28L9 8.654l6.22 3.846a.75.75 0 010 1.28L9 20.25z',
+                'heroicon-o-map-pin' => 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z',
+                'heroicon-o-globe-alt' => 'M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.944 11.944 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418',
                 'heroicon-o-user-group' => 'M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.645-5.888-1.654A11.97 11.97 0 014.5 19.5m6.5-1.5a9.094 9.094 0 003.741.479 3 3 0 004.682-2.72m.94 3.198a11.944 11.944 0 01-5.888 1.654c-2.17 0-4.207-.645-5.888-1.654M12 9a3 3 0 100-6 3 3 0 000 6z',
                 'heroicon-o-chart-bar' => 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z',
             ];
@@ -211,7 +208,7 @@
             
             <!-- Category Section -->
             <div class="mb-10 md:mb-12">
-                <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-6">{{ $categoryName }}</h3>
+                <h3 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-6 leading-snug">{{ $categoryName }}</h3>
                 
                 <!-- Statistics Grid: 1 col (mobile), 2 col (tablet), 4 col (desktop) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
@@ -239,13 +236,12 @@
                     Lihat Statistik Lengkap
                 </a>
         </div>
-        </div>
-    </section>
+    </x-sections.section>
     @endif
 
     <!-- Sambutan Lurah Section -->
     @if($lurah)
-    <x-sections.section spacing="py-12 md:py-16 lg:py-20">
+    <x-sections.section spacing="py-16 md:py-20 lg:py-24">
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 lg:gap-8 items-center">
                 <!-- Photo -->
@@ -268,13 +264,13 @@
                 </div>
                 <!-- Content -->
                 <div class="text-center md:text-left">
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-gray-900">Sambutan {{ $lurah->position }}</h2>
-                    <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-800">{{ $lurah->name }}</h3>
-                    <div class="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed prose prose-lg max-w-none">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">Sambutan {{ $lurah->position }}</h2>
+                    <h3 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2 leading-snug">{{ $lurah->name }}</h3>
+                    <div class="text-lg text-gray-700 leading-relaxed prose prose-lg max-w-none prose-neutral prose-p:text-gray-700 prose-p:text-lg prose-p:leading-relaxed prose-p:mb-4 prose-strong:text-gray-900 prose-strong:font-semibold prose-a:text-emerald-600 prose-a:font-medium prose-a:hover:text-emerald-700 prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:text-gray-700 prose-headings:text-gray-900 prose-headings:font-semibold prose-headings:mb-4 prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg">
                         @if($lurah->greeting)
                             {!! str($lurah->greeting)->sanitizeHtml() !!}
                         @else
-                            <p>
+                            <p class="text-gray-700">
                         Assalamu'alaikum Warahmatullahi Wabarakatuh. 
                         Selamat datang di website resmi {{ $settings->site_name ?? 'Desa Donoharjo' }}. 
                         Melalui website ini, kami berharap dapat memberikan informasi yang akurat dan transparan kepada seluruh masyarakat desa. 
@@ -293,12 +289,12 @@
         id="berita"
         title="Berita Terkini"
         background="bg-gray-50"
-        spacing="py-12 md:py-16 lg:py-20">
+        spacing="py-16 md:py-20 lg:py-24">
         
         @if($posts->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
             @foreach($posts as $post)
-            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 text-gray-900">
                 @if($post->thumbnail)
                 <a href="{{ route('post.show', $post->slug) }}">
                     <img src="{{ str_starts_with($post->thumbnail, 'http://') || str_starts_with($post->thumbnail, 'https://') ? $post->thumbnail : Storage::url($post->thumbnail) }}" 
@@ -317,13 +313,13 @@
                 </div>
                 @endif
                 <div class="p-4 md:p-6">
-                    <time class="text-sm text-gray-500 mb-2 block">
+                    <time class="text-sm text-gray-500 mb-2 block leading-normal">
                         {{ $post->published_at ? $post->published_at->locale('id')->isoFormat('D MMMM YYYY') : '' }}
                     </time>
-                    <h3 class="text-lg md:text-xl lg:text-2xl font-bold mb-2 text-gray-900 line-clamp-2">
-                        <a href="{{ route('post.show', $post->slug) }}" class="hover:text-emerald-600 transition">{{ $post->title }}</a>
+                    <h3 class="text-lg md:text-xl font-semibold text-gray-900 mb-2 line-clamp-2 leading-snug">
+                        <a href="{{ route('post.show', $post->slug) }}" class="text-gray-900 font-semibold hover:text-primary-600 transition-colors">{{ $post->title }}</a>
                     </h3>
-                    <p class="text-sm md:text-base text-gray-600 line-clamp-3">
+                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">
                         {{ Str::limit(strip_tags($post->content), 150) }}
                     </p>
                 </div>
@@ -342,7 +338,7 @@
         </div>
         @else
         <div class="text-center py-12">
-            <p class="text-gray-600 text-lg">Belum ada berita yang dipublikasikan.</p>
+            <p class="text-lg text-gray-700 leading-relaxed">Belum ada berita yang dipublikasikan.</p>
         </div>
         @endif
     </x-sections.section>
@@ -354,12 +350,12 @@
     <x-sections.section 
         id="transparansi"
         title="Transparansi APBDes"
-        spacing="py-12 md:py-16 lg:py-20">
+        spacing="py-16 md:py-20 lg:py-24">
         
         @if($apbdesData)
         <div class="space-y-6 md:space-y-8">
             <div class="mb-6">
-                <p class="text-lg md:text-xl lg:text-2xl font-semibold text-gray-700 text-center md:text-left">
+                <p class="text-lg md:text-xl text-gray-600 text-center leading-relaxed">
                     APBDes {{ $apbdesData['year'] }} – Pelaksanaan (Ringkasan Utama)
                 </p>
             </div>
@@ -400,7 +396,7 @@
         </div>
         @else
         <div class="text-center py-12">
-            <p class="text-gray-600 text-lg">Data APBDes belum tersedia.</p>
+            <p class="text-lg text-gray-700 leading-relaxed">Data APBDes belum tersedia.</p>
         </div>
         @endif
     </x-sections.section>

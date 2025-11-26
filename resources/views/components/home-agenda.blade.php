@@ -39,18 +39,13 @@
         <!-- Agenda Cards Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
             @foreach($upcomingAgendas as $agenda)
-            <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition-shadow duration-300">
+            <div class="bg-white shadow rounded-xl p-6 hover:shadow-lg transition-shadow duration-300 text-gray-900">
                 <!-- Date Badge -->
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center space-x-2">
                         <div class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">
                             {{ $agenda->date->locale('id')->isoFormat('D MMM YYYY') }}
                         </div>
-                        @if($agenda->is_featured)
-                        <div class="text-xs px-2 py-1 rounded bg-yellow-100 text-yellow-700 font-semibold">
-                            Featured
-                        </div>
-                        @endif
                     </div>
                     <div class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-700">
                         {{ $agenda->category_label }}

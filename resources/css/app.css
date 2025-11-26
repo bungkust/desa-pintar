@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import Design System Foundation */
+@import './design-system.css';
+
 html {
     scroll-behavior: smooth;
 }
@@ -41,34 +44,54 @@ html {
     display: block !important;
 }
 
-/* Nested dropdown support - show on hover with padding gap */
-.nested-dropdown-container {
-    padding-left: 8px;
+/* Nested dropdown parent container */
+.nested-dropdown-parent {
+    position: relative;
 }
 
-/* Show nested dropdown when hovering parent */
-.nested-dropdown-parent.group:hover .nested-dropdown-container {
-    display: block !important;
+/* Ensure parent link and submenu items have same height and alignment */
+.nested-dropdown-trigger {
+    display: block;
+    line-height: 1.5;
+}
+
+/* Nested dropdown - hide by default with smooth transition */
+/* JavaScript will control visibility, but CSS provides fallback and transitions */
+.nested-dropdown-container {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    display: block !important; /* Keep block for positioning, but hidden via opacity */
+    margin-left: 0 !important; /* Remove any left margin to make it stick to parent */
+}
+
+/* CSS fallback: Show nested dropdown when hovering the parent div */
+/* JavaScript will override this for better control */
+.nested-dropdown-parent:hover .nested-dropdown-container {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 /* Keep nested dropdown visible when hovering over it */
 .nested-dropdown-container:hover {
-    display: block !important;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
-/* Ensure parent dropdown stays open when hovering nested dropdown */
-.group:hover .dropdown-container .nested-dropdown-parent.group:hover .nested-dropdown-container {
-    display: block !important;
-}
-
-/* Ensure nested dropdown stays visible when hovering over nested dropdown content */
-.nested-dropdown-container:hover {
-    display: block !important;
-}
-
-/* Keep parent dropdown open when hovering nested dropdown */
-.group:hover .dropdown-container:hover .nested-dropdown-parent.group:hover .nested-dropdown-container {
-    display: block !important;
+/* Invisible bridge to prevent dropdown from disappearing when moving cursor from item to dropdown */
+.nested-dropdown-container::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    z-index: 49;
+    background: transparent;
+    pointer-events: auto;
 }
 
 /* Nested submenu (level 2) - Using custom class for better reliability */

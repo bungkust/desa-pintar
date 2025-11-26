@@ -108,32 +108,30 @@
                                             
                                             @if($childHasChildren)
                                                 <!-- Child with grandchildren - nested dropdown -->
-                                                <div class="relative nested-dropdown-parent group">
+                                                <div class="relative nested-dropdown-parent">
                                                     <a href="{{ $childUrl }}" 
-                                                       class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition-colors {{ $childIsParentActive ? 'bg-emerald-50 text-emerald-600 font-semibold' : '' }}">
-                                                        <span>{{ $child->label }}</span>
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                        </svg>
+                                                       class="nested-dropdown-trigger block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition-colors {{ $childIsParentActive ? 'bg-emerald-50 text-emerald-600 font-semibold' : '' }}">
+                                                        <span class="flex items-center justify-between">
+                                                            <span>{{ $child->label }}</span>
+                                                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                            </svg>
+                                                        </span>
                                                     </a>
                                                     
-                                                    <!-- Nested Submenu (Level 2) with invisible padding area -->
-                                                    <div class="absolute left-full top-0 hidden group-hover:block z-50 nested-dropdown-container">
-                                                        <div class="pl-2">
-                                                            <div class="bg-white shadow-lg rounded-lg w-56 border border-gray-200">
-                                                                <div class="py-1">
-                                                                    @foreach($child->children as $grandchild)
-                                                                        @php
-                                                                            $grandchildUrl = $grandchild->url ?? '#';
-                                                                            $grandchildIsActive = $isActiveUrl($grandchildUrl, $currentUrl);
-                                                                        @endphp
-                                                                        <a href="{{ $grandchildUrl }}" 
-                                                                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition-colors {{ $grandchildIsActive ? 'bg-emerald-50 text-emerald-600 font-semibold' : '' }}">
-                                                                            {{ $grandchild->label }}
-                                                                        </a>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
+                                                    <!-- Nested Submenu (Level 2) - positioned to align with parent item -->
+                                                    <div class="absolute left-full top-0 z-50 nested-dropdown-container">
+                                                        <div class="bg-white shadow-lg rounded-lg w-56 border border-gray-200">
+                                                            @foreach($child->children as $grandchild)
+                                                                @php
+                                                                    $grandchildUrl = $grandchild->url ?? '#';
+                                                                    $grandchildIsActive = $isActiveUrl($grandchildUrl, $currentUrl);
+                                                                @endphp
+                                                                <a href="{{ $grandchildUrl }}" 
+                                                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-emerald-600 transition-colors {{ $grandchildIsActive ? 'bg-emerald-50 text-emerald-600 font-semibold' : '' }}">
+                                                                    {{ $grandchild->label }}
+                                                                </a>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                 </div>

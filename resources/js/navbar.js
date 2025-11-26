@@ -441,17 +441,81 @@ function initNestedSubmenu() {
     });
 }
 
+/**
+ * Initialize nested dropdown (level 2) hover functionality for navbar
+ * This ensures sub-submenu only appears when hovering the specific child item,
+ * not when level 1 dropdown appears
+ */
+function initNestedDropdown() {
+    const nestedDropdownParents = document.querySelectorAll('.nested-dropdown-parent');
+    
+    nestedDropdownParents.forEach((parent) => {
+        const nestedContainer = parent.querySelector('.nested-dropdown-container');
+        const triggerLink = parent.querySelector('.nested-dropdown-trigger');
+        
+        if (!nestedContainer) {
+            return;
+        }
+        
+        let hideTimeout;
+        let isHovering = false;
+        
+        // Show nested dropdown only when hovering the trigger link or parent div
+        const showNested = () => {
+            clearTimeout(hideTimeout);
+            isHovering = true;
+            nestedContainer.style.opacity = '1';
+            nestedContainer.style.visibility = 'visible';
+            nestedContainer.style.pointerEvents = 'auto';
+        };
+        
+        // Hide nested dropdown with delay
+        const hideNested = () => {
+            hideTimeout = setTimeout(() => {
+                // Check if mouse is still over parent or nested container
+                if (!parent.matches(':hover') && !nestedContainer.matches(':hover')) {
+                    isHovering = false;
+                    nestedContainer.style.opacity = '0';
+                    nestedContainer.style.visibility = 'hidden';
+                    nestedContainer.style.pointerEvents = 'none';
+                }
+            }, 150);
+        };
+        
+        // Show when hovering trigger link
+        if (triggerLink) {
+            triggerLink.addEventListener('mouseenter', showNested);
+            triggerLink.addEventListener('mouseleave', hideNested);
+        }
+        
+        // Show when hovering parent (for better UX)
+        parent.addEventListener('mouseenter', showNested);
+        parent.addEventListener('mouseleave', hideNested);
+        
+        // Keep visible when hovering nested container
+        nestedContainer.addEventListener('mouseenter', showNested);
+        nestedContainer.addEventListener('mouseleave', hideNested);
+    });
+}
+
 // Initialize nested submenu when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNestedSubmenu);
+    document.addEventListener('DOMContentLoaded', () => {
+        initNestedSubmenu();
+        initNestedDropdown();
+    });
 } else {
     initNestedSubmenu();
+    initNestedDropdown();
 }
 
 // Re-initialize if navbar is re-initialized
 const originalInitNavbar = initNavbar;
 initNavbar = function() {
     originalInitNavbar();
-    setTimeout(initNestedSubmenu, 100);
+    setTimeout(() => {
+        initNestedSubmenu();
+        initNestedDropdown();
+    }, 100);
 };
 
