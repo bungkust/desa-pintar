@@ -33,7 +33,24 @@ RUN if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || touch .env; fi
 
 # Install PHP dependencies first (before copying all files for better caching)
 # Using --no-scripts to avoid running artisan commands before dependencies are fully installed
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist
+# Try multiple strategies if first attempt fails
+RUN set -eux; \
+    composer --version; \
+    echo "Checking composer files..."; \
+    ls -la composer.* 2>/dev/null || echo "No composer files found"; \
+    if [ -f composer.lock ]; then \
+        echo "Installing from composer.lock..."; \
+        composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist 2>&1 || \
+        (echo "=== Install with lock failed, trying with --ignore-platform-reqs ===" && \
+         composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist --ignore-platform-reqs 2>&1 || \
+         (echo "=== All install attempts failed ===" && exit 1)); \
+    else \
+        echo "No composer.lock found, running composer update..."; \
+        composer update --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist 2>&1 || \
+        (echo "=== Update failed, trying with --ignore-platform-reqs ===" && \
+         composer update --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist --ignore-platform-reqs 2>&1 || \
+         (echo "=== All update attempts failed ===" && exit 1)); \
+    fi
 
 # Copy rest of application files
 COPY . .
