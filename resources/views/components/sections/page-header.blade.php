@@ -12,7 +12,7 @@
                 {{ $title }}
             </h1>
             @if($description)
-            <p class="text-base md:text-lg text-gray-600 max-w-3xl mx-auto mb-6">
+            <p class="text-base md:text-lg text-gray-600 max-w-5xl mx-auto mb-6">
                 {!! str($description)->sanitizeHtml() !!}
             </p>
             @endif

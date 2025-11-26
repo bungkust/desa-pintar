@@ -7,13 +7,12 @@
 @endphp
 
 @section('content')
-    <x-sections.page-header 
+    <x-layouts.page-layout
         title="Agenda Desa"
         description="Kegiatan dan acara terdekat di {{ $settings->site_name ?? 'Desa Donoharjo' }}"
-        gradient="from-blue-50 via-emerald-50 to-teal-50"
-    />
-
-    <x-sections.section spacing="py-12 md:py-16 lg:py-20">
+        page-header-gradient="from-blue-50 via-emerald-50 to-teal-50">
+        
+        <x-sections.section spacing="py-12 md:py-16 lg:py-20">
         <!-- Filters and View Toggle -->
         <div class="bg-white rounded-lg shadow p-4 md:p-6 mb-8 text-gray-900">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
@@ -58,7 +57,7 @@
                            name="search" 
                            value="{{ request('search') }}"
                            placeholder="Cari judul agenda..."
-                           class="border rounded-lg w-full px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                           class="border border-gray-300 rounded-lg w-full px-3 py-2 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
 
                 <!-- Category Filter -->
@@ -66,7 +65,7 @@
                     <label for="category" class="text-sm font-medium mb-1 block text-gray-700">Kategori</label>
                     <select id="category" 
                             name="category" 
-                            class="border rounded-lg w-full px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            class="border border-gray-300 rounded-lg w-full px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $key => $label)
                             <option value="{{ $key }}" {{ request('category') == $key ? 'selected' : '' }}>
@@ -83,7 +82,7 @@
                            id="date" 
                            name="date" 
                            value="{{ request('date') }}"
-                           class="border rounded-lg w-full px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                           class="border border-gray-300 rounded-lg w-full px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                 </div>
 
                 <!-- Submit Button -->
@@ -257,5 +256,6 @@
             <p class="text-gray-600 text-lg">Tidak ada agenda yang ditemukan.</p>
         </div>
         @endif
-    </x-sections.section>
+        </x-sections.section>
+    </x-layouts.page-layout>
 @endsection

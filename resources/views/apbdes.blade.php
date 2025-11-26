@@ -3,24 +3,28 @@
 @section('content')
     @if($year === null || $summary === null)
         <!-- Empty State -->
-        <x-sections.section>
-            @include('components.empty-state', [
-                'title' => 'Data APBDes Belum Tersedia',
-                'message' => empty($availableYears) ? 'Belum ada data APBDes yang tersedia saat ini.' : 'Data APBDes untuk tahun yang diminta belum tersedia.',
-                'action' => !empty($availableYears) ? '<a href="' . route('apbdes.show', $availableYears[0]) . '" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors">Lihat Data Tahun ' . $availableYears[0] . '</a>' : null,
-            ])
-        </x-sections.section>
+        <x-layouts.page-layout
+            title="APBDes"
+            description="Laporan realisasi anggaran desa"
+            page-header-gradient="from-blue-50 via-emerald-50 to-teal-50">
+            <x-sections.section>
+                @include('components.empty-state', [
+                    'title' => 'Data APBDes Belum Tersedia',
+                    'message' => empty($availableYears) ? 'Belum ada data APBDes yang tersedia saat ini.' : 'Data APBDes untuk tahun yang diminta belum tersedia.',
+                    'action' => !empty($availableYears) ? '<a href="' . route('apbdes.show', $availableYears[0]) . '" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors">Lihat Data Tahun ' . $availableYears[0] . '</a>' : null,
+                ])
+            </x-sections.section>
+        </x-layouts.page-layout>
     @else
-        <!-- Header Section -->
-        <x-sections.page-header 
+        <x-layouts.page-layout
             title="APBDes {{ $year }} - {{ $settings->site_name ?? 'Desa Donoharjo' }}"
             description="Laporan realisasi anggaran desa secara lengkap, sebagai bentuk pertanggungjawaban kepada masyarakat. <strong>Realisasi</strong> adalah dana yang benar-benar telah digunakan, <strong>Anggaran</strong> adalah rencana pengeluaran yang ditetapkan, dan <strong>Persentase</strong> menunjukkan seberapa besar realisasi dibandingkan dengan anggaran yang direncanakan."
-            gradient="from-blue-50 via-emerald-50 to-teal-50"
-        />
-        
-        @if(count($availableYears) > 1)
-        <section class="py-0 -mt-8">
-            <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            page-header-gradient="from-blue-50 via-emerald-50 to-teal-50"
+            :show-toolbar="count($availableYears) > 1"
+            :toolbar-negative-margin="true">
+            
+            @if(count($availableYears) > 1)
+            <x-slot name="toolbarContent">
                 <div class="text-center">
                     @include('components.selects.year-selector', [
                         'currentYear' => $year,
@@ -28,9 +32,8 @@
                         'routeName' => 'apbdes.show',
                     ])
                 </div>
-            </div>
-        </section>
-        @endif
+            </x-slot>
+            @endif
 
         <!-- Chart Data (hidden, for JavaScript) -->
         @if($chartData)
@@ -259,9 +262,10 @@
             <div class="text-center">
                 @include('components.buttons.back-button', [
                     'href' => '/#transparansi',
-                    'label' => '← Kembali ke Transparansi',
+                    'label' => 'Kembali ke Transparansi',
                 ])
             </div>
         </x-sections.section>
+        </x-layouts.page-layout>
     @endif
 @endsection

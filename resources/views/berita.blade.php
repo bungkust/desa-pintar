@@ -5,12 +5,11 @@
 @endphp
 
 @section('content')
-    <x-sections.page-header 
+    <x-layouts.page-layout
         title="Berita & Informasi"
         description="Berita terkini dan informasi terbaru dari {{ $settings->site_name ?? 'Desa Donoharjo' }}"
-        gradient="from-blue-50 via-emerald-50 to-teal-50"
-    />
-
+        page-header-gradient="from-blue-50 via-emerald-50 to-teal-50">
+    
     <x-sections.section spacing="py-12 md:py-16 lg:py-20">
         @if($posts->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
@@ -67,5 +66,6 @@
         </div>
         @endif
     </x-sections.section>
+    </x-layouts.page-layout>
 @endsection
 

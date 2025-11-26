@@ -68,6 +68,19 @@
         }
     }
     
+    // If complaint is done or rejected, mark all statuses up to current as completed
+    if (in_array($complaint->status, ['done', 'rejected'])) {
+        $statusOrder = ['backlog', 'verification', 'todo', 'in_progress', 'done', 'rejected'];
+        $currentStatusIndex = array_search($complaint->status, $statusOrder);
+        if ($currentStatusIndex !== false) {
+            for ($i = 0; $i <= $currentStatusIndex; $i++) {
+                if (!in_array($statusOrder[$i], $completedStatuses)) {
+                    $completedStatuses[] = $statusOrder[$i];
+                }
+            }
+        }
+    }
+    
     // Build full timeline showing all statuses in order (no duplicates)
     $timelineStatuses = [];
     $statusOrder = ['backlog', 'verification', 'todo', 'in_progress', 'done', 'rejected'];
@@ -92,12 +105,35 @@
         $isCurrent = $complaint->status === $status;
         $update = $statusUpdateMap[$status] ?? null;
         
+        // If status is current and final (done/rejected), it should be completed
+        if ($isCurrent && in_array($complaint->status, ['done', 'rejected'])) {
+            $isCompleted = true;
+        }
+        
+        // Get note - prefer update note, fallback to default notes
+        $note = null;
+        if ($update && $update->note) {
+            $note = $update->note;
+        } elseif ($status === 'backlog') {
+            $note = 'Pengaduan diterima dan sedang dalam antrian.';
+        } elseif ($isCompleted && !$update) {
+            // If completed but no update record, use default note based on status
+            $defaultNotes = [
+                'verification' => 'Pengaduan sedang diverifikasi oleh admin.',
+                'todo' => 'Pengaduan sedang dalam proses penanganan.',
+                'in_progress' => 'Pengaduan sedang dalam proses penanganan.',
+                'done' => 'Pengaduan telah selesai ditangani.',
+                'rejected' => 'Pengaduan ditolak.',
+            ];
+            $note = $defaultNotes[$status] ?? null;
+        }
+        
         $timelineStatuses[] = [
             'status' => $status,
             'completed' => $isCompleted,
             'isCurrent' => $isCurrent,
-            'date' => $isCompleted ? ($update ? $update->created_at : ($status === 'backlog' ? $complaint->created_at : null)) : null,
-            'note' => $update ? $update->note : ($status === 'backlog' ? 'Pengaduan diterima dan sedang dalam antrian.' : null),
+            'date' => $isCompleted ? ($update ? $update->created_at : ($status === 'backlog' ? $complaint->created_at : ($isCurrent ? $complaint->updated_at : null))) : null,
+            'note' => $note,
             'updatedBy' => $update && $update->updatedBy ? $update->updatedBy->name : null,
             'image' => $update ? $update->image : null,
         ];
@@ -110,47 +146,36 @@
 @endphp
 
 @section('content')
-<x-sections.page-header 
+<x-layouts.page-layout
     title="Lacak Pengaduan"
     description="Pantau status pengaduan Anda secara real-time"
-    gradient="from-blue-50 via-emerald-50 to-teal-50"
-/>
+    page-header-gradient="from-blue-50 via-emerald-50 to-teal-50"
+    :show-back-button="false">
 
 <x-sections.section spacing="py-12 md:py-16 lg:py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="space-y-6">
-            <!-- Back Button -->
-            <div>
-                @include('components.buttons.back-button', [
-                    'href' => route('complaints.index'),
-                    'label' => 'Kembali ke Halaman Pengaduan',
-                    'variant' => 'gray',
-                ])
-            </div>
-
-            <!-- Divider -->
-            <hr class="border-gray-200">
 
             <!-- 2️⃣ Premium Tracking Code Card -->
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl border-2 border-blue-500 p-6 shadow-lg" style="background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);">
+            <div class="bg-white rounded-xl border-2 border-gray-200 p-6 shadow-lg">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div class="flex-1">
-                        <p class="text-sm font-semibold text-white mb-2 uppercase tracking-wide" style="text-shadow: 0 1px 2px rgba(0,0,0,0.2);">Kode Tracking</p>
+                        <p class="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">Kode Tracking</p>
                         <div class="flex items-center gap-4 flex-wrap">
-                            <span class="text-3xl md:text-4xl font-bold text-white font-mono tracking-wider bg-white/25 px-4 py-2 rounded-lg border-2 border-white/40 backdrop-blur-sm" style="text-shadow: 0 2px 4px rgba(0,0,0,0.4); background-color: rgba(255,255,255,0.25);">
+                            <span class="text-xl md:text-2xl font-bold text-gray-900 font-mono tracking-wider bg-gray-50 px-4 py-2 rounded-lg border-2 border-gray-200">
                                 {{ $complaint->tracking_code }}
                             </span>
                             <button 
                                 id="copyTrackingCode"
-                                class="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
+                                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2"
                                 data-code="{{ $complaint->tracking_code }}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                 </svg>
                                 <span id="copyText">Salin</span>
                             </button>
                         </div>
-                        <p class="text-sm text-white mt-3 flex items-center gap-2" style="text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                        <p class="text-sm text-gray-600 mt-3 flex items-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
@@ -159,9 +184,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Divider -->
-            <hr class="border-gray-200">
 
             <!-- 4️⃣ Detail Pengaduan in Card -->
             <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
@@ -225,9 +247,8 @@
                             </div>
                         </div>
                         
-                        <!-- Lokasi & RT/RW -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-4 border-b border-gray-100">
-                            <!-- Lokasi -->
+                        <!-- Lokasi -->
+                        <div class="py-4 border-b border-gray-100">
                             <div class="flex items-start gap-3">
                                 <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -239,11 +260,11 @@
                                     <p class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Lokasi</p>
                                     <p class="text-base font-medium text-gray-900">{{ $complaint->location_text }}</p>
                                 </div>
-                    </div>
-                    
+                            </div>
+                            
                             <!-- RT/RW -->
-                    @if($complaint->rt || $complaint->rw)
-                            <div class="flex items-start gap-3">
+                            @if($complaint->rt || $complaint->rw)
+                            <div class="flex items-start gap-3 mt-4 pt-4 border-t border-gray-100">
                                 <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -260,7 +281,7 @@
                                         @if($complaint->rw)
                                             <span class="inline-flex items-center px-3 py-1.5 rounded-lg bg-indigo-100 text-indigo-800 text-sm font-semibold border border-indigo-200">
                                                 RW {{ $complaint->rw }}
-                            </span>
+                                            </span>
                                         @endif
                                     </div>
                                 </div>
@@ -301,9 +322,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Divider -->
-            <hr class="border-gray-200">
 
             <!-- 5️⃣ Improved Timeline with Visual Stepper -->
             <div class="bg-white rounded-xl border-2 border-gray-200 p-6 shadow-sm">
@@ -346,9 +364,19 @@
                                             {{ $allStatuses[$timelineItem['status']]['label'] ?? $statusLabels[$timelineItem['status']] ?? $timelineItem['status'] }}
                                     </span>
                                         @if($timelineItem['isCurrent'])
-                                            <span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full border border-yellow-200">
-                                                Sedang Berlangsung
-                                    </span>
+                                            @if($complaint->status === 'done')
+                                                <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full border border-emerald-200">
+                                                    Selesai
+                                                </span>
+                                            @elseif($complaint->status === 'rejected')
+                                                <span class="px-2.5 py-0.5 bg-red-100 text-red-800 text-xs font-semibold rounded-full border border-red-200">
+                                                    Ditolak
+                                                </span>
+                                            @else
+                                                <span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full border border-yellow-200">
+                                                    Sedang Berlangsung
+                                                </span>
+                                            @endif
                                         @endif
                                     </div>
                                     @if($timelineItem['date'])
@@ -379,9 +407,6 @@
                 </div>
             </div>
 
-            <!-- Divider -->
-            <hr class="border-gray-200">
-
             <!-- Comments (Admin only) -->
             @if($comments->isNotEmpty())
                 <div class="bg-white rounded-xl border-2 border-gray-200 p-6 shadow-sm">
@@ -403,21 +428,22 @@
                         @endforeach
                     </div>
                 </div>
-
-                <!-- Divider -->
-                <hr class="border-gray-200">
             @endif
 
-            <!-- 6️⃣ Bigger CTA Button -->
+            <!-- 6️⃣ Back Button -->
             <div class="pt-2">
-                <a href="{{ route('complaints.index') }}" 
-                   class="block w-full px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-center">
-                    Buat Pengaduan Baru
-                </a>
+                <div class="flex items-center justify-start pt-6 border-t">
+                    @include('components.buttons.back-button', [
+                        'href' => route('complaints.index'),
+                        'label' => 'Kembali',
+                        'variant' => 'outline',
+                    ])
+                </div>
             </div>
         </div>
     </div>
 </x-sections.section>
+</x-layouts.page-layout>
 
 <!-- 7️⃣ Footer Spacing -->
 <div class="mt-16"></div>

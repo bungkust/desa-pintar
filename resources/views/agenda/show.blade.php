@@ -5,14 +5,15 @@
 @endphp
 
 @section('content')
-    <x-sections.page-header 
+    <x-layouts.page-layout
         title="{{ $agenda->title }}"
         description="Detail agenda kegiatan desa"
-        gradient="from-blue-50 via-emerald-50 to-teal-50"
-    />
-
+        page-header-gradient="from-blue-50 via-emerald-50 to-teal-50"
+        :show-back-button="true"
+        :back-url="route('agenda.index')"
+        back-text="Kembali ke Daftar Agenda">
+    
     <x-sections.section spacing="py-12 md:py-16 lg:py-20">
-        <div class="max-w-4xl mx-auto">
             <div class="bg-white shadow rounded-xl p-6 md:p-8 text-gray-900">
                 <!-- Header Info -->
                 <div class="mb-6 pb-6 border-b">
@@ -151,16 +152,9 @@
                         Tambahkan ke Google Calendar
                     </a>
 
-                    <a href="{{ route('agenda.index') }}" 
-                       class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Kembali ke Daftar Agenda
-                    </a>
                 </div>
             </div>
-        </div>
     </x-sections.section>
+    </x-layouts.page-layout>
 @endsection
 

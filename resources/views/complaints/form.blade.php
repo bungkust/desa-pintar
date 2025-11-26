@@ -1,21 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<x-sections.page-header 
+<x-layouts.page-layout
     title="Form Pengaduan Masyarakat"
     description="Isi form berikut dengan lengkap dan benar"
-    gradient="from-blue-50 via-emerald-50 to-teal-50"
-/>
+    page-header-gradient="from-blue-50 via-emerald-50 to-teal-50"
+    :show-back-button="false">
 
 <x-sections.section spacing="py-12 md:py-16" background="bg-gray-50">
-    <div class="container mx-auto px-4 md:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto mb-6">
-            @include('components.buttons.back-button', [
-                'href' => route('complaints.index'),
-                'label' => 'Kembali ke Halaman Pengaduan',
-                'variant' => 'gray',
-            ])
-        </div>
+        <div class="max-w-3xl mx-auto">
         <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
             @if(session('success'))
                 <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800">
@@ -50,7 +43,7 @@
                 <input type="hidden" name="category" id="category-input" value="{{ old('category', request('category')) }}" required>
 
                 <!-- Fieldset 1: Data Pelapor -->
-                <fieldset class="mb-8 pb-8 border-b border-gray-200">
+                <fieldset class="mb-8 pb-8">
                     <legend class="text-xl font-bold text-gray-900 mb-6">Data Pelapor</legend>
                     
                     <div class="mb-4">
@@ -58,7 +51,7 @@
                             Nama <span class="text-gray-500 text-xs">(opsional, direkomendasikan)</span>
                         </label>
                         <input type="text" name="name" value="{{ old('name') }}" 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                placeholder="Masukkan nama Anda">
                     </div>
 
@@ -68,7 +61,7 @@
                             <span class="text-gray-500 text-xs">(wajib jika tidak anonim)</span>
                         </label>
                         <input type="text" name="phone" value="{{ old('phone') }}" 
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                placeholder="08xxxxxxxxxx"
                                id="phone-input">
                         <p class="mt-1 text-xs text-gray-500">Format: 08xxxxxxxxxx</p>
@@ -78,13 +71,13 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">RT</label>
                             <input type="text" name="rt" value="{{ old('rt') }}" 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="RT">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">RW</label>
                             <input type="text" name="rw" value="{{ old('rw') }}" 
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="RW">
                         </div>
                     </div>
@@ -92,7 +85,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Lengkap</label>
                         <textarea name="address" rows="2" 
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Alamat lengkap">{{ old('address') }}</textarea>
                     </div>
 
@@ -109,7 +102,7 @@
                 </fieldset>
 
                 <!-- Fieldset 2: Detail Pengaduan -->
-                <fieldset class="mb-8 pb-8 border-b border-gray-200">
+                <fieldset class="mb-8 pb-8">
                     <legend class="text-xl font-bold text-gray-900 mb-6">Detail Pengaduan</legend>
                     
                     <div class="mb-4">
@@ -117,7 +110,7 @@
                             Kategori <span class="text-red-500">*</span>
                         </label>
                         <select name="category" id="category-select" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">-- Pilih Kategori --</option>
                             @foreach($categories ?? [] as $key => $label)
                                 <option value="{{ $key }}" {{ old('category', request('category')) == $key ? 'selected' : '' }}>
@@ -132,7 +125,7 @@
                             Judul Pengaduan <span class="text-red-500">*</span>
                         </label>
                         <input type="text" name="title" value="{{ old('title') }}" required
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                placeholder="Contoh: Jalan rusak di RT 05">
                     </div>
 
@@ -141,14 +134,14 @@
                             Deskripsi <span class="text-red-500">*</span>
                         </label>
                         <textarea name="description" rows="5" required
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Jelaskan masalah atau keluhan Anda secara detail...">{{ old('description') }}</textarea>
                         <p class="mt-1 text-xs text-gray-500">Maksimal 5000 karakter</p>
                     </div>
                 </fieldset>
 
                 <!-- Fieldset 3: Lokasi -->
-                <fieldset class="mb-8 pb-8 border-b border-gray-200">
+                <fieldset class="mb-8 pb-8">
                     <legend class="text-xl font-bold text-gray-900 mb-6">Lokasi</legend>
                     
                     <div class="mb-4">
@@ -156,7 +149,7 @@
                             Lokasi Pengaduan <span class="text-red-500">*</span>
                         </label>
                         <textarea name="location_text" rows="2" required
-                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                  class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Contoh: Jl. Raya Donoharjo, RT 05, RW 02">{{ old('location_text') }}</textarea>
                     </div>
 
@@ -164,13 +157,13 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Latitude (opsional)</label>
                             <input type="number" name="location_lat" value="{{ old('location_lat') }}" step="0.00000001"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="-7.xxxxx">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Longitude (opsional)</label>
                             <input type="number" name="location_lng" value="{{ old('location_lng') }}" step="0.00000001"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="110.xxxxx">
                         </div>
                     </div>
@@ -207,8 +200,9 @@
                 </div>
             </form>
         </div>
-    </div>
+        </div>
 </x-sections.section>
+</x-layouts.page-layout>
 
 @push('scripts')
 <script src="{{ asset('js/complaint-form.js') }}"></script>

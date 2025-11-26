@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Page Header -->
-    <x-sections.page-header 
+    <x-layouts.page-layout
         title="Statistik Lengkap Desa {{ $settings->site_name ?? 'Donoharjo' }}"
         description="Data statistik lengkap dengan tren historis dan perbandingan tahun ke tahun untuk memberikan gambaran komprehensif tentang perkembangan desa."
-        gradient="from-blue-50 via-emerald-50 to-teal-50"
-    />
-
+        page-header-gradient="from-blue-50 via-emerald-50 to-teal-50">
+    
     @php
         // Icon mapping untuk statistik (Heroicons v2 outline)
         $iconMap = [
@@ -139,6 +137,7 @@
         </div>
     </x-sections.section>
     @endif
+    </x-layouts.page-layout>
 @endsection
 
 @push('scripts')
