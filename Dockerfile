@@ -33,9 +33,7 @@ RUN if [ ! -f .env ]; then cp .env.example .env 2>/dev/null || touch .env; fi
 
 # Install PHP dependencies first (before copying all files for better caching)
 # Using --no-scripts to avoid running artisan commands before dependencies are fully installed
-RUN composer --version && \
-    composer validate --no-check-publish && \
-    composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --prefer-dist
 
 # Copy rest of application files
 COPY . .
