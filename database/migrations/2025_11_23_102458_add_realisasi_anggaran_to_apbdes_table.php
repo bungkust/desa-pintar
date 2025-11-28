@@ -36,6 +36,26 @@ return new class extends Migration
             // Make amount nullable by recreating table (SQLite limitation)
             // For simplicity, we'll keep amount as is and just add new columns
             // The enum constraint is already handled by Laravel validation
+        } elseif ($driver === 'pgsql') {
+            // PostgreSQL: Add columns and modify constraints
+            Schema::table('apbdes', function (Blueprint $table) use ($hasRealisasi, $hasAnggaran) {
+                // Make amount nullable for backward compatibility
+                if (Schema::hasColumn('apbdes', 'amount')) {
+                    $table->bigInteger('amount')->nullable()->change();
+                }
+                
+                // Add new columns (PostgreSQL doesn't support 'after', so just add them)
+                if (!$hasRealisasi) {
+                    $table->bigInteger('realisasi')->default(0);
+                }
+                if (!$hasAnggaran) {
+                    $table->bigInteger('anggaran')->default(0);
+                }
+            });
+
+            // PostgreSQL uses CHECK constraint for enum-like behavior
+            // The type column is already defined as enum in the original migration
+            // We don't need to modify it for PostgreSQL as Laravel handles it
         } else {
             // MySQL/MariaDB: Full support for MODIFY
             Schema::table('apbdes', function (Blueprint $table) use ($hasRealisasi, $hasAnggaran) {
@@ -73,13 +93,26 @@ return new class extends Migration
             $table->dropColumn(['realisasi', 'anggaran']);
         });
 
-        if ($driver !== 'sqlite') {
+        if ($driver === 'pgsql') {
+            // PostgreSQL: Revert amount to NOT NULL
+            try {
+                Schema::table('apbdes', function (Blueprint $table) {
+                    $table->bigInteger('amount')->nullable(false)->change();
+                });
+            } catch (\Exception $e) {
+                // Ignore if column doesn't exist or already NOT NULL
+            }
+        } elseif ($driver !== 'sqlite') {
             // MySQL/MariaDB: Revert enum back to original
             Schema::table('apbdes', function (Blueprint $table) {
                 $table->bigInteger('amount')->nullable(false)->change();
             });
             
-            DB::statement("ALTER TABLE apbdes MODIFY COLUMN type ENUM('pendapatan', 'belanja') NOT NULL");
+            try {
+                DB::statement("ALTER TABLE apbdes MODIFY COLUMN type ENUM('pendapatan', 'belanja') NOT NULL");
+            } catch (\Exception $e) {
+                // Ignore if already modified or not supported
+            }
         }
     }
 };

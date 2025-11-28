@@ -1,0 +1,726 @@
+{
+    "migrations": [
+        {
+            "id": 1,
+            "migration": "2025_01_22_100000_create_hero_slides_table",
+            "batch": 1
+        },
+        {
+            "id": 2,
+            "migration": "2025_01_22_100001_create_quick_links_table",
+            "batch": 1
+        },
+        {
+            "id": 3,
+            "migration": "2025_01_22_100002_create_statistics_table",
+            "batch": 1
+        },
+        {
+            "id": 4,
+            "migration": "2025_01_22_100003_create_posts_table",
+            "batch": 1
+        },
+        {
+            "id": 5,
+            "migration": "2025_01_22_100004_create_officials_table",
+            "batch": 1
+        },
+        {
+            "id": 6,
+            "migration": "2025_01_22_100005_create_apbdes_table",
+            "batch": 1
+        },
+        {
+            "id": 7,
+            "migration": "2025_11_22_140421_create_settings_table",
+            "batch": 1
+        },
+        {
+            "id": 8,
+            "migration": "2025_11_22_140621_create_sessions_table",
+            "batch": 1
+        },
+        {
+            "id": 9,
+            "migration": "2025_11_23_093040_create_users_table",
+            "batch": 1
+        },
+        {
+            "id": 10,
+            "migration": "2025_11_23_093207_create_cache_table",
+            "batch": 1
+        },
+        {
+            "id": 11,
+            "migration": "2025_11_23_093654_create_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 12,
+            "migration": "2025_11_23_094048_add_parent_id_to_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 13,
+            "migration": "2025_11_23_102458_add_realisasi_anggaran_to_apbdes_table",
+            "batch": 1
+        },
+        {
+            "id": 14,
+            "migration": "2025_11_23_105433_add_category_to_statistics_table",
+            "batch": 1
+        },
+        {
+            "id": 15,
+            "migration": "2025_11_23_111524_create_statistic_details_table",
+            "batch": 1
+        },
+        {
+            "id": 16,
+            "migration": "2025_11_23_134049_add_greeting_to_officials_table",
+            "batch": 1
+        },
+        {
+            "id": 17,
+            "migration": "2025_11_23_164403_add_route_fields_to_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 18,
+            "migration": "2025_11_23_165246_make_url_nullable_in_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 19,
+            "migration": "2025_11_23_172733_create_agendas_table",
+            "batch": 1
+        },
+        {
+            "id": 20,
+            "migration": "2025_11_24_075508_add_role_to_users_table",
+            "batch": 1
+        },
+        {
+            "id": 21,
+            "migration": "2025_11_24_075516_create_complaints_table",
+            "batch": 1
+        },
+        {
+            "id": 22,
+            "migration": "2025_11_24_075517_create_audit_logs_table",
+            "batch": 1
+        },
+        {
+            "id": 23,
+            "migration": "2025_11_24_075517_create_complaint_comments_table",
+            "batch": 1
+        },
+        {
+            "id": 24,
+            "migration": "2025_11_24_075517_create_complaint_updates_table",
+            "batch": 1
+        },
+        {
+            "id": 25,
+            "migration": "2025_11_24_170215_create_activity_logs_table",
+            "batch": 1
+        },
+        {
+            "id": 26,
+            "migration": "2025_11_24_170311_migrate_complaint_updates_and_audit_logs_to_activity_logs",
+            "batch": 1
+        }
+    ],
+    "hero_slides": [
+        {
+            "id": 1,
+            "title": "Donoharjo Asri & Berbudaya",
+            "subtitle": "Mewujudkan masyarakat yang sejahtera dan mandiri.",
+            "image": "https:\/\/via.placeholder.com\/1920x1080?text=Donoharjo+Asri",
+            "is_active": 1,
+            "order": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 2,
+            "title": "Pelayanan Digital",
+            "subtitle": "Urus surat lebih mudah dan transparan.",
+            "image": "https:\/\/via.placeholder.com\/1920x1080?text=Pelayanan+Digital",
+            "is_active": 1,
+            "order": 2,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        }
+    ],
+    "quick_links": [
+        {
+            "id": 1,
+            "label": "Layanan Surat",
+            "icon_class": "heroicon-o-document-text",
+            "url": "#",
+            "color": "#3B82F6",
+            "order": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 2,
+            "label": "Produk Hukum",
+            "icon_class": "heroicon-o-scale",
+            "url": "#",
+            "color": "#EF4444",
+            "order": 2,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 3,
+            "label": "Potensi Desa",
+            "icon_class": "heroicon-o-shopping-bag",
+            "url": "#",
+            "color": "#10B981",
+            "order": 3,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 4,
+            "label": "Pengaduan",
+            "icon_class": "heroicon-o-chat-bubble-left",
+            "url": "#",
+            "color": "#F59E0B",
+            "order": 4,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        }
+    ],
+    "statistics": [
+        {
+            "id": 1,
+            "label": "Penduduk",
+            "value": "13.450",
+            "icon": "heroicon-o-users",
+            "order": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "category": "demografi"
+        },
+        {
+            "id": 2,
+            "label": "Kepala Keluarga",
+            "value": "4.200",
+            "icon": "heroicon-o-home",
+            "order": 2,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "category": "demografi"
+        },
+        {
+            "id": 3,
+            "label": "Luas Wilayah",
+            "value": "560 Ha",
+            "icon": "heroicon-o-map",
+            "order": 3,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "category": "geografis"
+        }
+    ],
+    "posts": [
+        {
+            "id": 1,
+            "title": "Maklumat Pelayanan Desa Donoharjo",
+            "slug": "maklumat-pelayanan",
+            "thumbnail": null,
+            "content": "<h2>Maklumat Pelayanan Desa Donoharjo<\/h2>\n        <p>Dalam rangka meningkatkan kualitas pelayanan kepada masyarakat, Pemerintah Desa Donoharjo menyampaikan maklumat pelayanan sebagai berikut:<\/p>\n        \n        <h3>1. Jam Pelayanan<\/h3>\n        <ul>\n            <li>Senin - Kamis: 08:00 - 14:00 WIB<\/li>\n            <li>Jumat: 08:00 - 11:30 WIB<\/li>\n            <li>Sabtu: 08:00 - 12:00 WIB<\/li>\n        <\/ul>\n        \n        <h3>2. Lokasi Pelayanan<\/h3>\n        <p>Kantor Desa Donoharjo<br>\n        Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581<\/p>\n        \n        <h3>3. Jenis Pelayanan<\/h3>\n        <ul>\n            <li>Pengurusan Surat Keterangan<\/li>\n            <li>Pengurusan Akta Kelahiran<\/li>\n            <li>Pengurusan Akta Kematian<\/li>\n            <li>Pengantar Nikah<\/li>\n            <li>Surat Keterangan Tidak Mampu (SKTM)<\/li>\n            <li>Pelayanan Ketenagakerjaan<\/li>\n        <\/ul>\n        \n        <h3>4. Persyaratan<\/h3>\n        <p>Setiap jenis pelayanan memiliki persyaratan yang berbeda. Silakan lihat detail persyaratan pada menu masing-masing layanan.<\/p>\n        \n        <h3>5. Kontak<\/h3>\n        <p>Untuk informasi lebih lanjut, silakan hubungi:<br>\n        WhatsApp: 0812-2766-6999<br>\n        Email: info@donoharjo.desa.id<\/p>\n        \n        <p><strong>Kami berkomitmen memberikan pelayanan terbaik untuk masyarakat Desa Donoharjo.<\/strong><\/p>",
+            "published_at": "2025-10-29 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 2,
+            "title": "Persyaratan Pengajuan Akta Kelahiran",
+            "slug": "persyaratan-pengajuan-akta-kelahiran",
+            "thumbnail": null,
+            "content": "<h2>Persyaratan Pengajuan Akta Kelahiran<\/h2>\n        <p>Berikut adalah persyaratan yang harus dipenuhi untuk mengajukan Akta Kelahiran di Desa Donoharjo:<\/p>\n        \n        <h3>Persyaratan Umum<\/h3>\n        <ol>\n            <li>Surat Keterangan Kelahiran dari Bidan\/Dokter\/Rumah Sakit<\/li>\n            <li>Kartu Keluarga (KK) asli dan fotokopi<\/li>\n            <li>KTP kedua orang tua (asli dan fotokopi)<\/li>\n            <li>Surat Nikah orang tua (asli dan fotokopi)<\/li>\n            <li>Surat Keterangan dari RT\/RW setempat<\/li>\n        <\/ol>\n        \n        <h3>Khusus untuk Kelahiran di Luar Rumah Sakit<\/h3>\n        <ul>\n            <li>Surat Keterangan dari Bidan\/Dukun yang menolong persalinan<\/li>\n            <li>Surat Keterangan dari 2 (dua) orang saksi<\/li>\n            <li>Surat Keterangan dari RT\/RW<\/li>\n        <\/ul>\n        \n        <h3>Waktu Pengurusan<\/h3>\n        <p>Akta Kelahiran dapat diurus maksimal 60 hari setelah kelahiran. Jika melebihi batas waktu, akan dikenakan biaya tambahan.<\/p>\n        \n        <h3>Biaya<\/h3>\n        <ul>\n            <li>Pengurusan dalam batas waktu: <strong>GRATIS<\/strong><\/li>\n            <li>Pengurusan melebihi batas waktu: Sesuai ketentuan yang berlaku<\/li>\n        <\/ul>\n        \n        <h3>Lokasi Pengurusan<\/h3>\n        <p>Kantor Desa Donoharjo<br>\n        Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581<\/p>\n        \n        <p><strong>Catatan:<\/strong> Semua dokumen harus dalam kondisi lengkap dan valid. Pastikan fotokopi dokumen jelas dan dapat dibaca.<\/p>",
+            "published_at": "2025-11-03 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 3,
+            "title": "Persyaratan Pengajuan Akta Kematian",
+            "slug": "persyaratan-pengajuan-akta-kematian",
+            "thumbnail": null,
+            "content": "<h2>Persyaratan Pengajuan Akta Kematian<\/h2>\n        <p>Berikut adalah persyaratan yang harus dipenuhi untuk mengajukan Akta Kematian di Desa Donoharjo:<\/p>\n        \n        <h3>Persyaratan yang Diperlukan<\/h3>\n        <ol>\n            <li>Surat Keterangan Kematian dari Rumah Sakit\/Dokter\/Bidan (jika meninggal di rumah sakit)<\/li>\n            <li>Surat Keterangan Kematian dari RT\/RW setempat<\/li>\n            <li>Kartu Keluarga (KK) asli dan fotokopi<\/li>\n            <li>KTP almarhum\/almarhumah (asli dan fotokopi)<\/li>\n            <li>KTP pelapor (asli dan fotokopi)<\/li>\n            <li>Surat Keterangan dari 2 (dua) orang saksi (jika diperlukan)<\/li>\n        <\/ol>\n        \n        <h3>Khusus untuk Kematian di Luar Rumah Sakit<\/h3>\n        <ul>\n            <li>Surat Keterangan dari Dokter\/Bidan yang memeriksa<\/li>\n            <li>Surat Keterangan dari RT\/RW<\/li>\n            <li>Surat Keterangan dari 2 (dua) orang saksi<\/li>\n        <\/ul>\n        \n        <h3>Waktu Pengurusan<\/h3>\n        <p>Akta Kematian sebaiknya diurus segera setelah kematian terjadi, maksimal 30 hari setelah kematian.<\/p>\n        \n        <h3>Biaya<\/h3>\n        <p>Pengurusan Akta Kematian di Desa Donoharjo adalah <strong>GRATIS<\/strong>.<\/p>\n        \n        <h3>Lokasi Pengurusan<\/h3>\n        <p>Kantor Desa Donoharjo<br>\n        Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581<\/p>\n        \n        <p><strong>Catatan:<\/strong> Pelapor harus merupakan keluarga dekat atau pihak yang mengetahui peristiwa kematian. Semua dokumen harus dalam kondisi lengkap dan valid.<\/p>",
+            "published_at": "2025-11-08 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 4,
+            "title": "Persyaratan Pengantar Nikah",
+            "slug": "persyaratan-pengantar-nikah",
+            "thumbnail": null,
+            "content": "<h2>Persyaratan Pengantar Nikah<\/h2>\n        <p>Berikut adalah persyaratan yang harus dipenuhi untuk mengajukan Surat Pengantar Nikah di Desa Donoharjo:<\/p>\n        \n        <h3>Persyaratan untuk Calon Pengantin Pria<\/h3>\n        <ol>\n            <li>KTP asli dan fotokopi<\/li>\n            <li>Kartu Keluarga (KK) asli dan fotokopi<\/li>\n            <li>Akta Kelahiran (asli dan fotokopi)<\/li>\n            <li>Surat Keterangan Belum Menikah dari RT\/RW<\/li>\n            <li>Pas foto 3x4 (2 lembar, background merah)<\/li>\n            <li>Surat Keterangan dari tempat kerja (jika bekerja)<\/li>\n        <\/ol>\n        \n        <h3>Persyaratan untuk Calon Pengantin Wanita<\/h3>\n        <ol>\n            <li>KTP asli dan fotokopi<\/li>\n            <li>Kartu Keluarga (KK) asli dan fotokopi<\/li>\n            <li>Akta Kelahiran (asli dan fotokopi)<\/li>\n            <li>Surat Keterangan Belum Menikah dari RT\/RW<\/li>\n            <li>Pas foto 3x4 (2 lembar, background merah)<\/li>\n            <li>Surat Keterangan dari tempat kerja (jika bekerja)<\/li>\n        <\/ol>\n        \n        <h3>Persyaratan Khusus<\/h3>\n        <ul>\n            <li>Jika salah satu atau kedua calon pengantin pernah menikah, wajib melampirkan Akta Cerai atau Akta Kematian pasangan<\/li>\n            <li>Jika calon pengantin berusia di bawah 21 tahun, wajib melampirkan izin dari orang tua\/wali<\/li>\n            <li>Surat Keterangan dari RT\/RW yang menyatakan bahwa calon pengantin berdomisili di Desa Donoharjo<\/li>\n        <\/ul>\n        \n        <h3>Waktu Pengurusan<\/h3>\n        <p>Surat Pengantar Nikah dapat diurus pada hari kerja selama jam pelayanan. Proses pengurusan biasanya memakan waktu 1-2 hari kerja.<\/p>\n        \n        <h3>Biaya<\/h3>\n        <p>Pengurusan Surat Pengantar Nikah di Desa Donoharjo adalah <strong>GRATIS<\/strong>.<\/p>\n        \n        <h3>Lokasi Pengurusan<\/h3>\n        <p>Kantor Desa Donoharjo<br>\n        Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581<\/p>\n        \n        <p><strong>Catatan:<\/strong> Kedua calon pengantin harus hadir saat pengajuan. Pastikan semua dokumen lengkap dan valid sebelum datang ke kantor desa.<\/p>",
+            "published_at": "2025-11-13 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 5,
+            "title": "Persyaratan Pelayanan Surat Keterangan Tidak Mampu (SKTM)",
+            "slug": "persyaratan-pelayanan-surat-keterangan-tidak-mampu",
+            "thumbnail": null,
+            "content": "<h2>Persyaratan Pelayanan Surat Keterangan Tidak Mampu (SKTM)<\/h2>\n        <p>Berikut adalah persyaratan yang harus dipenuhi untuk mengajukan Surat Keterangan Tidak Mampu (SKTM) di Desa Donoharjo:<\/p>\n        \n        <h3>Persyaratan yang Diperlukan<\/h3>\n        <ol>\n            <li>KTP pemohon (asli dan fotokopi)<\/li>\n            <li>Kartu Keluarga (KK) asli dan fotokopi<\/li>\n            <li>Surat Keterangan dari RT\/RW yang menyatakan kondisi ekonomi keluarga<\/li>\n            <li>Surat Keterangan Penghasilan dari tempat kerja (jika bekerja)<\/li>\n            <li>Surat Keterangan Tidak Bekerja dari RT\/RW (jika tidak bekerja)<\/li>\n            <li>Fotokopi rekening listrik\/PDAM (3 bulan terakhir)<\/li>\n            <li>Fotokopi tagihan telepon\/internet (jika ada)<\/li>\n        <\/ol>\n        \n        <h3>Kriteria Penerima SKTM<\/h3>\n        <ul>\n            <li>Keluarga dengan penghasilan di bawah Upah Minimum Regional (UMR)<\/li>\n            <li>Keluarga yang tidak memiliki pekerjaan tetap<\/li>\n            <li>Keluarga dengan anggota yang mengalami sakit kronis atau disabilitas<\/li>\n            <li>Keluarga yang mengalami bencana atau musibah<\/li>\n            <li>Lansia yang tidak memiliki sumber penghasilan<\/li>\n        <\/ul>\n        \n        <h3>Kegunaan SKTM<\/h3>\n        <p>SKTM dapat digunakan untuk:<\/p>\n        <ul>\n            <li>Mendaftar program bantuan sosial<\/li>\n            <li>Mendapatkan keringanan biaya pendidikan<\/li>\n            <li>Mendapatkan keringanan biaya kesehatan<\/li>\n            <li>Mengajukan bantuan lainnya dari pemerintah<\/li>\n        <\/ul>\n        \n        <h3>Waktu Pengurusan<\/h3>\n        <p>SKTM dapat diurus pada hari kerja selama jam pelayanan. Proses pengurusan biasanya memakan waktu 3-5 hari kerja setelah dokumen lengkap.<\/p>\n        \n        <h3>Biaya<\/h3>\n        <p>Pengurusan SKTM di Desa Donoharjo adalah <strong>GRATIS<\/strong>.<\/p>\n        \n        <h3>Lokasi Pengurusan<\/h3>\n        <p>Kantor Desa Donoharjo<br>\n        Jl. Parasamya, Donoharjo, Ngaglik, Sleman, DIY 55581<\/p>\n        \n        <p><strong>Catatan:<\/strong> SKTM berlaku selama 6 (enam) bulan sejak tanggal diterbitkan. Setelah itu, pemohon harus mengajukan perpanjangan jika masih memerlukan.<\/p>",
+            "published_at": "2025-11-18 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 6,
+            "title": "Hasil Survey Kepuasan Masyarakat (IKM)",
+            "slug": "hasil-survey-kepuasan-masyarakat",
+            "thumbnail": null,
+            "content": "<h2>Hasil Survey Kepuasan Masyarakat (IKM) Desa Donoharjo<\/h2>\n        <p>Berikut adalah hasil Survey Indeks Kepuasan Masyarakat (IKM) yang dilaksanakan di Desa Donoharjo pada periode 2024:<\/p>\n        \n        <h3>Rangkuman Hasil Survey<\/h3>\n        <p>Survey IKM dilaksanakan dengan melibatkan 250 responden yang terdiri dari berbagai kalangan masyarakat Desa Donoharjo.<\/p>\n        \n        <h3>Aspek yang Dinilai<\/h3>\n        <ol>\n            <li><strong>Prosedur Pelayanan<\/strong>: 85% responden menyatakan puas<\/li>\n            <li><strong>Persyaratan<\/strong>: 82% responden menyatakan persyaratan sudah jelas<\/li>\n            <li><strong>Kejelasan Informasi<\/strong>: 88% responden menyatakan informasi mudah dipahami<\/li>\n            <li><strong>Kesopanan dan Keramahan<\/strong>: 90% responden menyatakan petugas ramah<\/li>\n            <li><strong>Keadilan Mendapatkan Pelayanan<\/strong>: 87% responden menyatakan adil<\/li>\n            <li><strong>Kedisiplinan Petugas<\/strong>: 89% responden menyatakan petugas disiplin<\/li>\n            <li><strong>Kecepatan Pelayanan<\/strong>: 83% responden menyatakan pelayanan cepat<\/li>\n            <li><strong>Kepastian Biaya<\/strong>: 91% responden menyatakan biaya jelas<\/li>\n            <li><strong>Kepastian Jadwal<\/strong>: 86% responden menyatakan jadwal jelas<\/li>\n        <\/ol>\n        \n        <h3>Nilai IKM Keseluruhan<\/h3>\n        <p><strong>Nilai IKM: 86,5<\/strong><\/p>\n        <p>Berdasarkan hasil survey, Indeks Kepuasan Masyarakat (IKM) Desa Donoharjo mencapai nilai <strong>86,5<\/strong> dari skala 100, yang menunjukkan tingkat kepuasan masyarakat yang <strong>sangat baik<\/strong>.<\/p>\n        \n        <h3>Rekomendasi Perbaikan<\/h3>\n        <ul>\n            <li>Meningkatkan kecepatan pelayanan dengan menambah jumlah petugas<\/li>\n            <li>Memperjelas informasi persyaratan melalui media sosial dan website<\/li>\n            <li>Meningkatkan sistem antrian untuk mengurangi waktu tunggu<\/li>\n            <li>Melakukan pelatihan berkala untuk petugas pelayanan<\/li>\n        <\/ul>\n        \n        <h3>Komitmen Pemerintah Desa<\/h3>\n        <p>Pemerintah Desa Donoharjo berkomitmen untuk terus meningkatkan kualitas pelayanan berdasarkan hasil survey ini. Kami akan terus berinovasi dan memperbaiki sistem pelayanan untuk memberikan yang terbaik bagi masyarakat.<\/p>\n        \n        <p><strong>Terima kasih atas partisipasi masyarakat dalam survey ini. Masukan dan saran dari masyarakat sangat berarti bagi kami untuk terus berkembang.<\/strong><\/p>",
+            "published_at": "2025-11-23 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 7,
+            "title": "Hasil Survey Indeks Persepsi Anti Korupsi (SPAK)",
+            "slug": "hasil-survey-indeks-persepsi-anti-korupsi",
+            "thumbnail": null,
+            "content": "<h2>Hasil Survey Indeks Persepsi Anti Korupsi (SPAK) Desa Donoharjo<\/h2>\n        <p>Berikut adalah hasil Survey Persepsi Anti Korupsi (SPAK) yang dilaksanakan di Desa Donoharjo pada periode 2024:<\/p>\n        \n        <h3>Rangkuman Hasil Survey<\/h3>\n        <p>Survey SPAK dilaksanakan dengan melibatkan 200 responden yang terdiri dari berbagai kalangan masyarakat Desa Donoharjo, termasuk tokoh masyarakat, pengusaha, dan warga biasa.<\/p>\n        \n        <h3>Aspek yang Dinilai<\/h3>\n        <ol>\n            <li><strong>Transparansi Informasi<\/strong>: 88% responden menyatakan informasi transparan<\/li>\n            <li><strong>Akuntabilitas Pengelolaan Keuangan<\/strong>: 85% responden menyatakan akuntabel<\/li>\n            <li><strong>Partisipasi Masyarakat<\/strong>: 82% responden menyatakan partisipasi baik<\/li>\n            <li><strong>Keterbukaan Proses Pengadaan<\/strong>: 84% responden menyatakan proses terbuka<\/li>\n            <li><strong>Pencegahan Konflik Kepentingan<\/strong>: 87% responden menyatakan tidak ada konflik<\/li>\n            <li><strong>Penanganan Pengaduan<\/strong>: 83% responden menyatakan pengaduan ditangani dengan baik<\/li>\n            <li><strong>Integritas Aparatur<\/strong>: 89% responden menyatakan aparatur berintegritas<\/li>\n        <\/ol>\n        \n        <h3>Nilai SPAK Keseluruhan<\/h3>\n        <p><strong>Nilai SPAK: 85,4<\/strong><\/p>\n        <p>Berdasarkan hasil survey, Indeks Persepsi Anti Korupsi (SPAK) Desa Donoharjo mencapai nilai <strong>85,4<\/strong> dari skala 100, yang menunjukkan tingkat persepsi anti korupsi yang <strong>sangat baik<\/strong>.<\/p>\n        \n        <h3>Indikator Kunci<\/h3>\n        <ul>\n            <li><strong>Transparansi<\/strong>: Pemerintah Desa Donoharjo telah mempublikasikan APBDes secara rutin melalui website dan papan informasi<\/li>\n            <li><strong>Akuntabilitas<\/strong>: Laporan keuangan desa dapat diakses oleh masyarakat<\/li>\n            <li><strong>Partisipasi<\/strong>: Masyarakat dilibatkan dalam perencanaan pembangunan melalui musyawarah desa<\/li>\n            <li><strong>Pengawasan<\/strong>: Terdapat mekanisme pengawasan yang melibatkan BPD dan masyarakat<\/li>\n        <\/ul>\n        \n        <h3>Rekomendasi Perbaikan<\/h3>\n        <ul>\n            <li>Meningkatkan sosialisasi program anti korupsi kepada masyarakat<\/li>\n            <li>Memperkuat sistem pengawasan internal<\/li>\n            <li>Meningkatkan partisipasi masyarakat dalam pengawasan<\/li>\n            <li>Melakukan pelatihan anti korupsi untuk aparatur desa<\/li>\n        <\/ul>\n        \n        <h3>Komitmen Pemerintah Desa<\/h3>\n        <p>Pemerintah Desa Donoharjo berkomitmen untuk terus meningkatkan tata kelola pemerintahan yang bersih, transparan, dan akuntabel. Kami akan terus berupaya mencegah praktik korupsi dan meningkatkan integritas aparatur desa.<\/p>\n        \n        <p><strong>Kami mengucapkan terima kasih kepada seluruh masyarakat yang telah berpartisipasi dalam survey ini. Komitmen kami adalah memberikan pelayanan yang bersih dan bebas dari korupsi.<\/strong><\/p>",
+            "published_at": "2025-11-25 09:27:48",
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        }
+    ],
+    "officials": [
+        {
+            "id": 1,
+            "name": "Hadi Rintoko",
+            "position": "Lurah",
+            "photo": null,
+            "order": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "greeting": null
+        },
+        {
+            "id": 2,
+            "name": "Anang Patri",
+            "position": "Carik",
+            "photo": null,
+            "order": 2,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "greeting": null
+        },
+        {
+            "id": 3,
+            "name": "Dani Prasetyo",
+            "position": "Kamituwa",
+            "photo": null,
+            "order": 3,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "greeting": null
+        }
+    ],
+    "apbdes": [
+        {
+            "id": 1,
+            "year": 2025,
+            "type": "pendapatan",
+            "category": "Dana Desa",
+            "amount": 1200000000,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "realisasi": 0,
+            "anggaran": 0
+        },
+        {
+            "id": 2,
+            "year": 2025,
+            "type": "pendapatan",
+            "category": "PAD",
+            "amount": 150000000,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "realisasi": 0,
+            "anggaran": 0
+        },
+        {
+            "id": 3,
+            "year": 2025,
+            "type": "belanja",
+            "category": "Pembangunan",
+            "amount": 800000000,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "realisasi": 0,
+            "anggaran": 0
+        },
+        {
+            "id": 4,
+            "year": 2025,
+            "type": "belanja",
+            "category": "Pemberdayaan",
+            "amount": 400000000,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "realisasi": 0,
+            "anggaran": 0
+        }
+    ],
+    "settings": [],
+    "sessions": [],
+    "users": [],
+    "cache": [],
+    "cache_locks": [],
+    "statistic_details": [
+        {
+            "id": 1,
+            "statistic_id": 1,
+            "year": 2020,
+            "value": "12.850",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 2,
+            "statistic_id": 1,
+            "year": 2021,
+            "value": "13.050",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 3,
+            "statistic_id": 1,
+            "year": 2022,
+            "value": "13.200",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 4,
+            "statistic_id": 1,
+            "year": 2023,
+            "value": "13.350",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 5,
+            "statistic_id": 1,
+            "year": 2024,
+            "value": "13.400",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 6,
+            "statistic_id": 1,
+            "year": 2025,
+            "value": "13.450",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 7,
+            "statistic_id": 2,
+            "year": 2020,
+            "value": "4.000",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 8,
+            "statistic_id": 2,
+            "year": 2021,
+            "value": "4.050",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 9,
+            "statistic_id": 2,
+            "year": 2022,
+            "value": "4.100",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 10,
+            "statistic_id": 2,
+            "year": 2023,
+            "value": "4.150",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 11,
+            "statistic_id": 2,
+            "year": 2024,
+            "value": "4.180",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 12,
+            "statistic_id": 2,
+            "year": 2025,
+            "value": "4.200",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 13,
+            "statistic_id": 3,
+            "year": 2020,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 14,
+            "statistic_id": 3,
+            "year": 2021,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 15,
+            "statistic_id": 3,
+            "year": 2022,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 16,
+            "statistic_id": 3,
+            "year": 2023,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 17,
+            "statistic_id": 3,
+            "year": 2024,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        },
+        {
+            "id": 18,
+            "statistic_id": 3,
+            "year": 2025,
+            "value": "560 Ha",
+            "additional_data": null,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48"
+        }
+    ],
+    "menu_items": [
+        {
+            "id": 1,
+            "label": "Pelayanan",
+            "url": "#pelayanan",
+            "type": "anchor",
+            "order": 10,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": null,
+            "route_name": null,
+            "route_params": null
+        },
+        {
+            "id": 2,
+            "label": "Maklumat Pelayanan",
+            "url": null,
+            "type": "route",
+            "order": 1,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"maklumat-pelayanan\"}"
+        },
+        {
+            "id": 3,
+            "label": "Akte Kelahiran",
+            "url": null,
+            "type": "route",
+            "order": 2,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"persyaratan-pengajuan-akta-kelahiran\"}"
+        },
+        {
+            "id": 4,
+            "label": "Akte Kematian",
+            "url": null,
+            "type": "route",
+            "order": 3,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"persyaratan-pengajuan-akta-kematian\"}"
+        },
+        {
+            "id": 5,
+            "label": "Pengantar Nikah",
+            "url": null,
+            "type": "route",
+            "order": 4,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"persyaratan-pengantar-nikah\"}"
+        },
+        {
+            "id": 6,
+            "label": "SKTM (Keterangan Tidak Mampu)",
+            "url": null,
+            "type": "route",
+            "order": 5,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"persyaratan-pelayanan-surat-keterangan-tidak-mampu\"}"
+        },
+        {
+            "id": 7,
+            "label": "Pajak PBB",
+            "url": "https:\/\/pbb.donoharjo.sides.id\/PbbSemuaList",
+            "type": "url",
+            "order": 6,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": null,
+            "route_params": null
+        },
+        {
+            "id": 8,
+            "label": "Peladi Makarti \/ Ketenagakerjaan",
+            "url": "https:\/\/sinkal.jogjaprov.go.id\/donoharjo\/layanan-ketenagakerjaan",
+            "type": "url",
+            "order": 7,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": null,
+            "route_params": null
+        },
+        {
+            "id": 9,
+            "label": "Survey IKM",
+            "url": "https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSdONOHARJO_SURVEY_IKM\/viewform",
+            "type": "url",
+            "order": 8,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": null,
+            "route_params": null
+        },
+        {
+            "id": 10,
+            "label": "Hasil Survey IKM",
+            "url": null,
+            "type": "route",
+            "order": 9,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"hasil-survey-kepuasan-masyarakat\"}"
+        },
+        {
+            "id": 11,
+            "label": "Survey Korupsi",
+            "url": "https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSdONOHARJO_SURVEY_KORUPSI\/viewform",
+            "type": "url",
+            "order": 10,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": null,
+            "route_params": null
+        },
+        {
+            "id": 12,
+            "label": "Hasil SPAK (Survei Persepsi Anti Korupsi)",
+            "url": null,
+            "type": "route",
+            "order": 11,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": 1,
+            "route_name": "post.show",
+            "route_params": "{\"slug\":\"hasil-survey-indeks-persepsi-anti-korupsi\"}"
+        },
+        {
+            "id": 13,
+            "label": "Statistik Lengkap",
+            "url": "\/statistik-lengkap",
+            "type": "url",
+            "order": 5,
+            "is_active": 1,
+            "created_at": "2025-11-28 09:27:48",
+            "updated_at": "2025-11-28 09:27:48",
+            "parent_id": null,
+            "route_name": null,
+            "route_params": null
+        }
+    ],
+    "agendas": [],
+    "complaints": [],
+    "audit_logs": [],
+    "complaint_comments": [],
+    "complaint_updates": [],
+    "activity_logs": []
+}

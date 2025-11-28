@@ -1,0 +1,153 @@
+{
+    "migrations": [
+        {
+            "id": 1,
+            "migration": "2025_01_22_100000_create_hero_slides_table",
+            "batch": 1
+        },
+        {
+            "id": 2,
+            "migration": "2025_01_22_100001_create_quick_links_table",
+            "batch": 1
+        },
+        {
+            "id": 3,
+            "migration": "2025_01_22_100002_create_statistics_table",
+            "batch": 1
+        },
+        {
+            "id": 4,
+            "migration": "2025_01_22_100003_create_posts_table",
+            "batch": 1
+        },
+        {
+            "id": 5,
+            "migration": "2025_01_22_100004_create_officials_table",
+            "batch": 1
+        },
+        {
+            "id": 6,
+            "migration": "2025_01_22_100005_create_apbdes_table",
+            "batch": 1
+        },
+        {
+            "id": 7,
+            "migration": "2025_11_22_140421_create_settings_table",
+            "batch": 1
+        },
+        {
+            "id": 8,
+            "migration": "2025_11_22_140621_create_sessions_table",
+            "batch": 1
+        },
+        {
+            "id": 9,
+            "migration": "2025_11_23_093040_create_users_table",
+            "batch": 1
+        },
+        {
+            "id": 10,
+            "migration": "2025_11_23_093207_create_cache_table",
+            "batch": 1
+        },
+        {
+            "id": 11,
+            "migration": "2025_11_23_093654_create_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 12,
+            "migration": "2025_11_23_094048_add_parent_id_to_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 13,
+            "migration": "2025_11_23_102458_add_realisasi_anggaran_to_apbdes_table",
+            "batch": 1
+        },
+        {
+            "id": 14,
+            "migration": "2025_11_23_105433_add_category_to_statistics_table",
+            "batch": 1
+        },
+        {
+            "id": 15,
+            "migration": "2025_11_23_111524_create_statistic_details_table",
+            "batch": 1
+        },
+        {
+            "id": 16,
+            "migration": "2025_11_23_134049_add_greeting_to_officials_table",
+            "batch": 1
+        },
+        {
+            "id": 17,
+            "migration": "2025_11_23_164403_add_route_fields_to_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 18,
+            "migration": "2025_11_23_165246_make_url_nullable_in_menu_items_table",
+            "batch": 1
+        },
+        {
+            "id": 19,
+            "migration": "2025_11_23_172733_create_agendas_table",
+            "batch": 1
+        },
+        {
+            "id": 20,
+            "migration": "2025_11_24_075508_add_role_to_users_table",
+            "batch": 1
+        },
+        {
+            "id": 21,
+            "migration": "2025_11_24_075516_create_complaints_table",
+            "batch": 1
+        },
+        {
+            "id": 22,
+            "migration": "2025_11_24_075517_create_audit_logs_table",
+            "batch": 1
+        },
+        {
+            "id": 23,
+            "migration": "2025_11_24_075517_create_complaint_comments_table",
+            "batch": 1
+        },
+        {
+            "id": 24,
+            "migration": "2025_11_24_075517_create_complaint_updates_table",
+            "batch": 1
+        },
+        {
+            "id": 25,
+            "migration": "2025_11_24_170215_create_activity_logs_table",
+            "batch": 1
+        },
+        {
+            "id": 26,
+            "migration": "2025_11_24_170311_migrate_complaint_updates_and_audit_logs_to_activity_logs",
+            "batch": 1
+        }
+    ],
+    "hero_slides": [],
+    "quick_links": [],
+    "statistics": [],
+    "posts": [],
+    "officials": [],
+    "apbdes": [],
+    "settings": [],
+    "sessions": [],
+    "users": [],
+    "cache": [],
+    "cache_locks": [],
+    "statistic_details": [],
+    "menu_items": [],
+    "agendas": [],
+    "complaints": [],
+    "audit_logs": [],
+    "complaint_comments": [],
+    "complaint_updates": [],
+    "activity_logs": []
+}
