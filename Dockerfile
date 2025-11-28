@@ -87,7 +87,6 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
 # Start command
 # Force remove SQLite files and clear all caches
 # Set CACHE_DRIVER to file before caching config (to avoid database cache errors)
-# Run migrations to ensure all tables exist (including cache table)
 # Then rebuild config cache with environment variables from Render
 # Render sets PORT environment variable automatically
 CMD rm -rf database/*.sqlite* bootstrap/cache/config.php storage/framework/cache/data/* 2>/dev/null || true && \
@@ -97,7 +96,5 @@ CMD rm -rf database/*.sqlite* bootstrap/cache/config.php storage/framework/cache
     php artisan view:clear && \
     php artisan optimize:clear && \
     CACHE_STORE=file CACHE_DRIVER=file php artisan config:cache && \
-    php artisan migrate --force || true && \
-    php artisan storage:link || true && \
     php artisan serve --host=0.0.0.0 --port=$PORT
 
