@@ -40,8 +40,8 @@
     <link rel="canonical" href="{{ $canonicalUrl ?? $currentUrl }}">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ secure_asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ secure_asset('apple-touch-icon.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">

@@ -10,6 +10,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class QuickLinkResource extends Resource
 {
@@ -87,6 +89,11 @@ class QuickLinkResource extends Resource
                     ->numeric()
                     ->default(0)
                     ->required(),
+                
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Is Active')
+                    ->helperText('Nonaktifkan untuk menyembunyikan quick link dari homepage')
+                    ->default(true),
             ]);
     }
 
@@ -110,6 +117,11 @@ class QuickLinkResource extends Resource
                 
                 Tables\Columns\ColorColumn::make('color'),
                 
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean()
+                    ->sortable(),
+                
                 Tables\Columns\TextColumn::make('order')
                     ->sortable(),
                 
@@ -119,7 +131,11 @@ class QuickLinkResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Active Status')
+                    ->placeholder('All quick links')
+                    ->trueLabel('Active only')
+                    ->falseLabel('Hidden only'),
             ])
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             ->actions([
@@ -129,6 +145,34 @@ class QuickLinkResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('activate')
+                        ->label('Activate')
+                        ->icon('heroicon-o-check-circle')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['is_active' => true]);
+                            });
+                            // Clear cache after bulk update
+                            Cache::forget('quick_links');
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotificationTitle('Quick links activated'),
+                    Tables\Actions\BulkAction::make('deactivate')
+                        ->label('Deactivate')
+                        ->icon('heroicon-o-x-circle')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(function (Collection $records) {
+                            $records->each(function ($record) {
+                                $record->update(['is_active' => false]);
+                            });
+                            // Clear cache after bulk update
+                            Cache::forget('quick_links');
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotificationTitle('Quick links deactivated'),
                 ]),
             ])
             ->striped()

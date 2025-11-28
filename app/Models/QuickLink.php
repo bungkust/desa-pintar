@@ -12,10 +12,12 @@ class QuickLink extends Model
         'url',
         'color',
         'order',
+        'is_active',
     ];
 
     protected $casts = [
         'order' => 'integer',
+        'is_active' => 'boolean',
     ];
 }
 

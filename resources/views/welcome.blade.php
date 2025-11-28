@@ -45,8 +45,44 @@
         @endphp
 
         <!-- Statistics by Category -->
+        @php
+            // Gabungkan demografi dan geografis menjadi satu section
+            $combinedStats = collect();
+            if (isset($statistics['demografi'])) {
+                $combinedStats = $combinedStats->merge($statistics['demografi']);
+            }
+            if (isset($statistics['geografis'])) {
+                $combinedStats = $combinedStats->merge($statistics['geografis']);
+            }
+        @endphp
+        
+        @if($combinedStats->count() > 0)
+            <!-- Combined Section: Statistik Penduduk & Wilayah -->
+            <div class="mb-10 md:mb-12">
+                <!-- Statistics Grid: 1 col (mobile), 2 col (tablet), 4 col (desktop) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    @foreach($combinedStats as $stat)
+                        @php
+                            $iconPath = $stat->icon ? ($iconMap[$stat->icon] ?? $defaultIconPath) : $defaultIconPath;
+                        @endphp
+                        @include('components.cards.stat-card', [
+                            'title' => $stat->label,
+                            'value' => $stat->value,
+                            'icon' => $iconPath,
+                            'iconColor' => 'text-emerald-600',
+                        ])
+                    @endforeach
+                </div>
+            </div>
+        @endif
+        
         @foreach($statistics as $category => $categoryStats)
             @php
+                // Skip demografi dan geografis karena sudah digabung
+                if ($category === 'demografi' || $category === 'geografis') {
+                    continue;
+                }
+                
                 $categoryName = $categoryLabels[$category] ?? 'Statistik ' . ucfirst($category);
             @endphp
             

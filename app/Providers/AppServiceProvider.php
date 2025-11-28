@@ -8,6 +8,7 @@ use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Official;
 use App\Models\Post;
+use App\Models\QuickLink;
 use App\Models\Statistic;
 use App\Models\StatisticDetail;
 use App\Observers\CacheClearingObserver;
@@ -16,6 +17,7 @@ use App\Policies\ComplaintPolicy;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Asset;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Settings;
 
@@ -37,6 +39,15 @@ class AppServiceProvider extends ServiceProvider
         // Force HTTPS in production for all URLs and assets
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
+            
+            // Force HTTPS for asset URLs (including Filament assets)
+            // This ensures all asset() calls return HTTPS URLs
+            if (!env('ASSET_URL')) {
+                config(['app.asset_url' => config('app.url')]);
+            }
+            
+            // Force secure asset helper globally
+            Asset::useSecure();
         }
         
         // Register policies
@@ -59,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         Statistic::observe($cacheObserver);
         StatisticDetail::observe($cacheObserver);
         Official::observe($cacheObserver);
+        QuickLink::observe($cacheObserver);
 
         // Register audit logging observer for admin actions
         $auditObserver = $this->app->make(\App\Observers\AuditLogObserver::class);

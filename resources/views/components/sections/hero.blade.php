@@ -11,12 +11,34 @@
 @php
     $backgroundStyle = '';
     if (!empty($image)) {
-        // If image is already a full URL (http/https) or absolute path (/storage/...), use it directly
-        // Otherwise, treat it as relative path and resolve with Storage::url()
-        if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/')) {
+        // If image is already a full URL (http/https), use it directly
+        if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
             $imageUrl = $image;
+        } elseif (str_starts_with($image, '/')) {
+            // Already an absolute path, use current request URL
+            $imageUrl = request()->getSchemeAndHttpHost() . $image;
         } else {
-            $imageUrl = Storage::url($image);
+            // Relative path, use Storage::url()
+            $storageUrl = Storage::url($image);
+            
+            // Only fix URL in local development when host/port mismatch
+            // In production, APP_URL should be correctly set, so we trust Storage::url()
+            if (config('app.env') === 'local' || config('app.debug')) {
+                $parsedStorageUrl = parse_url($storageUrl);
+                $currentHost = request()->getHost();
+                $currentPort = request()->getPort();
+                $currentScheme = request()->getScheme();
+                
+                // Only fix if host is different (e.g., localhost vs 127.0.0.1)
+                if (isset($parsedStorageUrl['host']) && $parsedStorageUrl['host'] !== $currentHost) {
+                    $imageUrl = $currentScheme . '://' . $currentHost . ($currentPort && $currentPort != 80 && $currentPort != 443 ? ':' . $currentPort : '') . ($parsedStorageUrl['path'] ?? '');
+                } else {
+                    $imageUrl = $storageUrl;
+                }
+            } else {
+                // Production: trust Storage::url() which uses APP_URL
+                $imageUrl = $storageUrl;
+            }
         }
         // Background image without overlay - overlay will be added via div
         $backgroundStyle = "background-image: url('{$imageUrl}'); background-size: cover; background-position: center; background-repeat: no-repeat;";
@@ -28,12 +50,21 @@
 @push('styles')
     @if(!empty($image))
         @php
-            // If image is already a full URL (http/https) or absolute path (/storage/...), use it directly
-            // Otherwise, treat it as relative path and resolve with Storage::url()
-            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://') || str_starts_with($image, '/')) {
+            // If image is already a full URL (http/https), use it directly
+            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
                 $imageUrl = $image;
+            } elseif (str_starts_with($image, '/')) {
+                // Already an absolute path, use current request URL
+                $imageUrl = request()->getSchemeAndHttpHost() . $image;
             } else {
-                $imageUrl = Storage::url($image);
+                // Relative path, use Storage::url() and fix if needed
+                $storageUrl = Storage::url($image);
+                // Fix URL to use current request host instead of APP_URL if different
+                if (str_contains($storageUrl, 'localhost') && request()->getHost() !== 'localhost') {
+                    $imageUrl = str_replace('http://localhost', request()->getSchemeAndHttpHost(), $storageUrl);
+                } else {
+                    $imageUrl = $storageUrl;
+                }
             }
         @endphp
         <link rel="preload" as="image" href="{{ $imageUrl }}" fetchpriority="high">

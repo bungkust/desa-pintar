@@ -48,7 +48,7 @@ Route::middleware(['throttle:120,1'])->group(function () {
 
     // Get QuickLinks (cached for 1 hour)
     $quickLinks = Cache::remember('quick_links', 3600, function () {
-        return QuickLink::orderBy('order')->limit(8)->get();
+        return QuickLink::where('is_active', true)->orderBy('order')->limit(8)->get();
     });
 
     // Get Statistics grouped by category (cached for 1 hour)

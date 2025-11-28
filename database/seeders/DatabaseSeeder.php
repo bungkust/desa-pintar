@@ -64,6 +64,7 @@ class DatabaseSeeder extends Seeder
                 'url' => '#',
                 'color' => '#3B82F6',
                 'order' => 1,
+                'is_active' => true,
             ]);
 
             QuickLink::create([
@@ -72,6 +73,7 @@ class DatabaseSeeder extends Seeder
                 'url' => '#',
                 'color' => '#EF4444',
                 'order' => 2,
+                'is_active' => true,
             ]);
 
             QuickLink::create([
@@ -80,6 +82,7 @@ class DatabaseSeeder extends Seeder
                 'url' => '#',
                 'color' => '#10B981',
                 'order' => 3,
+                'is_active' => true,
             ]);
 
             QuickLink::create([
@@ -88,35 +91,61 @@ class DatabaseSeeder extends Seeder
                 'url' => '#',
                 'color' => '#F59E0B',
                 'order' => 4,
+                'is_active' => true,
             ]);
         }
 
         // Seed Statistics
-        if (Statistic::count() < 3) {
-            Statistic::create([
-                'label' => 'Penduduk',
-                'value' => '13.450',
+        // Update atau create statistics dengan data terbaru (Januari 2020)
+        Statistic::updateOrCreate(
+            ['label' => 'Penduduk'],
+            [
+                'value' => '10.515',
                 'icon' => 'heroicon-o-users',
                 'category' => 'demografi',
                 'order' => 1,
-            ]);
+            ]
+        );
 
-            Statistic::create([
-                'label' => 'Kepala Keluarga',
-                'value' => '4.200',
-                'icon' => 'heroicon-o-home',
+        Statistic::updateOrCreate(
+            ['label' => 'Laki-laki'],
+            [
+                'value' => '5.925',
+                'icon' => 'heroicon-o-user-group',
                 'category' => 'demografi',
                 'order' => 2,
-            ]);
+            ]
+        );
 
-            Statistic::create([
-                'label' => 'Luas Wilayah',
+        Statistic::updateOrCreate(
+            ['label' => 'Perempuan'],
+            [
+                'value' => '4.590',
+                'icon' => 'heroicon-o-user-group',
+                'category' => 'demografi',
+                'order' => 3,
+            ]
+        );
+
+        Statistic::updateOrCreate(
+            ['label' => 'Kepala Keluarga (KK)'],
+            [
+                'value' => '3.264',
+                'icon' => 'heroicon-o-home',
+                'category' => 'demografi',
+                'order' => 4,
+            ]
+        );
+
+        Statistic::updateOrCreate(
+            ['label' => 'Luas Wilayah'],
+            [
                 'value' => '560 Ha',
                 'icon' => 'heroicon-o-map',
                 'category' => 'geografis',
-                'order' => 3,
-            ]);
-        }
+                'order' => 5,
+            ]
+        );
 
         // Seed Statistic Details (Historical Data)
         $this->seedStatisticDetails();

@@ -36,6 +36,11 @@ class ImageConversionObserver
                 continue;
             }
 
+            // Skip external URLs (http:// or https://)
+            if (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://')) {
+                continue;
+            }
+
             // Skip if already WebP
             $extension = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
             if ($extension === 'webp') {

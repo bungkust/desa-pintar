@@ -7,6 +7,7 @@ use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Official;
 use App\Models\Post;
+use App\Models\QuickLink;
 use App\Models\Statistic;
 use App\Models\StatisticDetail;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,7 @@ class CacheClearingObserver
             Statistic::class => $this->clearStatisticCaches(),
             StatisticDetail::class => $this->clearStatisticDetailCaches(),
             Official::class => $this->clearOfficialCaches($model),
+            QuickLink::class => $this->clearQuickLinkCaches(),
             default => null,
         };
 
@@ -123,5 +125,10 @@ class CacheClearingObserver
             Cache::forget('lurah_official');
             Cache::forget('hero_slide_active'); // In case lurah photo is used elsewhere
         }
+    }
+
+    protected function clearQuickLinkCaches(): void
+    {
+        Cache::forget('quick_links');
     }
 }
