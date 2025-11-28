@@ -26,8 +26,7 @@ return new class extends Migration
             $table->decimal('location_lng', 11, 8)->nullable();
             $table->text('location_text')->nullable();
             $table->enum('status', ['backlog', 'verification', 'todo', 'in_progress', 'done', 'rejected'])
-                ->default('backlog')
-                ->index();
+                ->default('backlog');
             $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('is_anonymous')->default(false);
             $table->json('images')->nullable(); // Store array of image paths

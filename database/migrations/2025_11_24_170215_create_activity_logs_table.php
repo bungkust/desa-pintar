@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             
             // Action type (e.g., 'status_changed', 'created', 'updated', 'deleted', 'assigned', 'commented')
-            $table->string('action', 100)->index();
+            $table->string('action', 100);
             
             // Polymorphic relationship to any model
             $table->string('model_type')->nullable();
