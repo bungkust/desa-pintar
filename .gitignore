@@ -32,3 +32,6 @@ yarn-error.log
 /database/*.sqlite
 /database/*.sqlite3
 
+# Test scripts (optional, bisa di-commit juga)
+# test-docker-local.sh
+
