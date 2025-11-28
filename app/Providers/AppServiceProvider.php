@@ -15,6 +15,7 @@ use App\Observers\ImageConversionObserver;
 use App\Policies\ComplaintPolicy;
 use App\Settings\GeneralSettings;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Spatie\LaravelSettings\Settings;
 
@@ -33,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Force HTTPS in production for all URLs and assets
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+        
         // Register policies
         Gate::policy(Complaint::class, ComplaintPolicy::class);
         

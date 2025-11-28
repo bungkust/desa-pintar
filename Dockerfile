@@ -68,7 +68,9 @@ RUN mkdir -p /var/www/html/storage/framework/cache/data \
     && chmod -R 777 /var/www/html/bootstrap/cache
 
 # Install Node.js dependencies and build assets
-RUN npm ci && npm run build
+RUN npm ci && npm run build && \
+    ls -la public/build/ && \
+    echo "Vite build completed successfully"
 
 # Run post-install scripts
 RUN php artisan package:discover --ansi
@@ -100,6 +102,7 @@ CMD rm -rf database/*.sqlite* bootstrap/cache/config.php storage/framework/cache
     CACHE_STORE=file CACHE_DRIVER=file php artisan config:cache && \
     sleep 2 && \
     php artisan migrate --force && \
+    php artisan db:seed --force || true && \
     (rm -f public/storage && php artisan storage:link) || true && \
     php artisan serve --host=0.0.0.0 --port=$PORT
 
