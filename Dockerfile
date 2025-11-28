@@ -85,10 +85,15 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD php artisan route:list || exit 1
 
 # Start command
-# Clear config cache first to ensure environment variables are loaded correctly
-# Then cache config with correct DB_CONNECTION from environment
+# Force remove SQLite files and clear all caches
+# Then rebuild config cache with environment variables from Render
 # Render sets PORT environment variable automatically
-CMD php artisan config:clear && \
+CMD rm -rf database/*.sqlite* bootstrap/cache/config.php storage/framework/cache/data/* 2>/dev/null || true && \
+    php artisan config:clear && \
+    php artisan cache:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php artisan optimize:clear && \
     php artisan config:cache && \
     php artisan serve --host=0.0.0.0 --port=$PORT
 
