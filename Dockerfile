@@ -52,8 +52,11 @@ RUN set -eux; \
          (echo "=== All update attempts failed ===" && exit 1)); \
     fi
 
-# Copy rest of application files
+# Copy rest of application files (exclude sqlite files via .dockerignore)
 COPY . .
+
+# Remove any sqlite files that might have been copied (safety check)
+RUN find . -name "*.sqlite" -o -name "*.sqlite3" | xargs rm -f 2>/dev/null || true
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/html/storage/framework/cache \
@@ -70,9 +73,8 @@ RUN npm ci && npm run build
 # Run post-install scripts
 RUN php artisan package:discover --ansi
 
-# Cache Laravel config, routes, and views
-RUN php artisan config:cache \
-    && php artisan route:cache \
+# Cache routes and views (config will be cached at runtime after env vars are set)
+RUN php artisan route:cache \
     && php artisan view:cache
 
 # Expose port (Render will set PORT env variable)
@@ -83,6 +85,10 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
     CMD php artisan route:list || exit 1
 
 # Start command
+# Clear config cache first to ensure environment variables are loaded correctly
+# Then cache config with correct DB_CONNECTION from environment
 # Render sets PORT environment variable automatically
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD php artisan config:clear && \
+    php artisan config:cache && \
+    php artisan serve --host=0.0.0.0 --port=$PORT
 

@@ -27,6 +27,13 @@ services:
         value: file
       - key: QUEUE_CONNECTION
         value: sync
+      # Database connection - IMPORTANT: Set to pgsql, not sqlite!
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_PORT
+        value: "5432"
+      # Note: DB_HOST, DB_DATABASE, DB_USERNAME, DB_PASSWORD must be set manually in Render dashboard
+      # Get these values from your PostgreSQL service page
     healthCheckPath: /
     autoDeploy: true
 
