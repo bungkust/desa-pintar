@@ -17,11 +17,11 @@ class QuickLinkResource extends Resource
 {
     protected static ?string $model = QuickLink::class;
 
-    protected static ?string $navigationGroup = 'Website Content';
+    protected static ?string $navigationGroup = 'Quick Links';
     
     protected static ?string $navigationLabel = 'Quick Links';
     
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

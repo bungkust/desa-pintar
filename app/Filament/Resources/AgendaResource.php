@@ -15,7 +15,7 @@ class AgendaResource extends Resource
 {
     protected static ?string $model = Agenda::class;
 
-    protected static ?string $navigationGroup = 'Website Content';
+    protected static ?string $navigationGroup = 'Agenda';
     
     protected static ?string $navigationLabel = 'Agenda';
     

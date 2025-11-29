@@ -127,21 +127,21 @@ Route::middleware(['throttle:120,1'])->group(function () {
         'whatsapp' => '6281227666999',
         'logo_path' => null,
         'instagram' => null,
+        'show_statistics_section' => true,
+        'show_lurah_section' => true,
+        'show_berita_section' => true,
+        'show_transparansi_section' => true,
     ];
         
-        $settingsCount = DB::table('settings')->where('group', 'general')->count();
-    
-    if ($settingsCount < 5) {
-        foreach ($defaults as $name => $value) {
-            DB::table('settings')->insertOrIgnore([
-                'group' => 'general',
-                'name' => $name,
-                'payload' => json_encode($value),
-                'locked' => false,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+    foreach ($defaults as $name => $value) {
+        DB::table('settings')->insertOrIgnore([
+            'group' => 'general',
+            'name' => $name,
+            'payload' => json_encode($value),
+            'locked' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
     
     try {

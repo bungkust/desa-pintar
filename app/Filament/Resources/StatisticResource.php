@@ -15,11 +15,11 @@ class StatisticResource extends Resource
 {
     protected static ?string $model = Statistic::class;
 
-    protected static ?string $navigationGroup = 'Transparency';
+    protected static ?string $navigationGroup = 'Statistics';
     
     protected static ?string $navigationLabel = 'Statistics';
     
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

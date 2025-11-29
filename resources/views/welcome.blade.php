@@ -13,7 +13,7 @@
         :settings="$settings">
 
     <!-- Statistik Section -->
-    @if($statistics->count() > 0)
+    @if(($settings->show_statistics_section ?? true) && $statistics->count() > 0)
     <x-sections.section 
         id="statistik"
         title="Statistik Desa {{ $settings->site_name ?? 'Donoharjo' }}"
@@ -120,7 +120,7 @@
     @endif
 
     <!-- Sambutan Lurah Section -->
-    @if($lurah)
+    @if(($settings->show_lurah_section ?? true) && $lurah)
     <x-sections.section spacing="py-16 md:py-20 lg:py-24">
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 lg:gap-8 items-center">
@@ -165,6 +165,7 @@
     @endif
 
     <!-- Berita Terkini Section -->
+    @if($settings->show_berita_section ?? true)
     <x-sections.section 
         id="berita"
         title="Berita Terkini"
@@ -222,11 +223,13 @@
         </div>
         @endif
     </x-sections.section>
+    @endif
 
     <!-- Agenda Desa Section -->
     <x-home-agenda :settings="$settings" />
 
     <!-- Transparansi APBDes Section -->
+    @if($settings->show_transparansi_section ?? true)
     <x-sections.section 
         id="transparansi"
         title="Transparansi APBDes"
@@ -280,5 +283,6 @@
         </div>
         @endif
     </x-sections.section>
+    @endif
     </x-layouts.landing-layout>
 @endsection

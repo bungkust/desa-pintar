@@ -19,11 +19,11 @@ class StatisticDetailResource extends Resource
 {
     protected static ?string $model = StatisticDetail::class;
 
-    protected static ?string $navigationGroup = 'Transparency';
+    protected static ?string $navigationGroup = 'Statistics';
     
     protected static ?string $navigationLabel = 'Statistic Details';
     
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

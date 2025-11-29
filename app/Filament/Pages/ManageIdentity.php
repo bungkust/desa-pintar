@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
+use Filament\Notifications\Notification;
 
 class ManageIdentity extends Page
 {
@@ -33,6 +34,10 @@ class ManageIdentity extends Page
             'whatsapp' => $settings->whatsapp ?? '',
             'logo_path' => $settings->logo_path ?? null,
             'instagram' => $settings->instagram ?? '',
+            'show_statistics_section' => $settings->show_statistics_section ?? true,
+            'show_lurah_section' => $settings->show_lurah_section ?? true,
+            'show_berita_section' => $settings->show_berita_section ?? true,
+            'show_transparansi_section' => $settings->show_transparansi_section ?? true,
         ]);
     }
 
@@ -119,6 +124,34 @@ class ManageIdentity extends Page
                     ->url()
                     ->maxLength(255)
                     ->helperText('Full Instagram URL'),
+
+                Forms\Components\Toggle::make('show_statistics_section')
+                    ->label('Tampilkan Statistik di Homepage')
+                    ->helperText('Nonaktifkan untuk menyembunyikan section statistik di halaman utama.')
+                    ->default(true)
+                    ->inline(false)
+                    ->columnSpanFull(),
+
+                Forms\Components\Toggle::make('show_lurah_section')
+                    ->label('Tampilkan Sambutan Lurah')
+                    ->helperText('Nonaktifkan untuk menyembunyikan section sambutan lurah.')
+                    ->default(true)
+                    ->inline(false)
+                    ->columnSpanFull(),
+
+                Forms\Components\Toggle::make('show_berita_section')
+                    ->label('Tampilkan Berita Terkini')
+                    ->helperText('Nonaktifkan untuk menyembunyikan section Berita di homepage.')
+                    ->default(true)
+                    ->inline(false)
+                    ->columnSpanFull(),
+
+                Forms\Components\Toggle::make('show_transparansi_section')
+                    ->label('Tampilkan Transparansi APBDes')
+                    ->helperText('Nonaktifkan untuk menyembunyikan section Transparansi APBDes.')
+                    ->default(true)
+                    ->inline(false)
+                    ->columnSpanFull(),
             ])
             ->statePath('data')
             ->columns(2);
@@ -149,9 +182,18 @@ class ManageIdentity extends Page
             }
         }
         
+        // Ensure boolean checkbox always has a value
+        $data['show_statistics_section'] = (bool) ($data['show_statistics_section'] ?? true);
+        $data['show_lurah_section'] = (bool) ($data['show_lurah_section'] ?? true);
+        $data['show_berita_section'] = (bool) ($data['show_berita_section'] ?? true);
+        $data['show_transparansi_section'] = (bool) ($data['show_transparansi_section'] ?? true);
+        
         app(GeneralSettings::class)->fill($data)->save();
         
-        $this->notify('success', 'Settings saved successfully.');
+        Notification::make()
+            ->title('Settings saved successfully.')
+            ->success()
+            ->send();
     }
 }
 
