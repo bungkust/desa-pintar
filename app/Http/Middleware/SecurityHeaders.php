@@ -61,6 +61,12 @@ class SecurityHeaders
         // X-XSS-Protection (legacy but still useful for older browsers)
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         
+        // Prevent intermediaries (e.g., CDN optimizers) from transforming admin responses.
+        if ($request->is('admin') || $request->is('admin/*')) {
+            $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, s-maxage=0, private, no-transform');
+            $response->headers->set('Pragma', 'no-cache');
+        }
+        
         // Strict-Transport-Security (HSTS) - only set if HTTPS
         if ($request->secure()) {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
