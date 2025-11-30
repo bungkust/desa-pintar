@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             HeroSlide::create([
                 'title' => 'Donoharjo Asri & Berbudaya',
                 'subtitle' => 'Mewujudkan masyarakat yang sejahtera dan mandiri.',
-                'image' => 'https://via.placeholder.com/1920x1080?text=Donoharjo+Asri',
+                'image' => 'https://placehold.co/1920x1080?text=Donoharjo+Asri',
                 'is_active' => true,
                 'order' => 1,
             ]);
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             HeroSlide::create([
                 'title' => 'Pelayanan Digital',
                 'subtitle' => 'Urus surat lebih mudah dan transparan.',
-                'image' => 'https://via.placeholder.com/1920x1080?text=Pelayanan+Digital',
+                'image' => 'https://placehold.co/1920x1080?text=Pelayanan+Digital',
                 'is_active' => true,
                 'order' => 2,
             ]);

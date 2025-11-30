@@ -9,6 +9,11 @@
 ])
 
 @php
+    // Fix for broken placeholder service
+    if ($image && str_contains($image, 'via.placeholder.com')) {
+        $image = str_replace('via.placeholder.com', 'placehold.co', $image);
+    }
+
     $backgroundStyle = '';
     if (!empty($image)) {
         // If image is already a full URL (http/https), use it directly
