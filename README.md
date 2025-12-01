@@ -11,17 +11,39 @@ APP_DEBUG=false
 DB_CONNECTION=pgsql  # or mysql
 ```
 
+### 🚨 CRITICAL: Asset Building Fix for Production
+```bash
+# IMPORTANT: Asset building often fails in production due to permissions
+# Use this workaround:
+
+# 1. Build on local/development machine first
+npm run build
+
+# 2. Or use the production build script
+chmod +x build-production.sh
+./build-production.sh
+
+# 3. If build fails, use this emergency fix:
+mkdir -p public/build/assets/css
+echo "/* Temporary production CSS */" > public/build/assets/css/app-CRz7xcJV.css
+
+# 4. Update manifest.json if needed
+# Copy from local build to production
+```
+
 ### Pre-Deployment Commands
 ```bash
-# Install dependencies
+# Install dependencies (production only)
 composer install --optimize-autoloader --no-dev
-npm ci && npm run build
+
+# Skip npm build if using emergency fix above
+# npm ci && npm run build
 
 # Database setup
 php artisan migrate --force
 php artisan db:seed
 
-# Clear all caches
+# Clear all caches (IMPORTANT for production)
 php artisan optimize:clear
 php artisan config:clear
 php artisan route:clear
@@ -94,6 +116,33 @@ sudo chown -R $(whoami) bootstrap/cache/
 # Or if using built-in Apache:
 sudo chown -R _www storage/
 sudo chown -R _www bootstrap/cache/
+```
+
+### Asset Loading Issues (404 CSS/JS errors)
+```bash
+# If you see 404 errors for CSS/JS files like app-CRz7xcJV.css:
+
+# 1. Check if build files exist
+ls -la public/build/assets/css/
+ls -la public/build/assets/js/
+
+# 2. Clear browser cache completely
+# Chrome: Ctrl+Shift+R or Cmd+Shift+R
+
+# 3. Clear Laravel caches
+php artisan optimize:clear
+php artisan view:clear
+php artisan config:clear
+
+# 4. Emergency fix - create missing files
+mkdir -p public/build/assets/css
+mkdir -p public/build/assets/js
+echo "/* Temporary CSS */" > public/build/assets/css/app-CRz7xcJV.css
+echo "/* Temporary JS */" > public/build/assets/js/app-CRz7xcJV.js
+
+# 5. Proper fix - rebuild assets (on local machine)
+npm run build
+# Then upload public/build/ to production server
 ```
 
 ### Permission Issues
