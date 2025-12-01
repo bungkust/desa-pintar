@@ -422,6 +422,8 @@ class ComplaintResource extends Resource
                     Tables\Actions\Action::make('updateStatus')
                         ->label('Update Status')
                         ->icon('heroicon-o-arrow-path')
+                        ->modalHeading('Update Status Pengaduan')
+                        ->modalDescription('Ubah status pengaduan ini')
                         ->form([
                             Forms\Components\Select::make('status')
                                 ->label('Status Baru')
@@ -434,15 +436,17 @@ class ComplaintResource extends Resource
                                     'done' => 'Done',
                                     'rejected' => 'Rejected',
                                 ])
-                                ->native(false),
+                                ->native(false)
+                                ->default(fn (Complaint $record) => $record->status),
                             Forms\Components\Textarea::make('note')
                                 ->label('Catatan')
-                                ->rows(3),
+                                ->rows(3)
+                                ->placeholder('Tambahkan catatan untuk perubahan status ini (opsional)'),
                         ])
                         ->action(function (array $data, Complaint $record) {
                             $oldStatus = $record->status;
                             $record->update(['status' => $data['status']]);
-                            
+
                             \App\Models\ActivityLog::create([
                                 'user_id' => auth()->id(),
                                 'action' => 'status_changed',
@@ -455,66 +459,50 @@ class ComplaintResource extends Resource
                                 'ip_address' => request()->ip(),
                                 'user_agent' => request()->userAgent(),
                             ]);
-                            
+
                             Notification::make()
                                 ->title('Status berhasil diupdate')
                                 ->success()
                                 ->send();
                         })
-                        ->visible(fn (Complaint $record) => auth()->user()->can('changeStatus', [$record, 'todo'])),
+                        ->modalSubmitActionLabel('Update Status')
+                        ->visible(fn (Complaint $record) => auth()->user()->can('changeStatus', [$record, 'todo']))
+                        ->modalWidth('md'),
                     
                     // Assign Petugas
                     Tables\Actions\Action::make('assignPetugas')
                         ->label('Assign Petugas')
                         ->icon('heroicon-o-user-plus')
+                        ->modalHeading('Assign Petugas')
+                        ->modalDescription('Pilih petugas yang akan menangani pengaduan ini')
                         ->form([
                             Forms\Components\Select::make('assigned_to')
                                 ->label('Ditugaskan Kepada')
                                 ->relationship('assignedUser', 'name')
                                 ->searchable()
                                 ->preload()
+                                ->placeholder('Pilih petugas')
                                 ->helperText('Pilih petugas yang akan menangani pengaduan ini'),
                         ])
                         ->action(function (array $data, Complaint $record) {
                             // Assignment tracking is handled by ComplaintObserver
                             $record->update(['assigned_to' => $data['assigned_to']]);
-                            
+
                             Notification::make()
                                 ->title('Petugas berhasil ditugaskan')
                                 ->success()
                                 ->send();
                         })
-                        ->visible(fn () => Auth::user()->canAssignPetugas()),
+                        ->modalSubmitActionLabel('Assign Petugas')
+                        ->visible(fn () => Auth::user()->canAssignPetugas())
+                        ->modalWidth('md'),
                     
                     // Komentar
                     Tables\Actions\Action::make('komentar')
                         ->label('Komentar')
                         ->icon('heroicon-o-chat-bubble-left-right')
-                        ->form([
-                            Forms\Components\Textarea::make('message')
-                                ->label('Komentar')
-                                ->required()
-                                ->rows(4)
-                                ->helperText('Tambahkan komentar untuk pengaduan ini'),
-                        ])
-                        ->action(function (array $data, Complaint $record) {
-                            \App\Models\ComplaintComment::create([
-                                'complaint_id' => $record->id,
-                                'sender_type' => 'admin',
-                                'sender_name' => auth()->user()->name,
-                                'message' => $data['message'],
-                            ]);
-                            
-                            \Illuminate\Support\Facades\Log::info('Complaint comment added', [
-                                'complaint_id' => $record->id,
-                                'user_id' => auth()->id(),
-                            ]);
-                            
-                            Notification::make()
-                                ->title('Komentar berhasil ditambahkan')
-                                ->success()
-                                ->send();
-                        }),
+                        ->url(fn (Complaint $record): string => static::getUrl('comments', ['record' => $record->id]))
+                        ->openUrlInNewTab(false),
                     
                     // Riwayat Update (moved to RelationManager, keeping for backward compatibility)
                     Tables\Actions\Action::make('riwayatUpdate')
@@ -529,7 +517,7 @@ class ComplaintResource extends Resource
                                     ->get();
                                 
                                 if ($activities->isEmpty()) {
-                                    return '<div class="p-4 text-center text-gray-500">Belum ada riwayat update.</div>';
+                                    return new HtmlString('<div class="p-4 text-center text-gray-500">Belum ada riwayat update.</div>');
                                 }
                                 
                                 $html = '<div class="space-y-4">';
@@ -562,8 +550,8 @@ class ComplaintResource extends Resource
                                     'complaint_id' => $record->id,
                                     'error' => $exception->getMessage(),
                                 ]);
-                                
-                                return '<div class="p-4 text-center text-red-500">Riwayat tidak dapat dimuat. Silakan coba lagi atau hubungi administrator.</div>';
+
+                                return new HtmlString('<div class="p-4 text-center text-red-500">Riwayat tidak dapat dimuat. Silakan coba lagi atau hubungi administrator.</div>');
                             }
                         })
                         ->modalSubmitAction(false)
@@ -607,6 +595,7 @@ class ComplaintResource extends Resource
             'create' => Pages\CreateComplaint::route('/create'),
             'view' => Pages\ViewComplaint::route('/{record}'),
             'edit' => Pages\EditComplaint::route('/{record}/edit'),
+            'comments' => Pages\ComplaintComments::route('/{record}/comments'),
         ];
     }
 }

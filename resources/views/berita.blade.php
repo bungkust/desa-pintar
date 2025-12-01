@@ -9,7 +9,7 @@
         title="Berita & Informasi"
         description="Berita terkini dan informasi terbaru dari {{ $settings->site_name ?? 'Desa Donoharjo' }}"
         page-header-gradient="from-blue-50 via-emerald-50 to-teal-50">
-    
+
     <x-sections.section spacing="py-12 md:py-16 lg:py-20">
         @if($posts->count() > 0)
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-6 lg:gap-8">
@@ -17,8 +17,8 @@
             <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 @if($post->thumbnail)
                 <a href="{{ route('post.show', $post->slug) }}">
-                    <img src="{{ str_starts_with($post->thumbnail, 'http://') || str_starts_with($post->thumbnail, 'https://') ? $post->thumbnail : Storage::url($post->thumbnail) }}" 
-                         alt="{{ $post->title }}" 
+                    <img src="{{ str_starts_with($post->thumbnail, 'http://') || str_starts_with($post->thumbnail, 'https://') ? $post->thumbnail : Storage::url($post->thumbnail) }}"
+                         alt="{{ $post->title }}"
                          class="w-full aspect-video object-cover"
                          width="800"
                          height="450"

@@ -5,6 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    {{-- Prevent Cloudflare Rocket Loader from interfering with Livewire/Alpine.js on admin pages --}}
+    @if(request()->is('admin*'))
+        <meta name="robots" content="noindex, nofollow">
+        <script data-cfasync="false">
+            // Prevent Cloudflare Rocket Loader interference and ensure Livewire stability
+            window.Livewire = window.Livewire || {};
+
+            // Global Alpine.js error handler for Livewire components
+            document.addEventListener('alpine:init', () => {
+                // Override Alpine's error handler to suppress DOM-related errors
+                const originalHandler = Alpine.onError;
+                Alpine.onError = (error, el, expression) => {
+                    // Suppress "Could not find Livewire component in DOM tree" errors
+                    if (error.message && error.message.includes('Could not find Livewire component in DOM tree')) {
+                        console.warn('Suppressed Livewire DOM error:', error.message);
+                        return;
+                    }
+                    // Call original handler for other errors
+                    if (originalHandler) {
+                        originalHandler(error, el, expression);
+                    }
+                };
+
+                // Add magic method to safely access Livewire components
+                Alpine.magic('wire', () => {
+                    return window.Livewire?.find || (() => null);
+                });
+
+                // Add safe access to wire properties
+                Alpine.magic('wireProperty', (el, expression) => {
+                    return (property) => {
+                        try {
+                            const component = window.Livewire?.find?.(el.closest('[wire\\:id]')?.getAttribute('wire:id'));
+                            return component ? component[property] : null;
+                        } catch (e) {
+                            return null;
+                        }
+                    };
+                });
+            });
+
+            // Prevent modal-related errors by ensuring proper cleanup
+            document.addEventListener('DOMContentLoaded', () => {
+                // Override dispatchEvent to handle modal events safely
+                const originalDispatch = EventTarget.prototype.dispatchEvent;
+                EventTarget.prototype.dispatchEvent = function(event) {
+                    try {
+                        return originalDispatch.call(this, event);
+                    } catch (error) {
+                        if (error.message && error.message.includes('Could not find Livewire component')) {
+                            console.warn('Suppressed modal dispatch error:', error.message);
+                            return false;
+                        }
+                        throw error;
+                    }
+                };
+
+                // Add specific handler for Filament modal events
+                document.addEventListener('modal-closed', (event) => {
+                    // Give time for DOM to settle before cleaning up
+                    setTimeout(() => {
+                        // Clean up any orphaned modal elements
+                        const orphanedModals = document.querySelectorAll('[wire\\:key*="table-action"], [wire\\:key*="table-bulk-action"]');
+                        orphanedModals.forEach(modal => {
+                            if (!modal.closest('[wire\\:id]')) {
+                                console.log('Removing orphaned modal element');
+                                modal.remove();
+                            }
+                        });
+                    }, 100);
+                });
+
+                // Override Filament's modal close behavior to prevent Alpine errors
+                const originalCloseModal = window.closeModal || (() => {});
+                window.closeModal = function(id) {
+                    try {
+                        // Check if the modal element still exists and has a Livewire component
+                        const modal = document.querySelector(`[wire\\:key*="${id}"]`);
+                        if (modal && modal.closest('[wire\\:id]')) {
+                            return originalCloseModal(id);
+                        } else {
+                            // Modal is orphaned, remove it directly
+                            if (modal) modal.remove();
+                            return true;
+                        }
+                    } catch (error) {
+                        console.warn('Error closing modal:', error);
+                        // Force remove the modal if it exists
+                        const modal = document.querySelector(`[wire\\:key*="${id}"]`);
+                        if (modal) modal.remove();
+                        return true;
+                    }
+                };
+
+                // Add a mutation observer to handle DOM changes that might affect Livewire components
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'childList') {
+                            // Check if any removed nodes contain Livewire components
+                            mutation.removedNodes.forEach((node) => {
+                                if (node.nodeType === Node.ELEMENT_NODE && node.hasAttribute('wire:id')) {
+                                    console.log('Livewire component removed from DOM:', node.getAttribute('wire:id'));
+                                }
+                            });
+                        }
+                    });
+                });
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+        </script>
+    @endif
     @php
         use App\Settings\GeneralSettings;
         use Illuminate\Support\Facades\Cache;

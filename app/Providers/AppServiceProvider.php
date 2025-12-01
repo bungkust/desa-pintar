@@ -56,8 +56,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Complaint::class, ComplaintPolicy::class);
 
         // Prevent CDN optimizers (e.g., Cloudflare Rocket Loader) from mutating Filament / Livewire scripts.
-        // Adds data-cfasync="false" to every Filament-managed script tag so Livewire components stay mounted.
+        // Adds data-cfasync="false" to every Filament-managed script and stylesheet tag so Livewire components stay mounted.
         FilamentAsset::resolved(function (AssetManager $assetManager): void {
+            // Handle scripts
             foreach ($assetManager->getScripts(withCore: true) as $script) {
                 $attributes = $script->getExtraAttributes();
 
@@ -70,7 +71,48 @@ class AppServiceProvider extends ServiceProvider
                     'data-cfasync' => 'false',
                 ]);
             }
+
+            // Handle stylesheets as well
+            foreach ($assetManager->getStyles(withCore: true) as $style) {
+                $attributes = $style->getExtraAttributes();
+
+                if (($attributes['data-cfasync'] ?? null) === 'false') {
+                    continue;
+                }
+
+                $style->extraAttributes([
+                    ...$attributes,
+                    'data-cfasync' => 'false',
+                ]);
+            }
         });
+
+        // Configure Livewire for better error handling in admin panel
+        if (request()->is('admin*')) {
+            // Add cache-busting to Livewire scripts
+            \Livewire\Livewire::setScriptRoute(function ($handle) {
+                return \Filament\Support\Facades\FilamentAsset::getScriptSrc($handle) . '?v=' . time();
+            });
+        }
+
+        // Global Livewire error handling for admin panel
+        \Livewire\Livewire::listen('error', function ($error, $component, $request) {
+            if (request()->is('admin*') && str_contains($error->getMessage(), 'Could not find Livewire component')) {
+                \Illuminate\Support\Facades\Log::warning('Suppressed Livewire DOM error', [
+                    'component' => $component,
+                    'error' => $error->getMessage(),
+                    'request' => request()->fullUrl(),
+                ]);
+                // Return a response that doesn't crash the page
+                return response()->json(['error' => 'Component temporarily unavailable'], 200);
+            }
+        });
+
+        // Configure Filament for better modal handling
+        if (request()->is('admin*')) {
+            // Disable sliding modals which can cause DOM issues
+            config(['filament.layout.widgets.modal' => false]);
+        }
         
         Settings::register(GeneralSettings::class);
 

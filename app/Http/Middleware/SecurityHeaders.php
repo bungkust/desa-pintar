@@ -21,7 +21,7 @@ class SecurityHeaders
         
         // Allow Vite dev server in development mode
         $isDev = app()->environment('local', 'development');
-        
+
         $viteHttp = $isDev ? 'http://127.0.0.1:5173 http://localhost:5173' : '';
         $viteWs = $isDev ? 'ws://127.0.0.1:5173 ws://localhost:5173' : '';
         
@@ -65,6 +65,10 @@ class SecurityHeaders
         if ($request->is('admin') || $request->is('admin/*')) {
             $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0, s-maxage=0, private, no-transform');
             $response->headers->set('Pragma', 'no-cache');
+            // Additional headers to prevent CDN interference with Livewire/Alpine.js
+            $response->headers->set('CDN-Cache-Control', 'no-store');
+            $response->headers->set('Cloudflare-CDN-Cache-Control', 'no-store');
+            $response->headers->set('Vercel-CDN-Cache-Control', 'no-store');
         }
         
         // Strict-Transport-Security (HSTS) - only set if HTTPS

@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -151,12 +152,12 @@ class PostResource extends Resource
                 
                 Tables\Columns\TextColumn::make('public_url')
                     ->label('URL Publik')
-                    ->state(fn (Post $record) => route('post.show', $record->slug))
+                    ->state(fn (?Post $record) => $record ? route('post.show', $record->slug) : null)
                     ->icon('heroicon-o-link')
                     ->copyable()
                     ->copyMessage('Link disalin')
-                    ->url(fn (Post $record) => route('post.show', $record->slug), shouldOpenInNewTab: true)
-                    ->visible(fn (Post $record) => filled($record->published_at) && $record->published_at->lte(now()))
+                    ->url(fn (?Post $record) => $record ? route('post.show', $record->slug) : null, shouldOpenInNewTab: true)
+                    ->visible(fn (?Post $record) => $record && filled($record->published_at) && $record->published_at->lte(now()))
                     ->toggleable(isToggledHiddenByDefault: true),
                 
                 Tables\Columns\TextColumn::make('published_at')
@@ -185,7 +186,19 @@ class PostResource extends Resource
             ->filtersLayout(FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('delete')
+                    ->label('Hapus')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalHeading('Hapus Post')
+                    ->modalDescription('Apakah Anda yakin ingin menghapus post ini? Tindakan ini tidak dapat dibatalkan.')
+                    ->modalSubmitActionLabel('Ya, Hapus')
+                    ->action(function (Model $record) {
+                        $record->delete();
+                        return redirect()->to(static::getUrl('index'));
+                    })
+                    ->successNotificationTitle('Post berhasil dihapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
