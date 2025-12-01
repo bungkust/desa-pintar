@@ -522,39 +522,49 @@ class ComplaintResource extends Resource
                         ->icon('heroicon-o-clock')
                         ->modalHeading('Riwayat Update Pengaduan')
                         ->modalContent(function (Complaint $record) {
-                            $activities = $record->activities()
-                                ->statusChanges()
-                                ->with('user')
-                                ->get();
-                            
-                            if ($activities->isEmpty()) {
-                                return '<div class="p-4 text-center text-gray-500">Belum ada riwayat update.</div>';
-                            }
-                            
-                            $html = '<div class="space-y-4">';
-                            foreach ($activities as $activity) {
-                                $html .= '<div class="border-l-4 border-blue-500 pl-4 py-2">';
-                                $html .= '<div class="flex items-center justify-between mb-1">';
-                                $html .= '<span class="font-semibold text-sm">' . 
-                                    ucfirst($activity->status_from ?? '—') . ' → ' . ucfirst($activity->status_to ?? '—') . 
-                                    '</span>';
-                                $html .= '<span class="text-xs text-gray-500">' . 
-                                    $activity->created_at->format('d/m/Y H:i') . 
-                                    '</span>';
-                                $html .= '</div>';
-                                if ($activity->user) {
-                                    $html .= '<div class="text-xs text-gray-600 mb-1">Oleh: ' . 
-                                        e($activity->user->name) . '</div>';
+                            try {
+                                $activities = $record->activities()
+                                    ->statusChanges()
+                                    ->with('user')
+                                    ->get();
+                                
+                                if ($activities->isEmpty()) {
+                                    return '<div class="p-4 text-center text-gray-500">Belum ada riwayat update.</div>';
                                 }
-                                if ($activity->note) {
-                                    $html .= '<div class="text-sm text-gray-700 mt-2">' . 
-                                        nl2br(e($activity->note)) . '</div>';
+                                
+                                $html = '<div class="space-y-4">';
+                                foreach ($activities as $activity) {
+                                    $statusFrom = $activity->status_from ? ucfirst($activity->status_from) : '—';
+                                    $statusTo = $activity->status_to ? ucfirst($activity->status_to) : '—';
+                                    $timestamp = optional($activity->created_at)?->format('d/m/Y H:i') ?? '-';
+                                    
+                                    $html .= '<div class="border-l-4 border-blue-500 pl-4 py-2">';
+                                    $html .= '<div class="flex items-center justify-between mb-1">';
+                                    $html .= '<span class="font-semibold text-sm">' . $statusFrom . ' → ' . $statusTo . '</span>';
+                                    $html .= '<span class="text-xs text-gray-500">' . $timestamp . '</span>';
+                                    $html .= '</div>';
+                                    
+                                    if ($activity->user) {
+                                        $html .= '<div class="text-xs text-gray-600 mb-1">Oleh: ' . e($activity->user->name) . '</div>';
+                                    }
+                                    
+                                    if (!empty($activity->note)) {
+                                        $html .= '<div class="text-sm text-gray-700 mt-2">' . nl2br(e($activity->note)) . '</div>';
+                                    }
+                                    
+                                    $html .= '</div>';
                                 }
                                 $html .= '</div>';
+                                
+                                return new HtmlString($html);
+                            } catch (\Throwable $exception) {
+                                \Log::error('Gagal memuat riwayat pengaduan', [
+                                    'complaint_id' => $record->id,
+                                    'error' => $exception->getMessage(),
+                                ]);
+                                
+                                return '<div class="p-4 text-center text-red-500">Riwayat tidak dapat dimuat. Silakan coba lagi atau hubungi administrator.</div>';
                             }
-                            $html .= '</div>';
-                            
-                            return new HtmlString($html);
                         })
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Tutup'),

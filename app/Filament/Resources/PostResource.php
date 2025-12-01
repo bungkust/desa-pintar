@@ -149,6 +149,16 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 
+                Tables\Columns\TextColumn::make('public_url')
+                    ->label('URL Publik')
+                    ->state(fn (Post $record) => route('post.show', $record->slug))
+                    ->icon('heroicon-o-link')
+                    ->copyable()
+                    ->copyMessage('Link disalin')
+                    ->url(fn (Post $record) => route('post.show', $record->slug), shouldOpenInNewTab: true)
+                    ->visible(fn (Post $record) => filled($record->published_at) && $record->published_at->lte(now()))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()
                     ->sortable()

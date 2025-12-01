@@ -301,33 +301,67 @@
                             Nomor WhatsApp <span class="text-red-500">*</span>
                             <span class="text-gray-500 text-xs">(wajib jika tidak anonim)</span>
                         </label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" 
+                        <input type="tel"
+                               name="phone"
+                               value="{{ old('phone') }}"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                placeholder="08xxxxxxxxxx"
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               maxlength="15"
+                               autocomplete="tel"
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                required>
-                        <p class="mt-1 text-xs text-gray-500">Format: 08xxxxxxxxxx</p>
+                        <p class="mt-1 text-xs text-gray-500">Format: 08xxxxxxxxxx (angka saja)</p>
+                        @error('phone')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">RT</label>
-                            <input type="text" name="rt" value="{{ old('rt') }}" 
+                            <input type="text"
+                                   name="rt"
+                                   value="{{ old('rt') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                                   placeholder="RT">
+                                   placeholder="RT"
+                                   inputmode="numeric"
+                                   pattern="[0-9]*"
+                                   maxlength="3"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            @error('rt')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">RW</label>
-                            <input type="text" name="rw" value="{{ old('rw') }}" 
+                            <input type="text"
+                                   name="rw"
+                                   value="{{ old('rw') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                                   placeholder="RW">
+                                   placeholder="RW"
+                                   inputmode="numeric"
+                                   pattern="[0-9]*"
+                                   maxlength="3"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            @error('rw')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Lengkap</label>
-                        <textarea name="address" rows="2" 
+                        <textarea name="address"
+                                  rows="2"
+                                  maxlength="500"
                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Alamat lengkap">{{ old('address') }}</textarea>
+                        <p class="mt-1 text-xs text-gray-500">Maksimal 500 karakter.</p>
+                        @error('address')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-4">
@@ -349,9 +383,17 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Judul Pengaduan <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="title" value="{{ old('title') }}" required
+                        <input type="text"
+                               name="title"
+                               value="{{ old('title') }}"
+                               required
+                               maxlength="255"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                placeholder="Contoh: Jalan rusak di RT 05">
+                        <p class="mt-1 text-xs text-gray-500">Maksimal 255 karakter.</p>
+                        @error('title')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="mb-4">
@@ -362,6 +404,9 @@
                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Jelaskan masalah atau keluhan Anda secara detail...">{{ old('description') }}</textarea>
                         <p class="mt-1 text-xs text-gray-500">Maksimal 5000 karakter</p>
+                        @error('description')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
@@ -376,6 +421,9 @@
                         <textarea name="location_text" rows="2" required
                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                   placeholder="Contoh: Jl. Raya Donoharjo, RT 05, RW 02">{{ old('location_text') }}</textarea>
+                        @error('location_text')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -385,12 +433,18 @@
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="-7.xxxxx">
                         </div>
+                        @error('location_lat')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Longitude (opsional)</label>
                             <input type="number" name="location_lng" value="{{ old('location_lng') }}" step="0.00000001"
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                                    placeholder="110.xxxxx">
                         </div>
+                        @error('location_lng')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <p class="mt-2 text-xs text-gray-500">Koordinat GPS (opsional). Akan digunakan untuk deteksi duplikasi pengaduan.</p>
                 </div>

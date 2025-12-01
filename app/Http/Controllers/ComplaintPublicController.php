@@ -177,12 +177,19 @@ class ComplaintPublicController
         }
 
         // Validation
+        // Normalize numeric-only fields before validation
+        $request->merge([
+            'phone' => $request->filled('phone') ? preg_replace('/\D+/', '', $request->input('phone')) : $request->input('phone'),
+            'rt' => $request->filled('rt') ? preg_replace('/\D+/', '', $request->input('rt')) : $request->input('rt'),
+            'rw' => $request->filled('rw') ? preg_replace('/\D+/', '', $request->input('rw')) : $request->input('rw'),
+        ]);
+
         $validator = Validator::make($request->all(), [
             'name' => ['nullable', 'string', 'max:255'],
-            'phone' => ['required_if:is_anonymous,0', 'nullable', 'string', 'max:20', 'regex:/^[0-9+\-\s()]+$/'],
+            'phone' => ['required_if:is_anonymous,0', 'nullable', 'string', 'digits_between:10,15', 'regex:/^[0-9]+$/'],
             'address' => ['nullable', 'string', 'max:500'],
-            'rt' => ['nullable', 'string', 'max:10'],
-            'rw' => ['nullable', 'string', 'max:10'],
+            'rt' => ['nullable', 'string', 'max:10', 'regex:/^[0-9]+$/'],
+            'rw' => ['nullable', 'string', 'max:10', 'regex:/^[0-9]+$/'],
             'category' => ['required', 'string', 'in:infrastruktur,sampah,air,listrik,keamanan,sosial,pendidikan,kesehatan,lainnya'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:5000'],
@@ -198,6 +205,10 @@ class ComplaintPublicController
             'title.required' => 'Judul pengaduan wajib diisi.',
             'description.required' => 'Deskripsi pengaduan wajib diisi.',
             'location_text.required' => 'Lokasi pengaduan wajib diisi.',
+            'phone.regex' => 'Nomor WhatsApp hanya boleh berisi angka.',
+            'phone.digits_between' => 'Nomor WhatsApp harus terdiri dari 10-15 digit.',
+            'rt.regex' => 'RT hanya boleh berisi angka.',
+            'rw.regex' => 'RW hanya boleh berisi angka.',
             'images.max' => 'Maksimal 3 gambar.',
             'images.*.max' => 'Ukuran gambar maksimal 2MB.',
         ]);

@@ -41,7 +41,7 @@ class CacheClearingObserver
         $modelClass = get_class($model);
 
         match ($modelClass) {
-            Post::class => $this->clearPostCaches(),
+            Post::class => $this->clearPostCaches($model),
             HeroSlide::class => $this->clearHeroSlideCaches(),
             MenuItem::class => $this->clearMenuItemCaches($model),
             Apbdes::class => $this->clearApbdesCaches($model),
@@ -56,10 +56,20 @@ class CacheClearingObserver
         Cache::forget('general_settings');
     }
 
-    protected function clearPostCaches(): void
+    protected function clearPostCaches(?Post $post = null): void
     {
         Cache::forget('posts');
         Cache::forget('posts_latest');
+        Cache::forget('latest_posts');
+
+        if ($post instanceof Post) {
+            Cache::forget('post_' . $post->slug);
+
+            $originalSlug = $post->getOriginal('slug');
+            if ($originalSlug && $originalSlug !== $post->slug) {
+                Cache::forget('post_' . $originalSlug);
+            }
+        }
     }
 
     protected function clearHeroSlideCaches(): void

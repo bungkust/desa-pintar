@@ -15,6 +15,8 @@ use App\Observers\CacheClearingObserver;
 use App\Observers\ImageConversionObserver;
 use App\Policies\ComplaintPolicy;
 use App\Settings\GeneralSettings;
+use Filament\Support\Assets\AssetManager;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Asset;
@@ -52,6 +54,23 @@ class AppServiceProvider extends ServiceProvider
         
         // Register policies
         Gate::policy(Complaint::class, ComplaintPolicy::class);
+
+        // Prevent CDN optimizers (e.g., Cloudflare Rocket Loader) from mutating Filament / Livewire scripts.
+        // Adds data-cfasync="false" to every Filament-managed script tag so Livewire components stay mounted.
+        FilamentAsset::resolved(function (AssetManager $assetManager): void {
+            foreach ($assetManager->getScripts(withCore: true) as $script) {
+                $attributes = $script->getExtraAttributes();
+
+                if (($attributes['data-cfasync'] ?? null) === 'false') {
+                    continue;
+                }
+
+                $script->extraAttributes([
+                    ...$attributes,
+                    'data-cfasync' => 'false',
+                ]);
+            }
+        });
         
         Settings::register(GeneralSettings::class);
 
