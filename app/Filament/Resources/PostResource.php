@@ -7,10 +7,12 @@ use App\Models\Post;
 use App\Services\ImageConversionService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -202,7 +204,25 @@ class PostResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('delete')
+                        ->label('Hapus Terpilih')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->action(function (Collection $records) {
+                            $count = $records->count();
+
+                            if ($count === 0) {
+                                Notification::make()
+                                    ->title('Tidak ada post yang dipilih')
+                                    ->warning()
+                                    ->send();
+                                return;
+                            }
+
+                            // Store selected IDs in session and redirect to confirmation page
+                            session(['bulk_delete_posts' => $records->pluck('id')->toArray()]);
+                            return redirect()->route('filament.admin.resources.posts.bulk-confirm');
+                        }),
                 ]),
             ])
             ->striped()
@@ -224,6 +244,7 @@ class PostResource extends Resource
             'index' => Pages\ListPosts::route('/'),
             'create' => Pages\CreatePost::route('/create'),
             'edit' => Pages\EditPost::route('/{record}/edit'),
+            'bulk-confirm' => Pages\BulkDeleteConfirm::route('/bulk-confirm'),
         ];
     }
 }

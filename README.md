@@ -1,14 +1,62 @@
 # Desa Donoharjo - Production Deployment Guide
 
+## 🚀 Render PostgreSQL Setup (✅ ACTIVE)
+
+### ✅ **SHARED DATABASE ACTIVE**
+- **Render PostgreSQL**: `dpg-d4jddn8bdp1s73fs2af0-a.oregon-postgres.render.com`
+- **Database**: `desa_donoharjo`
+- **Status**: ✅ Connected & Migrated
+
+### Why Shared Database?
+- ✅ **No more sync issues** between local and production
+- ✅ **Same data everywhere** - changes reflect immediately
+- ✅ **No migration conflicts** - single source of truth
+- ✅ **Real production data** for local development
+
+### Current Setup
+```env
+DB_CONNECTION=pgsql
+DB_HOST=dpg-d4jddn8bdp1s73fs2af0-a.oregon-postgres.render.com
+DB_PORT=5432
+DB_DATABASE=desa_donoharjo
+DB_USERNAME=desa_donoharjo_user
+DB_PASSWORD=8t36QmeSwKgkaduARQH7TD5sJsnnhj7B
+```
+
+### For New Environments
+```bash
+# 1. Copy the .env file from this project
+cp .env /path/to/new/environment/
+
+# 2. Run migrations (if needed)
+php artisan migrate --force
+
+# 3. Clear caches
+php artisan optimize:clear
+```
+
+### Manual Setup
+If you prefer manual setup:
+```bash
+# Update your .env file with SHARED database credentials
+DB_CONNECTION=pgsql
+DB_HOST=your-shared-postgres-host.com
+DB_DATABASE=desa_donoharjo_shared
+DB_USERNAME=your-username
+DB_PASSWORD=your-password
+
+# Both local and production use the SAME database
+```
+
 ## 🚀 Production Deployment Steps
 
 ### Environment Setup
 ```bash
-# Set production environment variables
+# Set production environment variables (KEEP SAME DB AS LOCAL)
 APP_ENV=production
 APP_TIMEZONE=Asia/Jakarta
 APP_DEBUG=false
-DB_CONNECTION=pgsql  # or mysql
+# DB_* variables should be SAME as local
 ```
 
 ### 🚨 CRITICAL: Asset Building Fix for Production
@@ -143,6 +191,17 @@ echo "/* Temporary JS */" > public/build/assets/js/app-CRz7xcJV.js
 # 5. Proper fix - rebuild assets (on local machine)
 npm run build
 # Then upload public/build/ to production server
+```
+
+### Database Sync Between Environments
+```bash
+# Sync production data to local (download latest data)
+./sync-db.sh prod
+
+# Sync local data to production (upload changes)
+./sync-db.sh local
+
+# Note: With shared database, you rarely need to sync!
 ```
 
 ### Permission Issues

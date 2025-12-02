@@ -69,8 +69,12 @@
                         wire:loading.attr="disabled"
                         class="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:opacity-70 disabled:cursor-wait text-white text-sm font-medium rounded-lg focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200"
                     >
-                        <x-heroicon-o-paper-airplane wire:loading.remove class="w-4 h-4 mr-2" />
-                        <x-heroicon-o-arrow-path wire:loading class="w-4 h-4 mr-2 animate-spin" />
+                        <svg wire:loading.remove class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                        <svg wire:loading class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
                         <span wire:loading.remove>Kirim Komentar</span>
                         <span wire:loading>Mengirim...</span>
                     </button>
@@ -85,7 +89,9 @@
             @if(empty($comments))
                 <div class="flex flex-col items-center justify-center py-12 px-6 text-center">
                     <div class="flex items-center justify-center w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full mb-4">
-                        <x-heroicon-o-chat-bubble-left-right class="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                        <svg class="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                         Belum ada komentar
@@ -100,9 +106,11 @@
                         <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
                             <div class="flex items-start justify-between mb-3">
                                 <div class="flex items-center space-x-2">
-                                    <div class="flex items-center justify-center w-6 h-6 bg-primary-100 dark:bg-primary-900/50 rounded-full">
-                                        <x-heroicon-o-user class="w-3 h-3 text-primary-600 dark:text-primary-400" />
-                                    </div>
+                            <div class="flex items-center justify-center w-6 h-6 bg-primary-100 dark:bg-primary-900/50 rounded-full">
+                                <svg class="w-3 h-3 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
                                     <span class="font-medium text-gray-900 dark:text-white">{{ $comment['sender_name'] }}</span>
                                     <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
                                         @if($comment['sender_type'] === 'admin')
@@ -113,8 +121,10 @@
                                         {{ $comment['sender_type'] === 'admin' ? 'Admin' : 'User' }}
                                     </span>
                                 </div>
-                                <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
-                                    <x-heroicon-o-clock class="w-3 h-3 inline mr-1" />
+                        <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0">
+                            <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
                                     {{ \Carbon\Carbon::parse($comment['created_at'])->format('d/m/Y H:i') }}
                                 </span>
                             </div>

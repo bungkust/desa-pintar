@@ -2,21 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
-    build: {
-        // Ensure consistent chunk naming for production
-        rollupOptions: {
-            output: {
-                // Prevent hash changes for same content
-                manualChunks: undefined,
-                // Consistent naming
-                chunkFileNames: 'assets/js/[name]-[hash].js',
-                entryFileNames: 'assets/js/[name]-[hash].js',
-                assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-            },
-        },
-        // Generate source maps for debugging
-        sourcemap: process.env.APP_ENV !== 'production',
-    },
     server: {
         host: '127.0.0.1', // Force IPv4 localhost
     },

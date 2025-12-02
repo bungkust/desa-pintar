@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', (env('APP_ENV') === 'production' || env('APP_ENV') === 'staging') ? 'pgsql' : 'sqlite'),
+    'default' => env('DB_CONNECTION', 'pgsql'), // Use PostgreSQL for all environments
 
     /*
     |--------------------------------------------------------------------------
@@ -95,6 +95,11 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
+            // Performance optimizations for slow remote databases
+            'options' => extension_loaded('pdo_pgsql') ? [
+                PDO::ATTR_EMULATE_PREPARES => false, // Use native prepared statements
+                PDO::ATTR_PERSISTENT => true, // Keep connections alive when possible
+            ] : [],
         ],
 
         'sqlsrv' => [
